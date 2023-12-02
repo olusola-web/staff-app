@@ -14,7 +14,7 @@ const userColumns = [
   { header: 'Amount', key: 'Amount' },
   { header: 'Date', key: 'Date' },
   { header: 'Status', key: 'Status' },
-  // Add more columns as needed
+
 ];
 const ReclaimTable = () => {
   return (

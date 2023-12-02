@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const DataTable = ({ data, columns, options }) => {
   const [initialized, setInitialized] = useState(false);
-  const tableId = useRef(`dataTable-${uuidv4()}`).current; // Unique ID for each table instance
+  const tableId = useRef(`dataTable-${uuidv4()}`).current; 
 
   useEffect(() => {
     if (data.length && !initialized) {
