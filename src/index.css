@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +14,56 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* DataTable.css */
+.display {
+  width: 100%;
+  table-layout: auto;
+}
+
+@media screen and (max-width: 640px) { /* Adjust breakpoint as needed */
+  .display {
+    table-layout: auto;
+  }
+}
+
+/* Responsive styles for small and medium devices */
+@media screen and (max-width: 768px) {
+  .display thead,
+  .display tbody,
+  .display th,
+  .display td,
+  .display tr {
+    display: block;
+  }
+
+  /* Hide table headers on small devices */
+  .display thead tr {
+    display: none;
+  }
+
+  .display tr { 
+    margin-bottom: 0.625rem; /* Adjust as needed */
+  }
+
+  .display td {
+    /* Each cell is a row */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 50%; /* Adjust as needed */
+    position: relative;
+    gap: -3px;
+  }
+
+  .display td:before {
+    /* Add column header as content before each cell */
+    position: absolute;
+    left: 10px; /* Adjust as needed */
+    width: 45%; /* Adjust as needed */
+    padding-right: 10px; /* Adjust as needed */
+    white-space: nowrap;
+    content: attr(data-label); /* Use data attribute for label */
+  }
 }

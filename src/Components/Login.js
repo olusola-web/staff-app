@@ -1,42 +1,21 @@
 import React, { useState } from "react";
-import logo from "../Assets/Images/MyAfrimall.png"
+import logo from "../Assets/Images/MyAfrimall.png";
 import { useNavigate } from "react-router-dom";
-// import { useStateContext } from "../context/StateContext";
-// import axios from "axios";
-// import { Spinner } from "react-activity";
-// import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
   const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  // const { setIsLoggedIn } = useStateContext();
 
   const handleInputChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     event.preventDefault();
-    // Remove API endpoint related code
-    try {
-      // Remove API endpoint related code
-    //   toast.success("Login Successful");
-      // Remove API endpoint related code
-
-      // setTimeout(() => {
-      //   navigate("/home");
-      // }, 3000);
-      // setIsLoggedIn(true);
-      // setUserData({});
-    } catch (error) {
-      // console.log(error);
-      // toast.error(error?.response?.data?.message);
-    } finally {
-      setIsLoading(false);
-    }
+    navigate("/home");
   };
 
   return (
@@ -82,14 +61,12 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            disabled={isLoading}
             className="bg-[#049805] text-white py-2 rounded-md focus:outline-none w-full flex items-center justify-center"
           >
-            {isLoading ? "Loading..." : "Login"}
+            Login
           </button>
         </form>
       </div>
-      {/* <ToastContainer /> */}
     </div>
   );
 };
