@@ -7,8 +7,8 @@ import { MdOutlineEmojiPeople } from "react-icons/md";
 
 
 export const getLinks = () => {
-    const user = localStorage.getItem("user");
-    const role = JSON.parse(user).role;
+   // const user =("user");
+    // const role = JSON.parse(user).role;
     // console.log(role === "Director");
   
     const links = [
@@ -484,11 +484,11 @@ export const getLinks = () => {
       //   ),
       // },
     // ];
-    if (role === "Director") {
+    //if (role === "Director") {
     //   return link3;
-    } else if (role === "admin") {
+   // } else if (role === "admin") {
     //   return links2;
-    }
+    //}
    return links;
   };
   
