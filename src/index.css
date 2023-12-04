@@ -66,4 +66,10 @@ code {
     white-space: nowrap;
     content: attr(data-label); /* Use data attribute for label */
   }
+
+  /* Add this CSS to your stylesheet */
+.custom-datatable-container .dataTables_filter {
+  margin-right: 20px; /* Adjust the gap as needed */
+}
+
 }
