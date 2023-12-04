@@ -8,6 +8,8 @@
     "@testing-library/user-event": "^13.5.0",
     "datatables.net": "^1.13.8",
     "datatables.net-dt": "^1.13.8",
+    "datatables.net-responsive": "^2.5.0",
+    "datatables.net-responsive-dt": "^2.5.0",
     "jquery": "^3.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
