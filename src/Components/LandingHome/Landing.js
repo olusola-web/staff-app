@@ -2,6 +2,7 @@ import React from "react";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import ReclaimTable from "../HomeReclaimTable/ReclaimTable";
 import LeaveRequest from "../LeaveRequestTableHome/LeaveRequest";
+import PendingPurchReqHome from "../PendingPurchaseRequestHome/PendingPurchReqHome";
 
 const Landing = () => {
   const reclaimCount = 5;
@@ -45,39 +46,49 @@ const Landing = () => {
         </div>
 
         {/* 2nd card  */}
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-center my-12">
-  <div className="bg-white p-4 rounded-lg shadow-md w-full h-full flex flex-col justify-center items-center">
-    <div className="flex justify-between items-center pb-6 gap-2 sm:gap-4 md:gap-8 lg:gap-16 xl:gap-20">
-      <h2 className="relative inline-block font-bold text-sm sm:text-md md:text-lg lg:text-xl">
-        Reclaim
-        <span className="absolute top-0 -right-2 md:-right-8 bg-red-500 text-white text-xs sm:text-sm px-2 py-1 rounded-full">
-          {reclaimCount}
-        </span>
-      </h2>
-      <h2 className="text-[#049805] sm:hidden md:block">View all</h2> {/* Make "View all" visible on small screens */}
-    </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-center my-12">
+          <div className="bg-white p-4 rounded-lg shadow-md w-full h-full flex flex-col justify-center items-center">
+            <div className="flex justify-between items-center pb-6 gap-2 sm:gap-4 md:gap-8 lg:gap-16 xl:gap-20">
+              <h2 className="relative inline-block font-bold text-sm sm:text-md md:text-lg lg:text-xl">
+                Reclaim
+                <span className="absolute top-0 -right-2 md:-right-8 bg-red-500 text-white text-xs sm:text-sm px-2 py-1 rounded-full">
+                  {reclaimCount}
+                </span>
+              </h2>
+              <h2 className="text-[#049805] sm:hidden md:block">View all</h2>{" "}
+              {/* Make "View all" visible on small screens */}
+            </div>
 
-    <div className="text-gray-600 font-bold overflow-x-auto w-full">
-      <ReclaimTable />
-    </div>
-  </div>
+            <div className="text-gray-600 font-bold overflow-x-auto w-full">
+              <ReclaimTable />
+            </div>
+          </div>
 
-          
-  <div className="bg-white p-4 rounded-lg shadow-md w-full h-full flex flex-col justify-center items-center">
-    <div className="flex justify-between items-center pb-6 gap-2 sm:gap-4 md:gap-8 lg:gap-16 xl:gap-20">
-      <h2 className="relative inline-block font-bold text-sm sm:text-md md:text-lg lg:text-xl">
-      Leave/Off Requests
-        <span className="absolute top-0 -right-2 md:-right-8 bg-red-500 text-white text-xs sm:text-sm px-2 py-1 rounded-full">
-          {reclaimCount}
-        </span>
-      </h2>
-      <h2 className="text-[#049805] sm:hidden md:block">View all</h2> {/* Make "View all" visible on small screens */}
-    </div>
+          <div className="bg-white p-4 rounded-lg shadow-md w-full h-full flex flex-col justify-center items-center">
+            <div className="flex justify-between items-center pb-6 gap-2 sm:gap-4 md:gap-8 lg:gap-16 xl:gap-20">
+              <h2 className="relative inline-block font-bold text-sm sm:text-md md:text-lg lg:text-xl">
+                Leave/Off Requests
+                <span className="absolute top-0 -right-2 md:-right-8 bg-red-500 text-white text-xs sm:text-sm px-2 py-1 rounded-full">
+                  {reclaimCount}
+                </span>
+              </h2>
+              <h2 className="text-[#049805] sm:hidden md:block">View all</h2>{" "}
+              {/* Make "View all" visible on small screens */}
+            </div>
 
-    <div className="text-gray-600 font-bold overflow-x-auto w-full">
-      <LeaveRequest />
-    </div>
-  </div>
+            <div className="text-gray-600 font-bold overflow-x-auto w-full">
+              <LeaveRequest />
+            </div>
+          </div>
+        </div>
+        {/* purchase request receipt table */}
+        <div>
+          <div className="flex justify-between  p-3">
+            <h1 className="font-bold">Pending Purchase Request</h1>
+            <h1 className="text-[#049805] font-bold">View All</h1>
+
+          </div>
+          <PendingPurchReqHome />
         </div>
       </div>
     </div>

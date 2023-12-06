@@ -72,4 +72,9 @@ code {
   margin-right: 20px; /* Adjust the gap as needed */
 }
 
+.description-cell {
+  word-wrap: break-word;
+  white-space: normal;
+}
+
 }
