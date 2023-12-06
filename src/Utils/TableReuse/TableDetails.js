@@ -54,8 +54,8 @@ const DataTable = ({ data, columns, options }) => {
         <tbody>
           {data.map((item, rowIndex) => (
             <tr key={rowIndex}>
-              {columns.map(({ key }, colIndex) => (
-                <td key={colIndex}>{item[key]}</td>
+              {columns.map(({ key, className}, colIndex) => (
+                <td key={colIndex} className={className}>{item[key]}</td>
               ))}
             </tr>
           ))}
