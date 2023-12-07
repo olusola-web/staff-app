@@ -66,7 +66,7 @@ const ProfileForm = () => {
               value={formData.fullName}
               onChange={handleChange}
               required
-              className="w-full p-2 bg-gray-100 rounded-md"
+              className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Enter your full name"
             />
           </label>
@@ -79,7 +79,7 @@ const ProfileForm = () => {
               value={formData.phoneNumber}
               onChange={handleChange}
               required
-              className="w-full p-2 bg-gray-100 rounded-md"
+              className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Enter your Phone Number"
             />
           </label>
@@ -92,7 +92,7 @@ const ProfileForm = () => {
               value={formData.dateOfBirth}
               onChange={handleChange}
               required
-              className="w-full p-2 bg-gray-100 rounded-md"
+              className="w-full p-4 bg-gray-100 rounded-md"
             />
           </label>
 
@@ -104,7 +104,7 @@ const ProfileForm = () => {
               value={formData.maritalStatus}
               onChange={handleChange}
               required
-              className="w-full p-2 bg-gray-100 rounded-md"
+              className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Enter your marital status"
             />
           </label>
@@ -119,7 +119,7 @@ const ProfileForm = () => {
               value={formData.address}
               onChange={handleChange}
               required
-              className="w-full p-2 bg-gray-100 rounded-md"
+              className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Enter your address"
             />
           </label>
@@ -132,7 +132,7 @@ const ProfileForm = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full p-2 bg-gray-100 rounded-md"
+              className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Ènter your email"
             />
           </label>
@@ -145,7 +145,7 @@ const ProfileForm = () => {
               value={formData.sex}
               onChange={handleChange}
               required
-              className="w-full p-2 bg-gray-100 rounded-md"
+              className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Enter your sex"
             />
           </label>
@@ -158,7 +158,7 @@ const ProfileForm = () => {
               onChange={handleChange}
               accept="image/*"
               required
-              className="w-full p-2 bg-gray-100 rounded-md"
+              className="w-full p-4 bg-gray-100 rounded-md"
             />
           </label>
         </div>
@@ -173,7 +173,7 @@ const ProfileForm = () => {
             onChange={handleChange}
             accept=".pdf, .doc, .docx"
             required
-            className="w-full p-2 bg-gray-100 rounded-md"
+            className="w-full p-4 bg-gray-100 rounded-md"
           />
         </label>
       </form>
@@ -191,7 +191,7 @@ const ProfileForm = () => {
               value={formData.fullName}
               onChange={handleChange}
               required
-              className="w-full p-2 bg-gray-100 rounded-md"
+              className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Enter guarantor's full name"
             />
           </label>
@@ -204,7 +204,7 @@ const ProfileForm = () => {
               value={formData.phoneNumber}
               onChange={handleChange}
               required
-              className="w-full p-2 bg-gray-100 rounded-md"
+              className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Enter guarantor's phone number"
             />
           </label>
@@ -219,7 +219,7 @@ const ProfileForm = () => {
               value={formData.address}
               onChange={handleChange}
               required
-              className="w-full p-2 bg-gray-100 rounded-md"
+              className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Enter guarantor's address"
             />
           </label>
@@ -232,7 +232,7 @@ const ProfileForm = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full p-2 bg-gray-100 rounded-md"
+              className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Ènter guarantor's highest level of education"
             />
           </label>
