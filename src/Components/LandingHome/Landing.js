@@ -2,7 +2,7 @@ import React from "react";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import ReclaimTable from "../HomeReclaimTable/ReclaimTable";
 import LeaveRequest from "../LeaveRequestTableHome/LeaveRequest";
-import PendingPurchReqHome from "../PendingPurchaseRequestHome/PendingPurchReqHome";
+import PendingPurchReqHome from "../PendingPurchReqHome/PendingPurchReqHome";
 
 const Landing = () => {
   const reclaimCount = 5;
@@ -47,7 +47,7 @@ const Landing = () => {
 
         {/* 2nd card  */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-center my-12">
-          <div className="bg-white p-4 rounded-lg shadow-md w-full h-full flex flex-col justify-center items-center">
+          <div className="bg-white p-2 rounded-lg shadow-md w-full h-full flex flex-col justify-center items-center">
             <div className="flex justify-between items-center pb-6 gap-2 sm:gap-4 md:gap-8 lg:gap-16 xl:gap-20">
               <h2 className="relative inline-block font-bold text-sm sm:text-md md:text-lg lg:text-xl">
                 Reclaim
@@ -64,7 +64,7 @@ const Landing = () => {
             </div>
           </div>
 
-          <div className="bg-white p-4 rounded-lg shadow-md w-full h-full flex flex-col justify-center items-center">
+          <div className="bg-white p-2 rounded-lg shadow-md w-full h-full flex flex-col justify-center items-center">
             <div className="flex justify-between items-center pb-6 gap-2 sm:gap-4 md:gap-8 lg:gap-16 xl:gap-20">
               <h2 className="relative inline-block font-bold text-sm sm:text-md md:text-lg lg:text-xl">
                 Leave/Off Requests

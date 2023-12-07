@@ -1,12 +1,12 @@
 import React from 'react'
 import Table from '../../Utils/Table';
-import SingleHomeReclaim from './SingleHomeReclaim'; 
+import SingleHomePurchReq from './SingleHomePurchReq';
 
 const tableHeader = [
   "S/N",
-  "Reclaim Amount",
+  "Description",
+  "Quantity",
   "Amount",
-  "Date",
   "Status",
 ];
 
@@ -14,34 +14,34 @@ const ReclaimTable = () => { // For simplicity, using sample data directly
   const displayedData = [
     {
       id: 1,
-      reclaim_amount: "5000",
-      amount: "10000",
-      date: "8/11/2023",
-      status: "Not granted"
+      description: "I would like to get a printer ",
+      quantity: "6",
+      amount: "₦40,000",
+      status: "Success",
     },
     {
       id: 2,
-      reclaim_amount: "5000",
-      amount: "10000",
-      date: "8/11/2023",
-      status: "Success"
-    }
+      description: "Leave Req",
+      quantity: "1",
+      amount: "₦40,000",
+      status: "Pending",
+    },
     // Add more data items as needed
   ];
   return (
     <div>
-      <div className="w-full max-w-5xl mb-4 overflow-x-auto table-responsive">
+      <div className="w-full max-w-5xl mb-4 overflow-x-auto table-responsive ">
         <Table
           headerContent={tableHeader}
-          minSize={"600px"}
-          cols={6}
+          minSize={"1000px"}
+          cols={5}
           data={displayedData}
           showSearch={false}
           searchKey=""
         >
           {displayedData?.map((item, index) => (
             <div key={index}>
-              <SingleHomeReclaim
+              <SingleHomePurchReq
                 item={item}
                 index={index}
                 // openModal and openEditModal can be passed if needed

@@ -40,23 +40,23 @@ const Table = ({
           </TableBody>
         </div>
         {!notPaginated && (
-          <div className="flex justify-between gap-4 items-center p-8">
+          <div className="flex justify-between gap-4 items-center p-">
             <button
               onClick={prevpage}
               disabled={loadingState}
-              className="flex items-center gap-2 bg-green-50 rounded-full p-2 px-6 text-sm"
+              className="flex items-center gap-2 bg-green-50 rounded-full p- px-6 text-sm"
             >
-              <GrChapterPrevious /> Prev
+              {/* <GrChapterPrevious /> Prev */}
             </button>
-            <span className="block bg-gray-100 rounded-full p-2 text-sm px-6">
+            <span className="block bg-gray-100 rounded-full p- text-sm px-6">
               {/* Page {page} */}
             </span>
             <button
               disabled={loadingState}
               // onClick={nextPage}
-              className="flex items-center gap-2 bg-green-50 rounded-full p-2 px-6 text-sm"
+              className="flex items-center gap-2 bg-green-50 rounded-full p- px-6 text-sm"
             >
-              Next <GrChapterNext />
+              {/* Next <GrChapterNext /> */}
             </button>
           </div>
         )}

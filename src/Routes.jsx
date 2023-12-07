@@ -6,6 +6,7 @@ import HomePage from "./Pages/HomePage";
 import Profile from "./Pages/ProfilePage";
 import PurchaseRequestPage from "./Pages/PurchaseRequestPage";
 import CreatePurchReqPage from "./Pages/CreatePurchReqPage";
+import LeaveOffRequestPage from "./Pages/LeaveOffRequestPage";
 
 const AppRoute = () => {
   return (
@@ -20,6 +21,7 @@ const AppRoute = () => {
             path="purchaserequest/create"
             element={<CreatePurchReqPage />}
           />
+          <Route path="leaverequest" element={<LeaveOffRequestPage />} />
         </Route>
       </Routes>
     </Router>

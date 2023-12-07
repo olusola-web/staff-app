@@ -18,7 +18,10 @@ const DataTable = ({ data, columns, options }) => {
   useEffect(() => {
     // Initialize DataTable only once
     if (!tableRef.current) {
-      tableRef.current = $(`#${tableId}`).DataTable(options);
+      tableRef.current = $(`#${tableId}`).DataTable({
+        ...options,
+        responsive: true // Enable responsive option
+      })
     }
 
     return () => {
