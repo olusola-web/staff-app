@@ -42,7 +42,7 @@ const ProfileForm = () => {
   };
 
   return (
-    <div className=" mx-auto mt-0 p-4 bg-white">
+    <div className="mx-auto mt-0 p-4 bg-white">
       <div className="p-2 flex flex-col md:flex-row justify-between items-center">
         <div className="flex gap-2 items-center md:mb-0 pt-7 mb-5 ">
           <FaHome className="m-0" />
