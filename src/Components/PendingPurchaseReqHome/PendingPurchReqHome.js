@@ -1,6 +1,6 @@
 import React from 'react'
 import Table from '../../Utils/Table';
-import SingleHomePurchReq from './SingleHomePurchReq';
+import SingleHomePurchReq from './SingleHomePenPurchReq';
 
 const tableHeader = [
   "S/N",
@@ -10,7 +10,7 @@ const tableHeader = [
   "Status",
 ];
 
-const ReclaimTable = () => { // For simplicity, using sample data directly
+const PendingPurchReqHome = () => { // For simplicity, using sample data directly
   const displayedData = [
     {
       id: 1,
@@ -29,7 +29,7 @@ const ReclaimTable = () => { // For simplicity, using sample data directly
     // Add more data items as needed
   ];
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center">
       <div className="w-full max-w-5xl mb-4 overflow-x-auto table-responsive ">
         <Table
           headerContent={tableHeader}
@@ -55,4 +55,4 @@ const ReclaimTable = () => { // For simplicity, using sample data directly
   )
 }
 
-export default ReclaimTable
+export default PendingPurchReqHome

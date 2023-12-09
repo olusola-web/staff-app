@@ -2,7 +2,7 @@ import React from "react";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import ReclaimTable from "../HomeReclaimTable/ReclaimTable";
 import LeaveRequest from "../LeaveRequestTableHome/LeaveRequest";
-import PendingPurchReqHome from "../PendingPurchReqHome/PendingPurchReqHome";
+import PendingPurchReqHome from "../PendingPurchaseReqHome/PendingPurchReqHome"
 
 const Landing = () => {
   const reclaimCount = 5;
