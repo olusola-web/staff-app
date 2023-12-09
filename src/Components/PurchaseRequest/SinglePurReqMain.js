@@ -1,8 +1,8 @@
 // In SinglePurchaseRequest.js
 import React from "react";
-import { RiDeleteBin6Line } from "react-icons/ri";
+// import { RiDeleteBin6Line } from "react-icons/ri";
 
-const SinglePurchaseRequest = ({ item, index, onDelete }) => {
+const SinglePurReqMain = ({ item, index, onDelete }) => {
   const { description, quantity, amount, action } = item || {};
 
   return (
@@ -13,15 +13,16 @@ const SinglePurchaseRequest = ({ item, index, onDelete }) => {
       <h2 className="px-3">{amount}</h2>
       <h2>
         {action}
-        <div className="flex gap-2 px-8">
+        {/* <div className="flex gap-2 px-8">
           <RiDeleteBin6Line
             className="text-red-600 cursor-pointer"
             onClick={onDelete}
           />
-        </div>
+        </div> */}
       </h2>
     </div>
   );
 };
 
-export default SinglePurchaseRequest;
+export default SinglePurReqMain;
+
