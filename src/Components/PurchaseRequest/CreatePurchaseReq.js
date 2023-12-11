@@ -35,10 +35,10 @@ const CreatePurchaseReq = () => {
         </div>
 
         <Link
-          to="/home/purchaserequest/create"
+          to="/home/purchaserequest"
           className="bg-[#049805] text-white rounded-lg px-4 py-2 inline-block text-center"
         >
-          Create Purchase Request
+          All Purchase Request
               </Link>
             
           </div>
