@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+// import Button from "../Button/ButtonReusable";
 import { FaHome, FaChevronRight } from "react-icons/fa";
+import { LuPencil } from "react-icons/lu";
 import { Link } from "react-router-dom";
 
-const ProfileForm = () => {
+const ProfileEdit = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     phoneNumber: "",
@@ -50,7 +52,10 @@ const ProfileForm = () => {
           <FaChevronRight className="m-1 text-[#049805]" />
           <p className="text-[#049805]"> Profile</p>
         </div>
-        <Link to="/home/profile/edit" className="bg-[#049005] text-white rounded-md p-2">
+        <Link
+          to="/home/profile/edit"
+          className="bg-[#049005] text-white rounded-md p-2"
+        >
           Edit Profile
         </Link>
       </div>
@@ -59,7 +64,14 @@ const ProfileForm = () => {
         {/* Left Column */}
         <div>
           <label className="block mb-2 text-sm font-medium">
-            Full Name
+            <div className="flex justify-between">
+              <p>Full Name</p>
+              <div className="flex">
+                <p>Edit</p>
+                <LuPencil className="m-1" />
+              </div>
+            </div>
+
             <input
               type="text"
               name="fullName"
@@ -72,7 +84,13 @@ const ProfileForm = () => {
           </label>
 
           <label className="block mb-2 text-sm font-medium">
-            Phone Number
+            <div className="flex justify-between">
+              <p>Phone Number</p>
+              <div className="flex">
+                <p>Edit</p>
+                <LuPencil className="m-1" />
+              </div>
+            </div>
             <input
               type="tel"
               name="phoneNumber"
@@ -85,7 +103,13 @@ const ProfileForm = () => {
           </label>
 
           <label className="block mb-2 text-sm font-medium">
-            Enter your Date of Birth
+            <div className="flex justify-between">
+              <p>Enter your Date of Birth</p>
+              <div className="flex">
+                <p>Edit</p>
+                <LuPencil className="m-1" />
+              </div>
+            </div>
             <input
               type="date"
               name="dateOfBirth"
@@ -97,7 +121,13 @@ const ProfileForm = () => {
           </label>
 
           <label className="block mb-2 text-sm font-medium">
-            Marital Status
+            <div className="flex justify-between">
+              <p>Marital Status</p>
+              <div className="flex">
+                <p>Edit</p>
+                <LuPencil className="m-1" />
+              </div>
+            </div>
             <input
               type="text"
               name="maritalStatus"
@@ -113,7 +143,13 @@ const ProfileForm = () => {
         {/* Right Column */}
         <div>
           <label className="block mb-2 text-sm font-medium">
-            Address
+            <div className="flex justify-between">
+              <p>Address</p>
+              <div className="flex">
+                <p>Edit</p>
+                <LuPencil className="m-1" />
+              </div>
+            </div>
             <input
               name="address"
               value={formData.address}
@@ -125,7 +161,13 @@ const ProfileForm = () => {
           </label>
 
           <label className="block mb-2 text-sm font-medium">
-            Email
+            <div className="flex justify-between">
+              <p>Email</p>
+              <div className="flex">
+                <p>Edit</p>
+                <LuPencil className="m-1" />
+              </div>
+            </div>
             <input
               type="email"
               name="email"
@@ -138,7 +180,13 @@ const ProfileForm = () => {
           </label>
 
           <label className="block mb-2 text-sm font-medium">
-            Enter your Sex
+            <div className="flex justify-between">
+              <p>Enter your Sex</p>
+              <div className="flex">
+                <p>Edit</p>
+                <LuPencil className="m-1" />
+              </div>
+            </div>
             <input
               type="text"
               name="sex"
@@ -184,7 +232,13 @@ const ProfileForm = () => {
         {/* Left Column */}
         <div>
           <label className="block mb-2 text-sm font-medium">
-            Full Name
+            <div className="flex justify-between">
+              <p>Full Name</p>
+              <div className="flex">
+                <p>Edit</p>
+                <LuPencil className="m-1" />
+              </div>
+            </div>
             <input
               type="text"
               name="fullName"
@@ -197,7 +251,13 @@ const ProfileForm = () => {
           </label>
 
           <label className="block mb-2 text-sm font-medium">
-            Phone Number
+            <div className="flex justify-between">
+              <p>Phone Number</p>
+              <div className="flex">
+                <p>Edit</p>
+                <LuPencil className="m-1" />
+              </div>
+            </div>
             <input
               type="tel"
               name="phoneNumber"
@@ -213,7 +273,13 @@ const ProfileForm = () => {
         {/* Right Column */}
         <div>
           <label className="block mb-2 text-sm font-medium">
-            Address
+            <div className="flex justify-between">
+              <p>Address</p>
+              <div className="flex">
+                <p>Edit</p>
+                <LuPencil className="m-1" />
+              </div>
+            </div>
             <input
               name="address"
               value={formData.address}
@@ -225,7 +291,13 @@ const ProfileForm = () => {
           </label>
 
           <label className="block mb-2 text-sm font-medium">
-            Guarantor Education
+            <div className="flex justify-between">
+              <p>Guarantor Education</p>
+              <div className="flex">
+                <p>Edit</p>
+                <LuPencil className="m-1" />
+              </div>
+            </div>
             <input
               type="text"
               name="education"
@@ -237,9 +309,18 @@ const ProfileForm = () => {
             />
           </label>
         </div>
+        {/* Save Button */}
+        <div className="flex items-center justify-center mb-4 py-7">
+          <button
+            type="submit"
+            className="w-full bg-[#049805] text-white p-3 rounded"
+          >
+            Save
+          </button>
+        </div>
       </form>
     </div>
   );
 };
 
-export default ProfileForm;
+export default ProfileEdit;
