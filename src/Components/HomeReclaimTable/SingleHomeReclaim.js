@@ -4,7 +4,7 @@ const SingleHomeReclaim = ({ item, index }) => {
   // Determine the Tailwind class based on the status
   const statusClass = status === 'Not granted' 
     ? 'bg-red-500'   // Red background for 'not granted'
-    : status === 'Success' 
+    : status === 'Successful' 
       ? 'bg-blue-500' // Blue background for 'Success'
       : '';           // Default background for other statuses
 
