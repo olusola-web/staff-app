@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import logo from "../Assets/Images/MyAfrimall.png";
 import { useNavigate } from "react-router-dom";
+import { useStateContext } from "../context/StateContext";
+import axios from "axios";
+import { Spinner } from "react-activity";
 
 const Login = () => {
   const [userData, setUserData] = useState({});
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { baseUrl, setIsLoggedIn } = useStateContext();
 
   const handleInputChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -13,8 +17,16 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
-    // setIsLoading(true);
+    setIsLoading(true);
     event.preventDefault();
+    const url = `${baseUrl}/login`;
+    try {
+      const res = await axios.post(url, userData);
+      console.log(res.data);
+    } catch (error) {
+      console.log(error.response);
+    }
+    setIsLoading(false);
     navigate("/home");
   };
 

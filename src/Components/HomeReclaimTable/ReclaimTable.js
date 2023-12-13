@@ -24,7 +24,7 @@ const ReclaimTable = () => { // For simplicity, using sample data directly
       reclaim_amount: "5000",
       amount: "10000",
       date: "8/11/2023",
-      status: "Success"
+      status: "Successful"
     }
     // Add more data items as needed
   ];
