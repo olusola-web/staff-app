@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../context/StateContext";
 import axios from "axios";
 import { Spinner } from "react-activity";
+import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
   const [userData, setUserData] = useState({});
@@ -22,12 +23,23 @@ const Login = () => {
     const url = `${baseUrl}/login`;
     try {
       const res = await axios.post(url, userData);
+      toast.success("Login Successful");
       console.log(res.data);
+      await localStorage.setItem("token", res.data.token)
+      const user = JSON.stringify(res.data.data)
+      localStorage.setItem("user", user)
+      setTimeout(() => {
+        navigate("/home");
+      }, 3000)
+      setIsLoggedIn(true);
+      setUserData({});
     } catch (error) {
       console.log(error.response);
+      toast.error(error?.response?.data?.message);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
-    navigate("/home");
+   
   };
 
   return (
@@ -42,7 +54,7 @@ const Login = () => {
               htmlFor="email"
               className="block text-sm font-medium text-gray-700 text-left"
             >
-              Name:
+              Email:
             </label>
             <input
               type="text"
@@ -73,12 +85,14 @@ const Login = () => {
           </div>
           <button
             type="submit"
+            disabled={isLoading}
             className="bg-[#049805] text-white py-2 rounded-md focus:outline-none w-full flex items-center justify-center"
           >
-            Login
+          {isLoading ? <Spinner /> : "Login"}
           </button>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };
