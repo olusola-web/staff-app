@@ -1,9 +1,11 @@
 // PurchaseRequest.js
 import React from "react";
+import { useEffect } from "react";
 import { FaHome, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import SinglePurReqMain from "./SinglePurReqMain";
 import Table from "../../Utils/Table";
+import { useStateContext } from "../../context/StateContext";
 
 const tableHeader = [
   "S/N",
@@ -16,25 +18,25 @@ const tableHeader = [
 
 // For simplicity, using sample data directly
 const PurchaseRequest = () => {
-  const displayedData = [
-    {
-      id: 1,
-      purchase_request_number: "122345543466 ",
-      item_name: "Printer",
-      amount: "₦40,000",
-      status: "Successful",
-      action: "view all",
-    },
-    {
-      id: 2,
-      purchase_request_number: "122345543466 ",
-      item_name: "Printer",
-      amount: "₦40,000",
-      status: "Pending",
-      action: "view all",
-    },
-    // Add more data items as needed
-  ];
+  const { allPurchaseReq, isLoading, getAllPurchaseReq } = useStateContext();
+
+
+  useEffect(() => {
+    getAllPurchaseReq();
+  }, []);
+
+  let displayedData;
+  if (allPurchaseReq && allPurchaseReq.data) {
+    displayedData = allPurchaseReq.data.map((req, index) => ({
+      id: index + 1,
+      purchase_request_number: req.Pr_Number,
+      item_name: req.purchase_request_items.map(item => item.description).join(", "),
+      amount: `₦${req.total_amount}`,
+      status: req.status,
+      action: "view all"
+    }));
+  }
+ 
   return (
     <div>
       <div className="p-6 flex flex-col md:flex-row justify-between items-center">
@@ -58,6 +60,9 @@ const PurchaseRequest = () => {
       {/* table */}
       <div className="flex flex-col items-center justify-center py-8">
         <div className="w-full max-w-5xl mb-4 overflow-x-auto table-responsive ">
+        {isLoading ? (
+            <p>Loading...</p>
+          ) : displayedData && displayedData.length > 0 ? (
           <Table
             headerContent={tableHeader}
             minSize={"1000px"}
@@ -76,7 +81,10 @@ const PurchaseRequest = () => {
                 <hr className="my-4 border-green-50" />
               </div>
             ))}
-          </Table>
+            </Table>
+              ) : (
+                <p className="text-center">You have 0 purchase requests</p>
+              )}
         </div>
       </div>
     </div>
