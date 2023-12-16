@@ -22,15 +22,20 @@ const ReclaimTable = () => { // For simplicity, using sample data directly
 
   // Check if reclaim_request is loaded and is an array
   if (reclaim_request && Array.isArray(reclaim_request)) {
-    displayedData = reclaim_request.map((reclaim, index) => ({
-      id: index + 1,
-      reclaim_number: reclaim.reclaim_number, 
-      amount_to_reclaim: `₦${reclaim.amount_to_reclaim}`, 
-      date: reclaim.date_of_expenses,
-      status: reclaim.status 
-      
-    }));
+    displayedData = reclaim_request.map((reclaim, index) => {
+      // Format the amount to include commas as thousands separators
+      const formattedAmount = new Intl.NumberFormat('en-US').format(reclaim.amount_to_reclaim);
+  
+      return {
+        id: index + 1,
+        reclaim_number: reclaim.reclaim_number, 
+        amount_to_reclaim: `₦${formattedAmount}`, // Using the formatted amount here
+        date: reclaim.date_of_expenses,
+        status: reclaim.status 
+      };
+    });
   }
+  
 
 
   return (
