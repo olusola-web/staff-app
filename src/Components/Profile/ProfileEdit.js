@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import Button from "../Button/ButtonReusable";
+import Button from "../Button/ButtonReusable";
 import { FaHome, FaChevronRight } from "react-icons/fa";
 import { LuPencil } from "react-icons/lu";
 import { Link } from "react-router-dom";
@@ -309,16 +309,14 @@ const ProfileEdit = () => {
             />
           </label>
         </div>
-        {/* Save Button */}
-        <div className="flex items-center justify-center mb-4 py-7">
-          <button
-            type="submit"
-            className="w-full bg-[#049805] text-white p-3 rounded"
-          >
-            Save
-          </button>
-        </div>
       </form>
+      {/* Save Button */}
+      <div className="flex items-center justify-center p-5">
+              <button type="save" className="bg-[#049805] text-white rounded-lg w-full p-3 rounded">
+        Save
+      </button>
+      </div>
+
     </div>
   );
 };
