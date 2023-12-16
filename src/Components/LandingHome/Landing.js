@@ -3,9 +3,26 @@ import { FaRegMoneyBillAlt } from "react-icons/fa";
 import ReclaimTable from "../HomeReclaimTable/ReclaimTable";
 import LeaveRequest from "../LeaveRequestTableHome/LeaveRequest";
 import PendingPurchReqHome from "../PendingPurchaseReqHome/PendingPurchReqHome";
+import { useStateContext } from "../../context/StateContext";
+import { useEffect } from "react";
+
+
 
 const Landing = () => {
-  const reclaimCount = 5;
+  const { getDashboardDetails, dashDetails, isLoading } = useStateContext();
+  const {  total_purchase_request,total_reclaim_request,total_leave_request,total_suggestion } = dashDetails
+     useEffect(() => {
+    getDashboardDetails();
+     }, []);
+  
+  const reclaimCount = dashDetails?.reclaim_request?.length || 0;
+  const leaveCount = dashDetails?.reclaim_request?.length || 0;
+  // useEffect(() => {
+  //   getDashboardDetails();
+  // }, []);
+
+
+
   return (
     <div>
       <div className="p-3">
@@ -18,28 +35,28 @@ const Landing = () => {
           <div className=" bg-white rounded-lg shadow-md w-full md:w-23rem lg:w-23rem h-40 md:h-[8rem] flex flex-col justify-center items-center gap-8">
             <h2 className="text-lg md:text-xl ">Total Purchase Request</h2>
             <div className="flex justify-between  items-center gap-[9rem]">
-              <p className="text-gray-600 font-bold">2</p>
+              <p className="text-gray-600 font-bold">{total_purchase_request}</p>
               <FaRegMoneyBillAlt className="bg-[#049805]" />
             </div>
           </div>
           <div className="bg-white rounded-lg shadow-md w-full md:w-23rem lg:w-23rem h-40 md:h-[8rem] flex flex-col justify-center items-center gap-8">
-            <h2 className="text-lg md:text-xl ">Total Purchase Request</h2>
+            <h2 className="text-lg md:text-xl ">Reclaim</h2>
             <div className="flex justify-between  items-center gap-[9rem]">
-              <p className="text-gray-600 font-bold">2</p>
+              <p className="text-gray-600 font-bold">{total_reclaim_request}</p>
               <FaRegMoneyBillAlt className="bg-[#FC6A5A]" />
             </div>
           </div>
           <div className="bg-white rounded-lg shadow-md w-full md:w-23rem lg:w-23rem h-40 md:h-[8rem] flex flex-col justify-center items-center gap-8">
-            <h2 className="text-lg md:text-xl ">Total Purchase Request</h2>
+            <h2 className="text-lg md:text-xl ">Leave/Off Request</h2>
             <div className="flex justify-between  items-center gap-[9rem]">
-              <p className="text-gray-600 font-bold">2</p>
+              <p className="text-gray-600 font-bold">{total_leave_request}</p>
               <FaRegMoneyBillAlt className="bg-[#FC6A5A]" />
             </div>
           </div>
           <div className="bg-white rounded-lg shadow-md w-full md:w-23rem lg:w-23rem h-40 md:h-[8rem] flex flex-col justify-center items-center gap-8">
-            <h2 className="text-lg md:text-xl ">Total Purchase Request</h2>
+            <h2 className="text-lg md:text-xl ">Complaints/Suggestions</h2>
             <div className="flex justify-between  items-center gap-[9rem]">
-              <p className="text-gray-600 font-bold">2</p>
+              <p className="text-gray-600 font-bold">{total_suggestion}</p>
               <FaRegMoneyBillAlt className="bg-[#FC6A5A]" />
             </div>
           </div>
@@ -69,7 +86,7 @@ const Landing = () => {
               <h2 className="relative inline-block font-bold text-sm sm:text-md md:text-lg lg:text-xl">
                 Leave/Off Requests
                 <span className="absolute top-0 -right-2 md:-right-8 bg-red-500 text-white text-xs sm:text-sm px-2 py-1 rounded-full">
-                  {reclaimCount}
+                  {leaveCount}
                 </span>
               </h2>
               <h2 className="text-[#049805] sm:hidden md:block">View all</h2>{" "}
@@ -162,7 +179,7 @@ const Landing = () => {
         <div>
           <div className="flex justify-between  p-3">
             <h1 className="font-bold">Pending Purchase Request</h1>
-            <h1 className="text-[#049805] font-bold">View All</h1>
+            <h1 className="text-[#049805] font-bold">View PR</h1>
           </div>
           <PendingPurchReqHome />
         </div>

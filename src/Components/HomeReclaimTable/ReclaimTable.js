@@ -1,58 +1,67 @@
 import React from 'react'
 import Table from '../../Utils/Table';
 import SingleHomeReclaim from './SingleHomeReclaim'; 
+import { useStateContext } from "../../context/StateContext";
+import { useEffect } from "react";
 
 const tableHeader = [
   "S/N",
-  "Reclaim Amount",
+  "RN",
   "Amount",
   "Date",
   "Status",
 ];
 
 const ReclaimTable = () => { // For simplicity, using sample data directly
-  const displayedData = [
-    {
-      id: 1,
-      reclaim_amount: "5000",
-      amount: "10000",
-      date: "8/11/2023",
-      status: "Not granted"
-    },
-    {
-      id: 2,
-      reclaim_amount: "5000",
-      amount: "10000",
-      date: "8/11/2023",
-      status: "Successful"
-    }
-    // Add more data items as needed
-  ];
+  const { dashDetails, isLoading } = useStateContext();
+  console.log('Reclaim Requests:', dashDetails.reclaim_request);
+  const { reclaim_request } = dashDetails;
+   console.log(dashDetails);
+
+  let displayedData = [];
+
+  // Check if reclaim_request is loaded and is an array
+  if (reclaim_request && Array.isArray(reclaim_request)) {
+    displayedData = reclaim_request.map((reclaim, index) => ({
+      id: index + 1,
+      reclaim_number: reclaim.reclaim_number, 
+      amount_to_reclaim: `₦${reclaim.amount_to_reclaim}`, 
+      date: reclaim.date_of_expenses,
+      status: reclaim.status 
+      
+    }));
+  }
+
+
   return (
-    <div>
-      <div className="w-full max-w-5xl mb-4 overflow-x-auto table-responsive">
-        <Table
-          headerContent={tableHeader}
-          minSize={"600px"}
-          cols={6}
-          data={displayedData}
-          showSearch={false}
-          searchKey=""
-        >
-          {displayedData?.map((item, index) => (
+    <div className="w-full max-w-5xl mb-4 overflow-x-auto table-responsive">
+      <Table
+        headerContent={tableHeader}
+        minSize={"600px"}
+        cols={5}
+        data={displayedData}
+        showSearch={false}
+        searchKey=""
+      >
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : displayedData && displayedData.length > 0 ? (
+          displayedData.map((item, index) => (
             <div key={index}>
               <SingleHomeReclaim
                 item={item}
                 index={index}
-                // openModal and openEditModal can be passed if needed
+                // Additional props if needed
               />
               <hr className="my-4 border-green-50" />
             </div>
-          ))}
-        </Table>
-      </div>
+          ))
+        ) : (
+          <div>No reclaims available</div>
+        )}
+      </Table>
     </div>
-  )
+  );
 }
 
 export default ReclaimTable
