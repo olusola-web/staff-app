@@ -5,7 +5,7 @@ const SingleHomePurchReq = ({ item, index }) => {
   const statusClass =
     status === "Not granted"
       ? "bg-red-500 " // Red background for 'not granted'
-      : status === "Success"
+      : status === "Successful"
       ? "bg-blue-500" // Blue background for 'Success'
       : "bg-green-500"; // Default background for other statuses
 
@@ -15,7 +15,7 @@ const SingleHomePurchReq = ({ item, index }) => {
       <div>{description}</div>
       <div className="px-5">{quantity}</div>
       <div>{amount}</div>
-      <div className={`text-white ${statusClass} p-2 w-[4rem] rounded`}>{status}</div>
+      <div className={`text-white text-center ${statusClass} p-2 w-[6rem] rounded`}>{status}</div>
     </div>
   );
 };
