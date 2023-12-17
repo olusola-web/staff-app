@@ -3,28 +3,35 @@ import { FaHome, FaChevronRight } from "react-icons/fa";
 import Button from "../Button/ButtonReusable";
 
 const Complaints = () => {
-  const [formData, setFormData] = useState({
-    requestType: "General Inquiry",
-    message: "",
-  });
+  const [selectedOption, setSelectedOption] = useState('Complaints');
+  const [message, setMessage] = useState('');
+  const [labelName, setLabelName] = useState('Kindly type in your complaint here');
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  const handleOptionChange = (e) => {
+    setSelectedOption(e.target.value);
+
+    // Change the label name for the message based on the selected option
+    switch (e.target.value) {
+      case 'Complaints':
+        setLabelName('Kindly type in your complaint here');
+        break;
+      case 'Suggestion':
+        setLabelName('Kindly type in your suggestion here');
+        break;
+      default:
+        setLabelName('');
+    }
+  };
+
+  const handleMessageChange = (e) => {
+    setMessage(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add your logic to handle the form submission (e.g., API request)
-    console.log("Form submitted:", formData);
-    // Clear the form fields after submission
-    setFormData({
-      requestType: "General Inquiry",
-      message: "",
-    });
+    // Handle form submission logic here
+    console.log('Option:', selectedOption);
+    console.log('Message:', message);
   };
 
   return (
@@ -42,31 +49,31 @@ const Complaints = () => {
         <form onSubmit={handleSubmit} className="flex flex-col w-full md:w-[60%] gap-5">
           {/* Request Type */}
           <div className="mb-7">
-            <label className="block text-sm font-medium">
+            <label className="block text-sm font-medium p-1">
               Select the Request you would like to lay
             </label>
             <select
-              name="requestType"
-              value={formData.requestType}
-              onChange={handleChange}
+              name="SelectedOption"
+              value={selectedOption}
+              onChange={handleOptionChange}
               className="w-full p-3 bg-gray-100 rounded-md"
             >
-              <option value="General Inquiry">Complaints</option>
-              <option value="Support">Suggestion</option>
+              <option value="complains">Complaint</option>
+              <option value="Suggestion">Suggestion</option>
             </select>
           </div>
 
           {/* Message */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-600">
-              Kindly type in your complaint here
+            <label className="block text-sm font-medium p-1 text-gray-600">
+            {labelName}
             </label>
             <textarea
               name="message"
-              value={formData.message}
-              onChange={handleChange}
+              value={message}
+              onChange={handleMessageChange}
               className="w-full p-2 rounded-md bg-gray-100"
-              rows="7"
+              rows="10"
               required
             ></textarea>
           </div>
@@ -87,3 +94,5 @@ const Complaints = () => {
 };
 
 export default Complaints;
+
+
