@@ -6,7 +6,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 const Complaints = () => {
-  const [selectedOption, setSelectedOption] = useState('Complaints');
+  const [selectedOption, setSelectedOption] = useState('Complaint');
   const [message, setMessage] = useState('');
   const [labelName, setLabelName] = useState('Kindly type in your complaint here');
   const { baseUrl, setIsLoading, config } = useStateContext();
@@ -15,7 +15,7 @@ const Complaints = () => {
     setSelectedOption(e.target.value);
     // Change the label name for the message based on the selected option
     switch (e.target.value) {
-      case 'Complaints':
+      case 'Complaint':
         setLabelName('Kindly type in your complaint here');
         break;
       case 'Suggestion':
@@ -80,7 +80,7 @@ const Complaints = () => {
               onChange={handleOptionChange}
               className="w-full p-3 bg-gray-100 rounded-md"
             >
-              <option value="complains">Complaint</option>
+              <option value="Complaint">Complaint</option>
               <option value="Suggestion">Suggestion</option>
             </select>
           </div>
