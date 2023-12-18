@@ -80,7 +80,7 @@ const SideBar = ({ closeSidebar }) => {
           {isLoading ? <Spinner /> : "Logout"}
         </Link> */}
       </div>
-      <ToastContainer/>
+      {/* <ToastContainer/> */}
     </div>
   );
 };
