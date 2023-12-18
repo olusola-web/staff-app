@@ -3,6 +3,7 @@ import { FaHome, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Button from "../Button/ButtonReusable";
 import RequestTable from "./RequestTable";
+import RequestTab from "../Reclaim/RequestTable"
 
 const ReclaimRequest = () => {
   const [form, setForm] = useState({
@@ -98,7 +99,7 @@ const ReclaimRequest = () => {
         </div>
       </form>
 
-      {/* <RequestTable /> */}
+      <RequestTable />
     </div>
   );
 };
