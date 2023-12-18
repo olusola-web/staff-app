@@ -1,19 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaHome, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useStateContext } from "../../context/StateContext";
+import { ToastContainer, toast } from "react-toastify";
+import { Spinner } from "react-activity";
 
 const ProfileForm = () => {
+  const [profileDetails, setProfileDetails] = useState({})
   const [formData, setFormData] = useState({
-    fullName: "",
-    phoneNumber: "",
-    dateOfBirth: "",
-    maritalStatus: "",
+    full_name: "",
+    phone_number: "",
+    dob: "",
+    marital_status: "",
     cv: null,
     address: "",
     email: "",
     sex: "",
-    picture: null,
+    profile_picture: null,
+    guarantor_full_name: "",
+    guarantor_address: "",
+    guarantor_phone: "",
+    guarantor_photo: null,
   });
+
+  const { baseUrl, isLoading, setIsLoading, config, uploadConfig } = useStateContext();
+
+  const handleGetProfile = async () => {
+    
+    try {
+      const url = `${baseUrl}/get-profile`;
+      const res = await axios.get(url, config());
+      setProfileDetails(res.data.data);
+      console.log(res.data);
+      
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+ useEffect(()=>{
+    handleGetProfile()
+  }, [])
+
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -23,21 +51,60 @@ const ProfileForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Perform actions with the form data (e.g., send to a server, update state)
+
+useEffect(()=>{
+if (profileDetails) {
+  setFormData({
+    ...formData,
+    full_name: profileDetails.full_name,
+    phone_number: profileDetails.phone_number,
+    dob: profileDetails.dob,
+    marital_status: profileDetails.marital_status,
+    address: profileDetails.address,
+    email: profileDetails.email,
+    sex: profileDetails.sex,
+    guarantor_full_name: profileDetails.guarantor_full_name,
+    guarantor_address: profileDetails.guarantor_address,
+    guarantor_phone: profileDetails.guarantor_phone,
+  });
+}
+}, [profileDetails])
+  
+  const handleSubmit = async (e) => {
+    // e.preventDefault();
+    setIsLoading(true);
+    try {
+      const url = `${baseUrl}/create-profile`;
+      let formInput = new FormData();
+      const payload =  formData;
+    for (const key in payload) {
+      formInput.append(key, payload[key]);
+    }
+      const res = await axios.post(url, payload, uploadConfig());
+      toast.success("Profile updated Successful");
+      console.log(res.data);
+    } catch (error) {
+      console.log(error.response);
+      toast.error(error?.response?.data?.message);
+    } finally {
+      setIsLoading(false);
+    }
     console.log("Form submitted:", formData);
     // Clear the form fields after submission
     setFormData({
-      fullName: "",
-      phoneNumber: "",
-      dateOfBirth: "",
-      maritalStatus: "",
-      cv: null,
-      address: "",
-      email: "",
-      sex: "",
-      picture: null,
+    full_name: "",
+    phone_number: "",
+    dob: "",
+    marital_status: "",
+    cv: null,
+    address: "",
+    email: "",
+    sex: "",
+    profile_picture: null,
+    guarantor_full_name: "",
+    guarantor_address: "",
+    guarantor_phone: "",
+    guarantor_photo: null,
     });
   };
 
@@ -62,8 +129,8 @@ const ProfileForm = () => {
             Full Name
             <input
               type="text"
-              name="fullName"
-              value={formData.fullName}
+              name="full_name"
+              value={formData.full_name}
               onChange={handleChange}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
@@ -75,8 +142,8 @@ const ProfileForm = () => {
             Phone Number
             <input
               type="tel"
-              name="phoneNumber"
-              value={formData.phoneNumber}
+              name="phone_number"
+              value={formData.phone_number}
               onChange={handleChange}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
@@ -88,8 +155,8 @@ const ProfileForm = () => {
             Enter your Date of Birth
             <input
               type="date"
-              name="dateOfBirth"
-              value={formData.dateOfBirth}
+              name="dob"
+              value={formData.dob}
               onChange={handleChange}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
@@ -100,8 +167,8 @@ const ProfileForm = () => {
             Marital Status
             <input
               type="text"
-              name="maritalStatus"
-              value={formData.maritalStatus}
+              name="marital_status"
+              value={formData.marital_status}
               onChange={handleChange}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
@@ -154,7 +221,7 @@ const ProfileForm = () => {
             Kindly upload a picture of yourself
             <input
               type="file"
-              name="picture"
+              name="profile_picture"
               onChange={handleChange}
               accept="image/*"
               required
@@ -187,8 +254,8 @@ const ProfileForm = () => {
             Full Name
             <input
               type="text"
-              name="fullName"
-              value={formData.fullName}
+              name="guarantor_full_name"
+              value={formData.guarantor_full_name}
               onChange={handleChange}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
@@ -200,8 +267,8 @@ const ProfileForm = () => {
             Phone Number
             <input
               type="tel"
-              name="phoneNumber"
-              value={formData.phoneNumber}
+              name="guarantor_phone"
+              value={formData.guarantor_phone}
               onChange={handleChange}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
@@ -215,8 +282,8 @@ const ProfileForm = () => {
           <label className="block mb-2 text-sm font-medium">
             Address
             <input
-              name="address"
-              value={formData.address}
+              name="guarantor_address"
+              value={formData.guarantor_address}
               onChange={handleChange}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
@@ -225,19 +292,28 @@ const ProfileForm = () => {
           </label>
 
           <label className="block mb-2 text-sm font-medium">
-            Guarantor Education
+            Guarantor Photo
             <input
-              type="text"
-              name="education"
-              value={formData.email}
+              type="file"
+              name="guarantor_photo"
               onChange={handleChange}
+              accept="image/*"
               required
               className="w-full p-4 bg-gray-100 rounded-md"
-              placeholder="Enter guarantor's highest level of education"
             />
           </label>
-        </div>
+        </div> 
       </form>
+      <ToastContainer />
+        <div className="mb-4 py-7">
+          <button
+          onClick={()=> handleSubmit()}
+            type="submit"
+            className="w-1/2 block bg-[#049805] text-white p-3  rounded focus:outline-none mx-auto"
+          >
+            {isLoading ? <Spinner /> : "Submit"}
+          </button>
+        </div>
     </div>
   );
 };

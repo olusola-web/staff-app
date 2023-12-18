@@ -11,14 +11,22 @@ export const StateProvider = ({ children }) => {
   const [allPurchaseReq, setAllPurchaseReq] = useState([]);
   const [page, setPage] = useState(1);
 
-  const config = () => {
+   const config = () => {
     return {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
   };
-
+  const uploadConfig = () => {
+  // const token = await getToken();
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  };
+};
   const baseUrl = "https://sandbox.myafrimall.com.ng/api/staff/v1";
 
   const getAllPurchaseReq = async () => {
@@ -45,6 +53,8 @@ export const StateProvider = ({ children }) => {
         setAllPurchaseReq,
         allPurchaseReq,
         getAllPurchaseReq,
+        config,
+        uploadConfig
       }}
     >
       {children}
