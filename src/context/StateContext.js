@@ -3,9 +3,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const StateContext = createContext();
-const token = localStorage.getItem("token");
 
 export const StateProvider = ({ children }) => {
+  const token = localStorage.getItem("token");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [allPurchaseReq, setAllPurchaseReq] = useState([]);
@@ -40,6 +40,7 @@ export const StateProvider = ({ children }) => {
   };
 };
   const baseUrl = "https://sandbox.myafrimall.com.ng/api/staff/v1";
+  const imgUrl = "https://sandbox.myafrimall.com.ng"
 
   const getAllPurchaseReq = async () => {
     const url = `${baseUrl}/get-purchase-requests?page=${page}`;
@@ -71,6 +72,7 @@ export const StateProvider = ({ children }) => {
 
 
   const getDashboardDetails = async () => {
+    console.log(token)
     const url = `${baseUrl}/dashboard`;
     console.log(url)
     setIsLoading(true);
@@ -85,6 +87,11 @@ export const StateProvider = ({ children }) => {
     }
   };
   
+useEffect(()=>{
+  if(token !== null){
+    getDashboardDetails()
+  }
+}, [isLoggedIn, token])
 
   return (
     <StateContext.Provider
@@ -102,7 +109,8 @@ export const StateProvider = ({ children }) => {
         getAllLeaveReq,
         dashDetails,
         config,
-        uploadConfig
+        uploadConfig,
+        imgUrl
       }}
     >
       {children}
