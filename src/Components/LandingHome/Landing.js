@@ -73,7 +73,7 @@ const Landing = () => {
 
         {/* 2nd card  */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center my-12">
-          <div className="">
+          <div className="bg-white p-2 rounded-lg shadow-md w-full h-full flex flex-col justify-center items-center">
             <div className="flex justify-around items-center pb-6 gap-2 sm:gap-4 md:gap-8 lg:gap-16 xl:gap-20">
               <h2 className="relative inline-block font-bold text-sm sm:text-md md:text-lg lg:text-xl">
                 Reclaim
@@ -90,7 +90,7 @@ const Landing = () => {
             </div>
           </div>
 
-          <div className="">
+          <div className="bg-white p-2 rounded-lg shadow-md w-full h-full flex flex-col justify-center items-center">
             <div className="flex justify-around items-center pb-6 gap-2 sm:gap-4 md:gap-8 lg:gap-16 xl:gap-20">
               <h2 className="relative inline-block font-bold text-sm sm:text-md md:text-lg lg:text-xl">
                 Leave/Off Requests
@@ -194,9 +194,22 @@ const Landing = () => {
           {/* Make "View all" visible on small screens */}
         </div>
 
-        <div className="text-gray-600 font-bold overflow-x-auto w-full">
+        {/* <div className="flex text-gray-600 font-bold overflow-x-auto w-[20rem]">
           <PendingPurchReqHome />
-          {/* <ProgressBarTable/> */}
+          <ProgressBarTable/>
+        </div> */}
+
+        <div className="flex gap-3 text-gray-600 font-bold overflow-x-aut w-full">
+          <div className="w-2/3">
+            {" "}
+            {/* Adjust the width as needed */}
+            <PendingPurchReqHome />
+          </div>
+          <div className="w-2/5">
+            {" "}
+            {/* Adjust the width as needed */}
+            <ProgressBarTable />
+          </div>
         </div>
       </div>
     </div>

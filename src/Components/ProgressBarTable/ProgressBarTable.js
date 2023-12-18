@@ -16,7 +16,7 @@ const ProgressBarTable = () => {
     <div className="w-full max-w-5xl mb-4 overflow-x-auto table-responsive">
       <Table
         headerContent={tableHeader}
-        minSize={"1200px"}
+        minSize={"300px"}
         cols={3} 
         data={displayedData}
         showSearch={false}
