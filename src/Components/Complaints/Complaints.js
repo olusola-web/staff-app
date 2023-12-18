@@ -5,11 +5,13 @@ import { useStateContext } from "../../context/StateContext";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
+
 const Complaints = () => {
   const [selectedOption, setSelectedOption] = useState('Complaint');
   const [message, setMessage] = useState('');
   const [labelName, setLabelName] = useState('Kindly type in your complaint here');
-  const { baseUrl, setIsLoading, config } = useStateContext();
+  const { baseUrl, setIsLoading, config,  getDashboardDetails, } = useStateContext();
+  
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
@@ -40,6 +42,7 @@ const Complaints = () => {
         comment: message
       }
       const res = await axios.post(url, option, config());
+      // getDashboardDetails()
       toast.success(res?.data?.message);
     } catch (error) {
       toast.error(error?.response?.data?.message);
