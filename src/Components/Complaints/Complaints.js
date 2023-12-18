@@ -4,12 +4,14 @@ import { FaHome, FaChevronRight } from "react-icons/fa";
 import { useStateContext } from "../../context/StateContext";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { Spinner } from "react-activity";
 
 const Complaints = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const [selectedOption, setSelectedOption] = useState('Complaint');
   const [message, setMessage] = useState('');
   const [labelName, setLabelName] = useState('Kindly type in your complaint here');
-  const { baseUrl, setIsLoading, config, getDashboardDetails } = useStateContext();
+  const { baseUrl, config, getDashboardDetails } = useStateContext();
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
@@ -105,9 +107,10 @@ const Complaints = () => {
           <div>
             <button
               type="submit"
-              className="w-full bg-[#049805] text-white p-3 rounded-md focus:outline-none"
+              className="w-full flex items-center justify-center bg-[#049805] text-white p-3 rounded-md focus:outline-none"
             >
-              Submit
+              {isLoading ? <Spinner /> : "Submit"}
+
             </button>
           </div>
         </form>

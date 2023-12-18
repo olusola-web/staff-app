@@ -9,6 +9,7 @@ export const StateProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [allPurchaseReq, setAllPurchaseReq] = useState([]);
+  const [profileDetails, setProfileDetails] = useState({})
   // const [allReclaim, setAllReclaim] = useState([]);
   const [allLeaveReq, setAllLeaveReq] = useState([]);
   // const [dashDetails, setDashdetails] = useState({});
@@ -87,9 +88,20 @@ export const StateProvider = ({ children }) => {
     }
   };
   
+  const handleGetProfile = async () => {
+    
+    try {
+      const url = `${baseUrl}/get-profile`;
+      const res = await axios.get(url, config());
+      setProfileDetails(res.data.data);
+    } catch (error) {
+      toast.error(error);
+    }
+  }
 useEffect(()=>{
   if(token !== null){
     getDashboardDetails()
+    handleGetProfile()
   }
 }, [isLoggedIn, token])
 
@@ -110,7 +122,9 @@ useEffect(()=>{
         dashDetails,
         config,
         uploadConfig,
-        imgUrl
+        imgUrl,
+        handleGetProfile,
+        profileDetails
       }}
     >
       {children}

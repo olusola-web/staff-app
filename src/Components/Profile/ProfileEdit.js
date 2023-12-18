@@ -3,12 +3,12 @@ import React, { useState, useEffect } from "react";
 import { FaHome, FaChevronRight } from "react-icons/fa";
 // import { LuPencil } from "react-icons/lu";
 // import { Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import axios from "axios";
+import { ToastContainer } from "react-toastify";
 import { useStateContext } from "../../context/StateContext";
+// import { Spinner } from "react-activity";
 
 const ProfileEdit = () => {
-  const [profileDetails, setProfileDetails] = useState({})
+  // const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
     full_name: "",
     phone_number: "",
@@ -25,23 +25,7 @@ const ProfileEdit = () => {
     guarantor_photo: null,
   });
 
- const { baseUrl, isLoading, setIsLoading, config, uploadConfig, imgUrl } = useStateContext();
-
-  const handleGetProfile = async () => {
-    
-    try {
-      const url = `${baseUrl}/get-profile`;
-      const res = await axios.get(url, config());
-      setProfileDetails(res.data.data);
-    } catch (error) {
-      // console.log(error.response);
-      toast.error(error)
-    }
-  }
-
- useEffect(()=>{
-    handleGetProfile()
-  }, [])
+ const { imgUrl, profileDetails } = useStateContext();
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -296,12 +280,10 @@ if (profileDetails) {
             />
           </label>
 
-          <label className="block mb-2 text-sm font-medium">
-            <div className="flex justify-between">
-              <p>Guarantor Photo</p>
-              <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails.guarantor_photo}`} target="__blank">view</a>
-            </div>
-              <input
+         <label className="block mb-2 text-sm font-medium">
+            Guarantor Photo
+            <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails.guarantor_photo}`} target="__blank">view</a>
+            <input
               type="file"
               name="guarantor_photo"
               onChange={handleChange}
@@ -319,8 +301,9 @@ if (profileDetails) {
           <button
           onClick={()=> handleSubmit()}
             type="submit"
-            className="w-1/2 block bg-[#049805] text-white p-3 rounded mx-auto"
+            className="w-1/2 flex items-center justify-center bg-[#049805] text-white p-3 rounded mx-auto"
           >
+            {/* {isLoading ? <Spinner /> : "Save"} */}
             Save
           </button>
         </div>

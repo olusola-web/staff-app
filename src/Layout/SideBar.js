@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { getLinks } from "./sideBardata";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 // import logo from "../Assest/images/MyAfrimall.png";
 import { IoCloseOutline } from "react-icons/io5";
 import { useStateContext } from "../context/StateContext";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { Spinner } from "react-activity";
 
 
@@ -69,16 +69,9 @@ const SideBar = ({ closeSidebar }) => {
           ))}
         </ul>
         <button onClick={()=>handleLogOut()}
-          className="bg-gray-100 p-2 rounded-md w-full block text-center mt-10">
+          className="bg-gray-100 p-2 rounded-md w-full flex items-center justify-center text-center mt-10">
             {isLoading ? <Spinner /> : "Logout"}
         </button>
-        {/* <Link
-          onClick={()=>handleLogOut()}
-          to="/"
-          className="bg-gray-100 p-2 rounded-md w-full block text-center mt-10"
-        >
-          {isLoading ? <Spinner /> : "Logout"}
-        </Link> */}
       </div>
       {/* <ToastContainer/> */}
     </div>

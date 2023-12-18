@@ -7,7 +7,6 @@ import { ToastContainer, toast } from "react-toastify";
 import { Spinner } from "react-activity";
 
 const ProfileForm = () => {
-  const [profileDetails, setProfileDetails] = useState({})
   const [formData, setFormData] = useState({
     full_name: "",
     phone_number: "",
@@ -24,21 +23,7 @@ const ProfileForm = () => {
     guarantor_photo: null,
   });
 
-  const { baseUrl, isLoading, setIsLoading, config, uploadConfig, imgUrl } = useStateContext();
-
-  const handleGetProfile = async () => {
-    
-    try {
-      const url = `${baseUrl}/get-profile`;
-      const res = await axios.get(url, config());
-      setProfileDetails(res.data.data);
-    } catch (error) {
-      toast.error(error);
-    }
-  }
- useEffect(()=>{
-    handleGetProfile()
-  }, [])
+  const { baseUrl, isLoading, setIsLoading, uploadConfig, imgUrl, profileDetails } = useStateContext();
 
 
   const handleChange = (e) => {
@@ -303,13 +288,15 @@ if (profileDetails) {
       </form>
       <ToastContainer />
         <div className="mb-4 py-7">
-          <button
+
+          {profileDetails ? null : <button
           onClick={()=> handleSubmit()}
             type="submit"
-            className="w-1/2 block bg-[#049805] text-white p-3  rounded focus:outline-none mx-auto"
+            className="w-1/2 flex items-center justify-center bg-[#049805] text-white p-3  rounded focus:outline-none mx-auto"
           >
             {isLoading ? <Spinner /> : "Submit"}
-          </button>
+          </button> }
+         
         </div>
     </div>
   );
