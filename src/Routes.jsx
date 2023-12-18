@@ -8,8 +8,7 @@ import ProfileEditPage from "./Pages/ProfileEditPage";
 import PurchaseRequestPage from "./Pages/PurchaseRequestPage";
 import CreatePurchReqPage from "./Pages/CreatePurchReqPage";
 import LeaveOffRequestPage from "./Pages/LeaveOffRequestPage";
-import ReclaimPage from "./Pages/ReclaimPage";
-import ReclaimRequestPage from "./Pages/ReclaimRequestPage"
+import ComplaintsPage from "./Pages/ComplaintsPage";
 
 const AppRoute = () => {
   return (
@@ -20,6 +19,7 @@ const AppRoute = () => {
           <Route index element={<HomePage />} />
           <Route path="profile" element={<Profile />} />
           <Route path="profile/edit" element={<ProfileEditPage />} />
+          <Route path="Complaints" element={<ComplaintsPage />} />
 
           <Route path="purchaserequest" element={<PurchaseRequestPage />} />
           <Route
@@ -29,6 +29,8 @@ const AppRoute = () => {
           <Route path="reclaim" element={<ReclaimPage />} />
           <Route path="reclaimrequest" element={<ReclaimRequestPage />}/>
           <Route path="leaverequest" element={<LeaveOffRequestPage />} />
+          
+          
         </Route>
       </Routes>
     </Router>

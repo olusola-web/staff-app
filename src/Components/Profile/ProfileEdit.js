@@ -1,21 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import Button from "../Button/ButtonReusable";
 import { FaHome, FaChevronRight } from "react-icons/fa";
-import { LuPencil } from "react-icons/lu";
-import { Link } from "react-router-dom";
+// import { LuPencil } from "react-icons/lu";
+// import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
+import { useStateContext } from "../../context/StateContext";
 
 const ProfileEdit = () => {
+  const [profileDetails, setProfileDetails] = useState({})
   const [formData, setFormData] = useState({
-    fullName: "",
-    phoneNumber: "",
-    dateOfBirth: "",
-    maritalStatus: "",
+    full_name: "",
+    phone_number: "",
+    dob: "",
+    marital_status: "",
     cv: null,
     address: "",
     email: "",
     sex: "",
-    picture: null,
+    profile_picture: null,
+    guarantor_full_name: "",
+    guarantor_address: "",
+    guarantor_phone: "",
+    guarantor_photo: null,
   });
+
+ const { baseUrl, isLoading, setIsLoading, config, uploadConfig, imgUrl } = useStateContext();
+
+  const handleGetProfile = async () => {
+    
+    try {
+      const url = `${baseUrl}/get-profile`;
+      const res = await axios.get(url, config());
+      setProfileDetails(res.data.data);
+    } catch (error) {
+      // console.log(error.response);
+      toast.error(error)
+    }
+  }
+
+ useEffect(()=>{
+    handleGetProfile()
+  }, [])
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -25,21 +51,43 @@ const ProfileEdit = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+useEffect(()=>{
+if (profileDetails) {
+  setFormData({
+    ...formData,
+    full_name: profileDetails.full_name,
+    phone_number: profileDetails.phone_number,
+    dob: profileDetails.dob,
+    marital_status: profileDetails.marital_status,
+    address: profileDetails.address,
+    email: profileDetails.email,
+    sex: profileDetails.sex,
+    guarantor_full_name: profileDetails.guarantor_full_name,
+    guarantor_address: profileDetails.guarantor_address,
+    guarantor_phone: profileDetails.guarantor_phone,
+  });
+}
+}, [profileDetails])
+
+  const handleSubmit = () => {
+    // e.preventDefault();
     // Perform actions with the form data (e.g., send to a server, update state)
-    console.log("Form submitted:", formData);
+    // console.log("Form submitted:", formData);
     // Clear the form fields after submission
     setFormData({
-      fullName: "",
-      phoneNumber: "",
-      dateOfBirth: "",
-      maritalStatus: "",
-      cv: null,
-      address: "",
-      email: "",
-      sex: "",
-      picture: null,
+    full_name: "",
+    phone_number: "",
+    dob: "",
+    marital_status: "",
+    cv: null,
+    address: "",
+    email: "",
+    sex: "",
+    profile_picture: null,
+    guarantor_full_name: "",
+    guarantor_address: "",
+    guarantor_phone: "",
+    guarantor_photo: null,
     });
   };
 
@@ -52,12 +100,6 @@ const ProfileEdit = () => {
           <FaChevronRight className="m-1 text-[#049805]" />
           <p className="text-[#049805]"> Profile</p>
         </div>
-        <Link
-          to="/home/profile/edit"
-          className="bg-[#049005] text-white rounded-md p-2"
-        >
-          Edit Profile
-        </Link>
       </div>
       <h2 className="text-2xl font-bold mb-7 mt-5">Personal Details Section</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
@@ -66,16 +108,12 @@ const ProfileEdit = () => {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Full Name</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
 
             <input
               type="text"
-              name="fullName"
-              value={formData.fullName}
+              name="full_name"
+              value={formData.full_name}
               onChange={handleChange}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
@@ -86,15 +124,11 @@ const ProfileEdit = () => {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Phone Number</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
             <input
               type="tel"
-              name="phoneNumber"
-              value={formData.phoneNumber}
+              name="phone_number"
+              value={formData.phone_number}
               onChange={handleChange}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
@@ -105,15 +139,11 @@ const ProfileEdit = () => {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Enter your Date of Birth</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
             <input
               type="date"
-              name="dateOfBirth"
-              value={formData.dateOfBirth}
+              name="dob"
+              value={formData.dob}
               onChange={handleChange}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
@@ -123,20 +153,17 @@ const ProfileEdit = () => {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Marital Status</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
-            <input
-              type="text"
-              name="maritalStatus"
-              value={formData.maritalStatus}
+               <select className="w-full p-4 bg-gray-100 rounded-md" name="marital_status"
+              value={formData.marital_status}
               onChange={handleChange}
-              required
-              className="w-full p-4 bg-gray-100 rounded-md"
-              placeholder="Enter your marital status"
-            />
+              required>
+              <option value="" selected disabled>Enter your marital status</option>
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
+              <option value="Divorced">Divorced</option>
+              <option value="Others">Others</option>
+            </select>
           </label>
         </div>
 
@@ -145,10 +172,6 @@ const ProfileEdit = () => {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Address</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
             <input
               name="address"
@@ -163,10 +186,6 @@ const ProfileEdit = () => {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Email</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
             <input
               type="email"
@@ -181,28 +200,26 @@ const ProfileEdit = () => {
 
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
-              <p>Enter your Sex</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
+              <p>Sex</p>
             </div>
-            <input
-              type="text"
-              name="sex"
-              value={formData.sex}
+             <select
+             value={formData.sex}
               onChange={handleChange}
               required
-              className="w-full p-4 bg-gray-100 rounded-md"
-              placeholder="Enter your sex"
-            />
+              className="w-full p-4 bg-gray-100 rounded-md" name="sex">
+              <option value="" selected disabled>Enter your sex</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>              
+              <option value="Others">Others</option>
+            </select>
           </label>
 
           <label className="block mb-2 text-sm font-medium">
             Kindly upload a picture of yourself
+            <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails.profile_picture}`} target="__blank">view</a>
             <input
               type="file"
-              name="picture"
+              name="profile_picture"
               onChange={handleChange}
               accept="image/*"
               required
@@ -215,6 +232,7 @@ const ProfileEdit = () => {
       <form>
         <label className="block mb-2 text-sm font-medium ">
           Kindly upload your cv
+          <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails.cv}`} target="__blank">view</a>
           <input
             type="file"
             name="cv"
@@ -234,15 +252,11 @@ const ProfileEdit = () => {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Full Name</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
             <input
               type="text"
-              name="fullName"
-              value={formData.fullName}
+              name="guarantor_full_name"
+              value={formData.guarantor_full_name}
               onChange={handleChange}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
@@ -253,15 +267,11 @@ const ProfileEdit = () => {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Phone Number</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
             <input
               type="tel"
-              name="phoneNumber"
-              value={formData.phoneNumber}
+              name="guarantor_phone"
+              value={formData.guarantor_phone}
               onChange={handleChange}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
@@ -275,14 +285,10 @@ const ProfileEdit = () => {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Address</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
             <input
-              name="address"
-              value={formData.address}
+              name="guarantor_address"
+              value={formData.guarantor_address}
               onChange={handleChange}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
@@ -292,33 +298,32 @@ const ProfileEdit = () => {
 
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
-              <p>Guarantor Education</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
+              <p>Guarantor Photo</p>
+              <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails.guarantor_photo}`} target="__blank">view</a>
             </div>
-            <input
-              type="text"
-              name="education"
-              value={formData.email}
+              <input
+              type="file"
+              name="guarantor_photo"
               onChange={handleChange}
+              accept="image/*"
               required
               className="w-full p-4 bg-gray-100 rounded-md"
-              placeholder="Enter guarantor's highest level of education"
             />
           </label>
         </div>
-        {/* Save Button */}
+        
+      </form>
+      <ToastContainer />
+      {/* Save Button */}
         <div className="flex items-center justify-center mb-4 py-7">
           <button
+          onClick={()=> handleSubmit()}
             type="submit"
-            className="w-full bg-[#049805] text-white p-3 rounded"
+            className="w-1/2 block bg-[#049805] text-white p-3 rounded mx-auto"
           >
             Save
           </button>
         </div>
-      </form>
     </div>
   );
 };

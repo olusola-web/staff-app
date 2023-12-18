@@ -3,9 +3,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const StateContext = createContext();
-const token = localStorage.getItem("token");
 
 export const StateProvider = ({ children }) => {
+  const token = localStorage.getItem("token");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [allPurchaseReq, setAllPurchaseReq] = useState([]);
@@ -23,15 +23,24 @@ export const StateProvider = ({ children }) => {
   const [page, setPage] = useState(1);
   // const [profile, setProfile]
 
-  const config = () => {
+   const config = () => {
     return {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
   };
-
+  const uploadConfig = () => {
+  // const token = await getToken();
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  };
+};
   const baseUrl = "https://sandbox.myafrimall.com.ng/api/staff/v1";
+  const imgUrl = "https://sandbox.myafrimall.com.ng"
 
   const getAllPurchaseReq = async () => {
     const url = `${baseUrl}/get-purchase-requests?page=${page}`;
@@ -63,6 +72,7 @@ export const StateProvider = ({ children }) => {
 
 
   const getDashboardDetails = async () => {
+    console.log(token)
     const url = `${baseUrl}/dashboard`;
     console.log(url)
     setIsLoading(true);
@@ -77,6 +87,11 @@ export const StateProvider = ({ children }) => {
     }
   };
   
+useEffect(()=>{
+  if(token !== null){
+    getDashboardDetails()
+  }
+}, [isLoggedIn, token])
 
   return (
     <StateContext.Provider
@@ -92,7 +107,10 @@ export const StateProvider = ({ children }) => {
         getDashboardDetails,
         allLeaveReq,
         getAllLeaveReq,
-        dashDetails
+        dashDetails,
+        config,
+        uploadConfig,
+        imgUrl
       }}
     >
       {children}
