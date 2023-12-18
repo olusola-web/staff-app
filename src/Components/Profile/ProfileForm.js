@@ -24,7 +24,7 @@ const ProfileForm = () => {
     guarantor_photo: null,
   });
 
-  const { baseUrl, isLoading, setIsLoading, config, uploadConfig } = useStateContext();
+  const { baseUrl, isLoading, setIsLoading, config, uploadConfig, imgUrl } = useStateContext();
 
   const handleGetProfile = async () => {
     
@@ -32,10 +32,8 @@ const ProfileForm = () => {
       const url = `${baseUrl}/get-profile`;
       const res = await axios.get(url, config());
       setProfileDetails(res.data.data);
-      console.log(res.data);
-      
     } catch (error) {
-      console.log(error.response);
+      toast.error(error);
     }
   }
  useEffect(()=>{
@@ -70,7 +68,7 @@ if (profileDetails) {
 }
 }, [profileDetails])
   
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     // e.preventDefault();
     setIsLoading(true);
     try {
@@ -81,15 +79,13 @@ if (profileDetails) {
       formInput.append(key, payload[key]);
     }
       const res = await axios.post(url, payload, uploadConfig());
-      toast.success("Profile updated Successful");
-      console.log(res.data);
+      toast.success(res?.data?.message);
     } catch (error) {
-      console.log(error.response);
       toast.error(error?.response?.data?.message);
     } finally {
       setIsLoading(false);
     }
-    console.log("Form submitted:", formData);
+    // console.log("Form submitted:", formData);
     // Clear the form fields after submission
     setFormData({
     full_name: "",
@@ -165,15 +161,16 @@ if (profileDetails) {
 
           <label className="block mb-2 text-sm font-medium">
             Marital Status
-            <input
-              type="text"
-              name="marital_status"
+            <select className="w-full p-4 bg-gray-100 rounded-md" name="marital_status"
               value={formData.marital_status}
               onChange={handleChange}
-              required
-              className="w-full p-4 bg-gray-100 rounded-md"
-              placeholder="Enter your marital status"
-            />
+              required>
+              <option value="" selected disabled>Enter your marital status</option>
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
+              <option value="Divorced">Divorced</option>
+              <option value="Others">Others</option>
+            </select>
           </label>
         </div>
 
@@ -205,20 +202,18 @@ if (profileDetails) {
           </label>
 
           <label className="block mb-2 text-sm font-medium">
-            Enter your Sex
-            <input
-              type="text"
-              name="sex"
-              value={formData.sex}
-              onChange={handleChange}
-              required
-              className="w-full p-4 bg-gray-100 rounded-md"
-              placeholder="Enter your sex"
-            />
+            Sex
+            <select className="w-full p-4 bg-gray-100 rounded-md" name="sex">
+              <option value="" selected disabled>Enter your sex</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>              
+              <option value="Others">Others</option>
+            </select>
           </label>
 
           <label className="block mb-2 text-sm font-medium">
             Kindly upload a picture of yourself
+            <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails.profile_picture}`} target="__blank">view</a>
             <input
               type="file"
               name="profile_picture"
@@ -234,6 +229,7 @@ if (profileDetails) {
       <form>
         <label className="block mb-2 text-sm font-medium ">
           Kindly upload your cv
+          <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails.cv}`} target="__blank">view</a>
           <input
             type="file"
             name="cv"
@@ -293,6 +289,7 @@ if (profileDetails) {
 
           <label className="block mb-2 text-sm font-medium">
             Guarantor Photo
+            <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails.guarantor_photo}`} target="__blank">view</a>
             <input
               type="file"
               name="guarantor_photo"

@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { FaHome, FaChevronRight } from "react-icons/fa";
-import Button from "../Button/ButtonReusable";
+// import Button from "../Button/ButtonReusable";
+import { useStateContext } from "../../context/StateContext";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const Complaints = () => {
   const [selectedOption, setSelectedOption] = useState('Complaints');
   const [message, setMessage] = useState('');
   const [labelName, setLabelName] = useState('Kindly type in your complaint here');
+  const { baseUrl, setIsLoading, config } = useStateContext();
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
-
     // Change the label name for the message based on the selected option
     switch (e.target.value) {
       case 'Complaints':
@@ -27,11 +30,30 @@ const Complaints = () => {
     setMessage(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('Option:', selectedOption);
-    console.log('Message:', message);
+    setIsLoading(true);
+    try {
+      const url = `${baseUrl}/submit-suggestion`;
+      const option = {
+        comment_type: selectedOption,
+        comment: message
+      }
+      const res = await axios.post(url, option, config());
+      toast.success(res?.data?.message);
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    } finally {
+      setIsLoading(false);
+      setMessage("")
+  };
+}
+ const getCurrentDate = () => {
+    const date = new Date();
+    const day = date.getDate()
+    const month = date.getMonth()
+    const year = date.getFullYear()
+    return `${day} / ${month} / ${year}`;
   };
 
   return (
@@ -43,7 +65,7 @@ const Complaints = () => {
           <FaChevronRight className="m-1 text-[#049805]" />
           <p className="text-[#049805]"> Complaints/Suggestions</p>
         </div>
-        <h3>Date:21/11/2023</h3>
+        <h3 className="font-600">Date: {getCurrentDate()}</h3>
       </div>
       <div className="flex justify-center pt-5">
         <form onSubmit={handleSubmit} className="flex flex-col w-full md:w-[60%] gap-5">
@@ -88,6 +110,7 @@ const Complaints = () => {
             </button>
           </div>
         </form>
+        <ToastContainer/>
       </div>
     </div>
   );
