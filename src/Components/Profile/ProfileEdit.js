@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Button from "../Button/ButtonReusable";
+// import Button from "../Button/ButtonReusable";
 import { FaHome, FaChevronRight } from "react-icons/fa";
-import { LuPencil } from "react-icons/lu";
-import { Link } from "react-router-dom";
+// import { LuPencil } from "react-icons/lu";
+// import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { useStateContext } from "../../context/StateContext";
 
@@ -24,7 +25,7 @@ const ProfileEdit = () => {
     guarantor_photo: null,
   });
 
- const { baseUrl, isLoading, setIsLoading, config, uploadConfig } = useStateContext();
+ const { baseUrl, isLoading, setIsLoading, config, uploadConfig, imgUrl } = useStateContext();
 
   const handleGetProfile = async () => {
     
@@ -32,10 +33,9 @@ const ProfileEdit = () => {
       const url = `${baseUrl}/get-profile`;
       const res = await axios.get(url, config());
       setProfileDetails(res.data.data);
-      console.log(res.data);
-      
     } catch (error) {
-      console.log(error.response);
+      // console.log(error.response);
+      toast.error(error)
     }
   }
 
@@ -69,10 +69,10 @@ if (profileDetails) {
 }
 }, [profileDetails])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
     // e.preventDefault();
     // Perform actions with the form data (e.g., send to a server, update state)
-    console.log("Form submitted:", formData);
+    // console.log("Form submitted:", formData);
     // Clear the form fields after submission
     setFormData({
     full_name: "",
@@ -100,12 +100,6 @@ if (profileDetails) {
           <FaChevronRight className="m-1 text-[#049805]" />
           <p className="text-[#049805]"> Profile</p>
         </div>
-        <Link
-          to="/home/profile/edit"
-          className="bg-[#049005] text-white rounded-md p-2"
-        >
-          Edit Profile
-        </Link>
       </div>
       <h2 className="text-2xl font-bold mb-7 mt-5">Personal Details Section</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
@@ -114,10 +108,6 @@ if (profileDetails) {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Full Name</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
 
             <input
@@ -134,10 +124,6 @@ if (profileDetails) {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Phone Number</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
             <input
               type="tel"
@@ -153,10 +139,6 @@ if (profileDetails) {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Enter your Date of Birth</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
             <input
               type="date"
@@ -171,20 +153,17 @@ if (profileDetails) {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Marital Status</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
-            <input
-              type="text"
-              name="marital_status"
+               <select className="w-full p-4 bg-gray-100 rounded-md" name="marital_status"
               value={formData.marital_status}
               onChange={handleChange}
-              required
-              className="w-full p-4 bg-gray-100 rounded-md"
-              placeholder="Enter your marital status"
-            />
+              required>
+              <option value="" selected disabled>Enter your marital status</option>
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
+              <option value="Divorced">Divorced</option>
+              <option value="Others">Others</option>
+            </select>
           </label>
         </div>
 
@@ -193,10 +172,6 @@ if (profileDetails) {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Address</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
             <input
               name="address"
@@ -211,10 +186,6 @@ if (profileDetails) {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Email</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
             <input
               type="email"
@@ -229,25 +200,23 @@ if (profileDetails) {
 
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
-              <p>Enter your Sex</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
+              <p>Sex</p>
             </div>
-            <input
-              type="text"
-              name="sex"
-              value={formData.sex}
+             <select
+             value={formData.sex}
               onChange={handleChange}
               required
-              className="w-full p-4 bg-gray-100 rounded-md"
-              placeholder="Enter your sex"
-            />
+              className="w-full p-4 bg-gray-100 rounded-md" name="sex">
+              <option value="" selected disabled>Enter your sex</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>              
+              <option value="Others">Others</option>
+            </select>
           </label>
 
           <label className="block mb-2 text-sm font-medium">
             Kindly upload a picture of yourself
+            <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails.profile_picture}`} target="__blank">view</a>
             <input
               type="file"
               name="profile_picture"
@@ -263,6 +232,7 @@ if (profileDetails) {
       <form>
         <label className="block mb-2 text-sm font-medium ">
           Kindly upload your cv
+          <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails.cv}`} target="__blank">view</a>
           <input
             type="file"
             name="cv"
@@ -282,10 +252,6 @@ if (profileDetails) {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Full Name</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
             <input
               type="text"
@@ -301,10 +267,6 @@ if (profileDetails) {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Phone Number</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
             <input
               type="tel"
@@ -323,10 +285,6 @@ if (profileDetails) {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Address</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
             </div>
             <input
               name="guarantor_address"
@@ -341,10 +299,7 @@ if (profileDetails) {
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
               <p>Guarantor Photo</p>
-              <div className="flex">
-                <p>Edit</p>
-                <LuPencil className="m-1" />
-              </div>
+              <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails.guarantor_photo}`} target="__blank">view</a>
             </div>
               <input
               type="file"
@@ -358,6 +313,7 @@ if (profileDetails) {
         </div>
         
       </form>
+      <ToastContainer />
       {/* Save Button */}
         <div className="flex items-center justify-center mb-4 py-7">
           <button

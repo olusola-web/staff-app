@@ -9,6 +9,8 @@ import { useEffect } from "react";
 import { CgHome } from "react-icons/cg";
 
 const Landing = () => {
+  const token = localStorage.getItem("token")
+  // console.log(token)
   const { getDashboardDetails, dashDetails, isLoading } = useStateContext();
   const {
     total_purchase_request,
@@ -17,7 +19,7 @@ const Landing = () => {
     total_suggestion,
   } = dashDetails;
   useEffect(() => {
-    getDashboardDetails();
+    // getDashboardDetails();
   }, []);
 
   // for the counter

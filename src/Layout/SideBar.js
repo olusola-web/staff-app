@@ -1,18 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { getLinks } from "./sideBardata";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 // import logo from "../Assest/images/MyAfrimall.png";
 import { IoCloseOutline } from "react-icons/io5";
-// import { useStateContext } from "pages/context/StateContext";
+import { useStateContext } from "../context/StateContext";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { Spinner } from "react-activity";
+
 
 const SideBar = ({ closeSidebar }) => {
   const [links, setLinks] = useState([]);
-//   const { logout } = useStateContext();
+  const [isLoading, setIsLoading] = useState(false)
+  const { baseUrl, config, setIsLoggedIn } = useStateContext();
+
   useEffect(() => {
     const link = getLinks();
     setLinks(link);
   }, []);
 
+  const navigate = useNavigate()
+
+  const handleLogOut = async () => {
+    setIsLoading(true);
+    try {
+      const url = `${baseUrl}/logout`;
+      const res = await axios.post(url, {}, config());
+      toast.success(res?.data?.message);
+      console.log(res.data)
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    } finally {
+      localStorage.clear()
+      setIsLoading(false);
+      setIsLoggedIn(false)
+      navigate("/")
+  };
+}
   return (
     <div className="shadow-md h-screen p-4 overflowHide">
       <div className="flex justify-between">
@@ -44,14 +68,19 @@ const SideBar = ({ closeSidebar }) => {
             </li>
           ))}
         </ul>
-        <Link
-        //   onClick={logout}
+        <button onClick={()=>handleLogOut()}
+          className="bg-gray-100 p-2 rounded-md w-full block text-center mt-10">
+            {isLoading ? <Spinner /> : "Logout"}
+        </button>
+        {/* <Link
+          onClick={()=>handleLogOut()}
           to="/"
           className="bg-gray-100 p-2 rounded-md w-full block text-center mt-10"
         >
-          Logout
-        </Link>
+          {isLoading ? <Spinner /> : "Logout"}
+        </Link> */}
       </div>
+      <ToastContainer/>
     </div>
   );
 };
