@@ -7,6 +7,7 @@ import ProgressBarTable from "../ProgressBarTable/ProgressBarTable";
 import { useStateContext } from "../../context/StateContext";
 import { useEffect } from "react";
 import { CgHome } from "react-icons/cg";
+import { Link } from "react-router-dom";
 
 const Landing = () => {
   const token = localStorage.getItem("token")
@@ -83,8 +84,7 @@ const Landing = () => {
                   {reclaimCount}
                 </span>
               </h2>
-              <h2 className="text-[#049805] sm:hidden md:block">View all</h2>{" "}
-              {/* Make "View all" visible on small screens */}
+              <Link to="reclaim" className="text-[#049805] sm:hidden md:block">View all</Link>
             </div>
 
             <div className="text-gray-600 font-bold overflow-x-auto w-full">
@@ -92,7 +92,7 @@ const Landing = () => {
             </div>
           </div>
 
-          <div className="bg-white p-2 rounded-lg shadow-md w-full h-full flex flex-col justify-center items-center">
+          <div className="bg-white p-2 rounded-lg shadow-md w-full h-full fle flex-col justify-center items-center">
             <div className="flex justify-around items-center pb-6 gap-2 sm:gap-4 md:gap-8 lg:gap-16 xl:gap-20">
               <h2 className="relative inline-block font-bold text-sm sm:text-md md:text-lg lg:text-xl">
                 Leave/Off Requests
@@ -100,10 +100,9 @@ const Landing = () => {
                   {leaveCount}
                 </span>
               </h2>
-              <h2 className="text-[#049805] sm:hidden md:block">View all</h2>{" "}
-              {/* Make "View all" visible on small screens */}
+              <Link to="leaverequest" className="text-[#049805] sm:hidden md:block">View all</Link>
             </div>
-
+            {/* <Link to="totalbankdetails" className="text-[#049805] pr-6">View all</Link> */}
             <div className="text-gray-600 font-bold overflow-x-auto w-full">
               <LeaveRequest />
             </div>
@@ -184,37 +183,32 @@ const Landing = () => {
           </div>
         </div>
         {/* pending purchase request receipt table home */}
-
-        <div className="flex justify-between items-center pb-6 gap-2 sm:gap-4 md:gap-8 lg:gap-16 xl:gap-20">
-          <h2 className="relative inline-block font-bold text-sm sm:text-md md:text-lg lg:text-xl">
+         
+        <div className="bg-whit p-2 rounded-lg shadow-m w-full h-full flex flex-col justify-center items-center">
+    {/* <div className="flex justify-between items-center pb-6 gap-2 sm:gap-4 md:gap-8 lg:gap-16 xl:gap-20">
+        <h2 className="relative inline-block font-bold text-sm sm:text-md md:text-lg lg:text-xl">
             Pending Purchase Request
             <span className="absolute top-0 -right-2 md:-right-8 bg-red-500 text-white text-xs sm:text-sm px-2 py-1 rounded-full">
-              {prCount}
+                {prCount}
             </span>
-          </h2>
-          <h2 className="text-[#049805] sm:hidden md:block">View PR</h2>{" "}
-          {/* Make "View all" visible on small screens */}
-        </div>
-
-        {/* <div className="flex text-gray-600 font-bold overflow-x-auto w-[20rem]">
-          <PendingPurchReqHome />
-          <ProgressBarTable/>
-        </div> */}
-
-        <div className="flex gap-3 text-gray-600 font-bold overflow-x-aut w-full">
-          <div className="w-2/3">
-            {" "}
-            {/* Adjust the width as needed */}
+        </h2>
+        <h2 className="text-[#049805] sm:hidden md:block">View PR</h2>
+      
+    </div> */}
+    
+    <div className="flex gap-3 justify-between text-gray-600 font-bold overflow-x-auto w-full">
+          <div className="w-3/5 "> {/* Adjusted width to ensure total does not exceed 100% */}
+            
             <PendingPurchReqHome />
-          </div>
-          <div className="w-2/5">
-            {" "}
-            {/* Adjust the width as needed */}
-            <ProgressBarTable />
-          </div>
         </div>
-      </div>
+        <div className="w-2/5"> {/* Adjusted width accordingly */}
+            <ProgressBarTable />
+        </div>
     </div>
+</div>
+
+      </div>
+     </div>
   );
 };
 
