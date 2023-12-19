@@ -4,7 +4,7 @@ import Button from "../Button/ButtonReusable";
 import SinglePurchaseRequest from "./SinglePurchaseRequest";
 
 const tableHeader = [
-  <th className="py-3 px-6">S/N</th>, 
+  <th className="py-3 px-6">S/N</th>,
   <th className="py-3 px-4">Description</th>,
   <th className="py-3 px-4">Quantity</th>,
   <th className="py-3 px-4">Amount</th>,
@@ -54,15 +54,13 @@ const PurchaseRequestTable = () => {
           cols={5}
           data={displayedData}
           showSearch={false}
-          searchKey=""
-        >
+          searchKey="">
           {displayedData.map((item, index) => (
             <div key={item.id}>
               <SinglePurchaseRequest
                 item={item}
                 index={index}
                 onDelete={() => handleDelete(index)}
-                
               />
               <hr className="my-4 border-green-50" />
             </div>
@@ -81,8 +79,7 @@ const PurchaseRequestTable = () => {
       <div className="px-4 sm:px-6 md:px-8 lg:px-10 py-2">
         <Button
           type="submit"
-          className="w-full bg-[#049805] text-white rounded"
-        >
+          className="w-full bg-[#049805] text-white rounded">
           Submit Purchase Request
         </Button>
       </div>
