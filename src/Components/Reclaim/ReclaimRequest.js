@@ -11,7 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 const ReclaimRequest = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const { baseUrl, uploadConfig } = useStateContext();
+  const { baseUrl, uploadConfig, GetAllReclaims } = useStateContext();
 
   const [form, setForm] = useState({
     details: "",
@@ -39,12 +39,8 @@ const ReclaimRequest = () => {
     setIsLoading(true);
     try {
       const url = `${baseUrl}/create-reclaim-request`;
-    //   let formInput = new FormData();
-    //   const payload =  formData;
-    // for (const key in payload) {
-    //   formInput.append(key, payload[key]);
-    // }
       const res = await axios.post(url, form, uploadConfig());
+      GetAllReclaims()
       toast.success(res?.data?.message);
     } catch (error) {
       toast.error(error?.response?.data?.message);
@@ -119,7 +115,7 @@ const ReclaimRequest = () => {
               id="proof_of_reclaim"
               name="proof_of_reclaim"
               value={proof_of_reclaim}
-              accept=".pdf, .doc, .docx"
+              accept=".pdf, .doc, .docx, image/*"
               onChange={(e) => handleFormChange("proof_of_reclaim", e.target.value)}
               className="w-full h-12 px-4 py-2 text-md text-gray-700 bg-white border-2 border-gray-300 rounded transition ease-in-out outline-none focus:border-green-500"
             />

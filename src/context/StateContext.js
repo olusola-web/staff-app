@@ -88,8 +88,7 @@ export const StateProvider = ({ children }) => {
     }
   };
   
-  const handleGetProfile = async () => {
-    
+  const handleGetProfile = async () => { 
     try {
       const url = `${baseUrl}/get-profile`;
       const res = await axios.get(url, config());
@@ -98,10 +97,22 @@ export const StateProvider = ({ children }) => {
       toast.error(error);
     }
   }
+
+  const GetAllReclaims = async () => {  
+    try {
+      const url = `${baseUrl}/get-all-reclaims`;
+      const res = await axios.get(url, config());
+      console.log(res.data.data);
+    } catch (error) {
+      toast.error(error);
+    }
+  }
+  
 useEffect(()=>{
   if(token !== null){
     getDashboardDetails()
     handleGetProfile()
+    GetAllReclaims()
   }
 }, [isLoggedIn, token])
 
@@ -124,7 +135,8 @@ useEffect(()=>{
         uploadConfig,
         imgUrl,
         handleGetProfile,
-        profileDetails
+        profileDetails,
+        GetAllReclaims
       }}
     >
       {children}
