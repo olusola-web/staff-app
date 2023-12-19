@@ -9,6 +9,8 @@ import PurchaseRequestPage from "./Pages/PurchaseRequestPage";
 import CreatePurchReqPage from "./Pages/CreatePurchReqPage";
 import LeaveOffRequestPage from "./Pages/LeaveOffRequestPage";
 import ComplaintsPage from "./Pages/ComplaintsPage";
+import ReclaimPage from "./Pages/ReclaimPage"
+import ReclaimRequestPage from "./Pages/ReclaimRequestPage"
 
 const AppRoute = () => {
   return (
