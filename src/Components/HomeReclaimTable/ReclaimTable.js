@@ -18,6 +18,12 @@ const ReclaimTable = () => {
   // Check if reclaim_request is loaded and is an array
   if (reclaim_request && Array.isArray(reclaim_request)) {
     displayedData = reclaim_request.map((reclaim, index) => {
+
+      let formattedDate = reclaim.created_at
+      ? new Date(reclaim.created_at).toLocaleDateString()
+      : "Not Available"; // or any default text
+
+      
       // Format the amount to include commas as thousands separators
       const formattedAmount = new Intl.NumberFormat("en-US").format(
         reclaim.amount_to_reclaim

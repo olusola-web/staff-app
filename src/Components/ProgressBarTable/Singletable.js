@@ -1,12 +1,12 @@
 const Singletable = ({ item, index }) => {
-  const { Date, Details, Points } = item || {};
+  const { date, details, point } = item || {};
 
   return (
-    <div className="grid grid-cols-5 gap-2 font-medium text-sm">
-      <div className="">{index + 1}</div>
-      <div className="">{Date}</div>
-      <div>{Details}</div>
-      <div className="">{Points}</div>
+    <div className="grid grid-cols-3 gap-2 font-medium text-sm my-2">
+      {/* <div className="">{index + 1}</div> */}
+      <div className="">{date}</div>
+      <div>{details}</div>
+      <div className="">{point}</div>
     </div>
   );
 };
