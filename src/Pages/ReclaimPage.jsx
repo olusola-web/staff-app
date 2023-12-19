@@ -1,14 +1,11 @@
-import React from 'react'
-import ReclaimEdit from '../Components/Reclaim/ReclaimEdit';
-
-
-
+import React from 'react';
+import Reclaim from '../Components/Reclaims/Reclaim'
 const ReclaimPage = () => {
   return (
-      <div>
-          <ReclaimEdit />
-   </div> 
+    <div>
+      <Reclaim/>
+    </div>
   );
 }
 
-export default ReclaimPage
+export default ReclaimPage;
