@@ -5,10 +5,9 @@ import Button from '../Button/ButtonReusable';
 import DeleteModal from '../../Assets/Images/deleteModal.png'
 
 const LeaveOffRequest = () => {
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(true);
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [newRequest, setNewRequest] = useState({
-    name: '',
     leaveType: 'Leave',
     startDate: '',
     endDate: '',
@@ -23,7 +22,7 @@ const LeaveOffRequest = () => {
   };
 
   const handleCreateRequest = () => {
-    if (!newRequest.name || !newRequest.startDate || !newRequest.endDate) {
+    if (!newRequest.startDate || !newRequest.endDate) {
       alert('Please fill in all fields before submitting.');
       return;
     }
@@ -40,7 +39,7 @@ const LeaveOffRequest = () => {
   };
 
   const handleCancel = () => {
-    setShowForm(false);
+    setShowForm(true);
   };
 
   const handleDelete = (id, date) => {
@@ -115,95 +114,103 @@ const LeaveOffRequest = () => {
   };
 
   return (
-    <div className="mx-auto mt-0 p-4 bg-white ">
+    <div className="mx-auto mt-0 p-4 bg-white">
       <div className="p-2 flex flex-col md:flex-row justify-between items-center">
-        <div className="flex gap-2 items-center md:mb-0 pt-7 mb-5 ">
+        <div className="flex gap-2 items-center md:mb-0 pt-6 mb-5 ">
           <FaHome className="m-0" />
           <p className="text-black">Home</p>
           <FaChevronRight className="m-1 text-[#049805]" />
           <p className="text-[#049805]">Leave/Off Request</p>
         </div>
-        <button
-          className="bg-[#049005] text-white rounded-md p-2"
-          onClick={() => setShowForm(true)}
-        >
-          Create New Request
-        </button>
+     
       </div>
 
       {showForm && (
-        <form className='flex justify-center pt-5'>
-          <div className='flex flex-col w-full md:w-[60%] gap-5'>
-            <div className='flex flex-col'>
-              <label className='font-semibold text-lg md:text-xl text-[#1f1e1e] mb-2'>Select the Request you would like to apply for</label>
-              <select className='p-2 bg-[#D9D9D933] rounded-lg text-lg'
-                  name="leaveType"
-                  value={newRequest.leaveType}
-                  onChange={handleInputChange}
-                >
-                  <option value="Leave">Leave</option>
-                  <option value="Off">Off</option>
+        <form className="flex justify-center pt-14">
+          <div className="flex flex-col w-full md:w-[60%] gap-5">
+            <div className="flex flex-col">
+              <label className="font-semibold text-lg md:text-xl text-[#1f1e1e] mb-2">
+                Select the Request you would like to apply for
+              </label>
+              <select
+                className="w-full px-4 py-3 text-md  text-gray-700 bg-white border-2 border-grey-300 rounded transition ease-in-out outline-none focus:text-grey-700 focus:bg-white focus:border-green-600 hover:border-green-400"
+                name="leaveType"
+                value={newRequest.leaveType}
+                onChange={handleInputChange}>
+                <option value="Leave">Leave</option>
+                <option value="Off">Off</option>
               </select>
             </div>
 
-            <div className='flex flex-col'>
-              <label className='font-semibold text-lg md:text-xl text-[#1f1e1e] mb-2'>Enter your Name</label>
-              <input className='p-2 bg-[#D9D9D933] rounded-lg text-lg'
-                  type="text"
-                  name="name"
-                  value={newRequest.name}
-                  onChange={handleInputChange}
+            <div className="flex flex-col">
+              <label className="font-semibold text-lg md:text-xl text-[#1f1e1e] mb-2">
+                Off Start Date
+              </label>
+              <input
+                className="w-full px-4 py-2 text-md  text-gray-700 bg-white border-2 border-grey-300 rounded transition ease-in-out outline-none focus:text-grey-700 focus:bg-white focus:border-green-600 hover:border-green-400"
+                type="date"
+                name="startDate"
+                value={newRequest.startDate}
+                onChange={handleInputChange}
+                min={new Date().toISOString().split("T")[0]}
               />
             </div>
 
-            <div className='flex flex-col'>
-              <label className='font-semibold text-lg md:text-xl text-[#1f1e1e] mb-2'>Off Start Date</label>
-              <input className='p-2 bg-[#D9D9D933] rounded-lg text-lg'
-                  type="date"
-                  name="startDate"
-                  value={newRequest.startDate}
-                  onChange={handleInputChange}
-                  min={new Date().toISOString().split('T')[0]}
+            <div className="flex flex-col">
+              <label className="font-semibold text-lg md:text-xl text-[#1f1e1e] mb-2">
+                Off End Date
+              </label>
+              <input
+                className="w-full px-4 py-2 text-md  text-gray-700 bg-white border-2 border-grey-300 rounded transition ease-in-out outline-none focus:text-grey-700 focus:bg-white focus:border-green-600 hover:border-green-400"
+                type="date"
+                name="endDate"
+                value={newRequest.endDate}
+                onChange={handleInputChange}
+                min={newRequest.startDate}
               />
             </div>
 
-            <div className='flex flex-col'>
-              <label className='font-semibold text-lg md:text-xl text-[#1f1e1e] mb-2'>Off End Date</label>
-              <input className='p-2 bg-[#D9D9D933] rounded-lg text-lg'
-                  type="date"
-                  name="endDate"
-                  value={newRequest.endDate}
-                  onChange={handleInputChange}
-                  min={newRequest.startDate}
-              />
-            </div>
-            
-            <Button onClick={handleCreateRequest}>Submit</Button>
-            <Button onClick={handleCancel}>Cancel</Button>
+            <Button
+              className="w-full px-4 py-2 text-md  bg-[#049005]  rounded transition ease-in-out outline-none focus:text-grey-700 focus:bg-white hover:bg-green-700 hover:font-bold"
+              onClick={handleCreateRequest}>
+              Submit
+            </Button>
           </div>
-          
         </form>
       )}
 
       {!showForm && leaveRequests.length > 0 && (
         <div>
           <div className="p-4">
-            <h2 className='text-2xl text-[#1F1E1E] font-semibold text-center mb-6'>Leave/Off Request <span className='text-[#3771C8]'>({getPendingRequestsCount()})</span></h2>
+            <h2 className="text-2xl text-[#1F1E1E] font-semibold text-center mb-6">
+              Leave/Off Request{" "}
+              <span className="text-[#3771C8]">
+                ({getPendingRequestsCount()})
+              </span>
+            </h2>
             {leaveRequests
-              .filter((request) => request.status === 'Pending')
+              .filter((request) => request.status === "Pending")
               .map((request) => (
                 <div
                   key={request.id}
                   className={`mb-4 p-4 bg-[#F8F8F8] ${
-                    expandedRequest === request.id ? 'bg-gray-200' : ''
+                    expandedRequest === request.id ? "bg-gray-200" : ""
                   }`}
-                  onClick={() => handleCardClick(request.id)}
-                >
+                  onClick={() => handleCardClick(request.id)}>
                   <div className="flex justify-between items-center">
-                    <p className='cursor-pointer font-semibold text-xl'>{generateCardContent(request)}</p>
+                    <p className="cursor-pointer font-semibold text-xl">
+                      {generateCardContent(request)}
+                    </p>
                     <div className="flex gap-5 items-center">
-                      <RiDeleteBin6Line onClick={() => handleDelete(request.id, request.startDate)} className='cursor-pointer text-[#E13535] text-lg' />
-                      <p className='bg-[#3771C8] text-white p-3 rounded-md'>{request.status}</p>
+                      <RiDeleteBin6Line
+                        onClick={() =>
+                          handleDelete(request.id, request.startDate)
+                        }
+                        className="cursor-pointer text-[#E13535] text-lg"
+                      />
+                      <p className="bg-[#3771C8] text-white p-3 rounded-md">
+                        {request.status}
+                      </p>
                     </div>
                   </div>
                   {expandedRequest === request.id && (
@@ -219,22 +226,35 @@ const LeaveOffRequest = () => {
           </div>
 
           <div className=" p-4">
-            <h2 className='text-2xl text-[#1F1E1E] font-semibold text-center mb-6'>Approved Requests <span className='text-[#049805]'>({getApprovedRequestsCount()})</span></h2>
+            <h2 className="text-2xl text-[#1F1E1E] font-semibold text-center mb-6">
+              Approved Requests{" "}
+              <span className="text-[#049805]">
+                ({getApprovedRequestsCount()})
+              </span>
+            </h2>
             {leaveRequests
-              .filter((request) => request.status === 'Approved')
+              .filter((request) => request.status === "Approved")
               .map((request) => (
                 <div
                   key={request.id}
                   className={`mb-4 p-4 bg-[#F8F8F8] ${
-                    expandedRequest === request.id ? 'bg-gray-200' : ''
+                    expandedRequest === request.id ? "bg-gray-200" : ""
                   }`}
-                  onClick={() => handleCardClick(request.id)}
-                >
+                  onClick={() => handleCardClick(request.id)}>
                   <div className="flex justify-between items-center">
-                    <p className='cursor-pointer font-semibold text-xl'>{generateCardContent(request)}</p>
+                    <p className="cursor-pointer font-semibold text-xl">
+                      {generateCardContent(request)}
+                    </p>
                     <div className="flex gap-5 items-center">
-                      <RiDeleteBin6Line onClick={() => handleDelete(request.id, request.startDate)} className='cursor-pointer text-[#E13535] text-lg' />
-                      <p className='bg-[#049805] text-white p-3 rounded-md'>{request.status}</p>
+                      <RiDeleteBin6Line
+                        onClick={() =>
+                          handleDelete(request.id, request.startDate)
+                        }
+                        className="cursor-pointer text-[#E13535] text-lg"
+                      />
+                      <p className="bg-[#049805] text-white p-3 rounded-md">
+                        {request.status}
+                      </p>
                     </div>
                   </div>
                   {expandedRequest === request.id && (
@@ -252,22 +272,35 @@ const LeaveOffRequest = () => {
       )}
 
       {!showForm && leaveRequests.length === 0 && (
-        <div className='flex justify-center items-center h-[40vh]'>
-          <p className='text-[#00000080]'>You have 0 leave/off requests</p>
+        <div className="flex justify-center items-center h-[40vh]">
+          <p className="text-[#00000080]">You have 0 leave/off requests</p>
         </div>
       )}
 
       {/* Delete Confirmation Modal */}
       {deleteConfirmation && (
         <div className="p-5 overflow-hidden fixed inset-0 z-10 flex flex-col items-center justify-center bg-white h-[100vh] gap-8">
-          <img src={DeleteModal} alt="Delete Modal" className="w-[80%] md:w-[30%]" />
+          <img
+            src={DeleteModal}
+            alt="Delete Modal"
+            className="w-[80%] md:w-[30%]"
+          />
           <p className="text-[#1F1E1E] text-center text-lg font-medium">
-              Do you want to delete the leave request you scheduled for {formatDate(deleteConfirmation.date)}?
+            Do you want to delete the leave request you scheduled for{" "}
+            {formatDate(deleteConfirmation.date)}?
           </p>
-            <div className="flex md:gap-32 gap-14">
-              <Button className='bg-[#D9D9D9] text-[black] font-medium' onClick={cancelDelete}>Cancel</Button>
-              <Button className='bg-[#FF0036] font-medium' onClick={confirmDelete}>Delete</Button>
-            </div>
+          <div className="flex md:gap-32 gap-14">
+            <Button
+              className="bg-[#D9D9D9] text-[black] font-medium"
+              onClick={cancelDelete}>
+              Cancel
+            </Button>
+            <Button
+              className="bg-[#FF0036] font-medium"
+              onClick={confirmDelete}>
+              Delete
+            </Button>
+          </div>
         </div>
       )}
     </div>
