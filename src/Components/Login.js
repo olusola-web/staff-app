@@ -8,16 +8,73 @@ import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
   const [userData, setUserData] = useState({});
+  const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const { baseUrl, setIsLoggedIn } = useStateContext();
 
   const handleInputChange = (e) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value });
-  };
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
 
+    const newErrors = { ...errors };
+  delete newErrors[name];
+  setErrors(newErrors);
+  };
+//   const handleChange = (e) => {
+//   const { name, value, type, files } = e.target;
+//   setFormData({
+//     ...formData,
+//     [name]: type === "file" ? files[0] : value,
+//   });
+
+//   const newErrors = { ...errors };
+//   delete newErrors[name];
+//   setErrors(newErrors);
+// };
+const handleBlur = (e) => {
+  const { name, value } = e.target;
+  setErrors((prevErrors) => ({
+    ...prevErrors,
+    [name]: value.trim() ? null : `${name.split('_').join(' ')} is required`,
+  }));
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (name === "email") {
+    if (!value.trim()) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        email: "Email is required",
+      }));
+    } else if (!isValidEmail.test(value)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        email: "Invalid email format",
+      }));
+    } else {
+      const newErrors = { ...errors };
+      delete newErrors.email;
+      setErrors(newErrors);
+    }
+  }
+};
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
+  const requiredFields = [
+  'email',
+  'password'
+];
+const newErrors = {};
+
+requiredFields.forEach((field) => {
+  if (!userData[field]) {
+    newErrors[field] = `${field.split('_').join(' ')} is required`;
+  }
+});
+if (Object.keys(newErrors).length > 0) {
+  setErrors(newErrors);
+  return;
+}
     setIsLoading(true);
     event.preventDefault();
     const url = `${baseUrl}/login`;
@@ -62,9 +119,11 @@ const Login = () => {
               name="email"
               value={userData?.email || ""}
               onChange={handleInputChange}
+              onBlur={handleBlur}
               required
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
             />
+            {errors.email && <p className="text-red-600 text-left font-bold">{errors.email}</p>}
           </div>
           <div className="mb-6 lg:mx-8">
             <label
@@ -79,9 +138,11 @@ const Login = () => {
               name="password"
               value={userData?.password || ""}
               onChange={handleInputChange}
+              onBlur={handleBlur}
               required
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
             />
+            {errors.password && <p className="text-red-600 text-left font-bold">{errors.password}</p>}
           </div>
           <button
             type="submit"

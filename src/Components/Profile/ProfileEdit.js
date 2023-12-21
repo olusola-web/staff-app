@@ -5,10 +5,10 @@ import { FaHome, FaChevronRight } from "react-icons/fa";
 // import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useStateContext } from "../../context/StateContext";
-// import { Spinner } from "react-activity";
+import { Spinner } from "react-activity";
 
 const ProfileEdit = () => {
-  // const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
     full_name: "",
     phone_number: "",
@@ -27,13 +27,47 @@ const ProfileEdit = () => {
 
  const { imgUrl, profileDetails } = useStateContext();
 
+   const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "file" ? files[0] : value,
-    });
-  };
+  const { name, value, type, files } = e.target;
+  setFormData({
+    ...formData,
+    [name]: type === "file" ? files[0] : value,
+  });
+
+  const newErrors = { ...errors };
+  delete newErrors[name];
+  setErrors(newErrors);
+};
+
+const handleBlur = (e) => {
+  const { name, value } = e.target;
+  setErrors((prevErrors) => ({
+    ...prevErrors,
+    [name]: value.trim() ? null : `${name.split('_').join(' ')} is required`,
+  }));
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+    if (name === "email") {
+    if (!value.trim()) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        email: "Email is required",
+      }));
+    } else if (!isValidEmail.test(value)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        email: "Invalid email format",
+      }));
+    } else {
+      // Clear email error if it's valid
+      const newErrors = { ...errors };
+      delete newErrors.email;
+      setErrors(newErrors);
+    }
+  }
+};
 
 useEffect(()=>{
 if (profileDetails) {
@@ -53,26 +87,37 @@ if (profileDetails) {
 }
 }, [profileDetails])
 
-  const handleSubmit = () => {
-    // e.preventDefault();
-    // Perform actions with the form data (e.g., send to a server, update state)
-    // console.log("Form submitted:", formData);
-    // Clear the form fields after submission
-    setFormData({
-    full_name: "",
-    phone_number: "",
-    dob: "",
-    marital_status: "",
-    cv: null,
-    address: "",
-    email: "",
-    sex: "",
-    profile_picture: null,
-    guarantor_full_name: "",
-    guarantor_address: "",
-    guarantor_phone: "",
-    guarantor_photo: null,
-    });
+  const handleSubmit = async () => {
+    // form validation
+const requiredFields = [
+  'full_name',
+  'phone_number',
+  'dob',
+  'cv',
+  'marital_status',
+  'address',
+  'email',
+  'sex',
+  'profile-picture',
+  'guarantor_full_name',
+  'guarantor_address',
+  'guarantor_phone',
+  'guarantor_photo',
+];
+
+const newErrors = {};
+requiredFields.forEach((field) => {
+  if (!FormData[field]) {
+    newErrors[field] = `${field.split('_').join(' ')} is required`;
+  }
+});
+
+if (Object.keys(newErrors).length > 0) {
+  setErrors(newErrors);
+  return;
+}
+    setIsLoading(true);
+    console.log("Form submitted:", formData);  
   };
 
   return (
@@ -89,20 +134,19 @@ if (profileDetails) {
       <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
         {/* Left Column */}
         <div>
-          <label className="block mb-2 text-sm font-medium">
-            <div className="flex justify-between">
-              <p>Full Name</p>
-            </div>
-
+        <label className="block mb-2 text-sm font-medium">
+            Full Name
             <input
               type="text"
               name="full_name"
               value={formData.full_name}
               onChange={handleChange}
+              onBlur={handleBlur}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Enter your full name"
             />
+            {errors.full_name && <p className="text-red-600 font-bold">{errors.full_name}</p>}
           </label>
 
           <label className="block mb-2 text-sm font-medium">
@@ -114,10 +158,12 @@ if (profileDetails) {
               name="phone_number"
               value={formData.phone_number}
               onChange={handleChange}
+              onBlur={handleBlur}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Enter your Phone Number"
             />
+            {errors.phone_number && <p className="text-red-600 font-bold">{errors.phone_number}</p>}
           </label>
 
           <label className="block mb-2 text-sm font-medium">
@@ -129,9 +175,11 @@ if (profileDetails) {
               name="dob"
               value={formData.dob}
               onChange={handleChange}
+              onBlur={handleBlur}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
             />
+            {errors.dob && <p className="text-red-600 font-bold">{errors.dob}</p>}
           </label>
 
           <label className="block mb-2 text-sm font-medium">
@@ -141,6 +189,7 @@ if (profileDetails) {
                <select className="w-full p-4 bg-gray-100 rounded-md" name="marital_status"
               value={formData.marital_status}
               onChange={handleChange}
+              onBlur={handleBlur}
               required>
               <option value="" selected disabled>Enter your marital status</option>
               <option value="Single">Single</option>
@@ -148,6 +197,7 @@ if (profileDetails) {
               <option value="Divorced">Divorced</option>
               <option value="Others">Others</option>
             </select>
+            {errors.marital_status && <p className="text-red-600 font-bold">{errors.marital_status}</p>}
           </label>
         </div>
 
@@ -161,10 +211,12 @@ if (profileDetails) {
               name="address"
               value={formData.address}
               onChange={handleChange}
+              onBlur={handleBlur}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Enter your address"
             />
+            {errors.address && <p className="text-red-600 font-bold">{errors.address}</p>}
           </label>
 
           <label className="block mb-2 text-sm font-medium">
@@ -176,10 +228,12 @@ if (profileDetails) {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              onBlur={handleBlur}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Ènter your email"
             />
+            {errors.email && <p className="text-red-600 font-bold">{errors.email}</p>}
           </label>
 
           <label className="block mb-2 text-sm font-medium">
@@ -189,6 +243,7 @@ if (profileDetails) {
              <select
              value={formData.sex}
               onChange={handleChange}
+              onBlur={handleBlur}
               required
               className="w-full p-4 bg-gray-100 rounded-md" name="sex">
               <option value="" selected disabled>Enter your sex</option>
@@ -196,6 +251,7 @@ if (profileDetails) {
               <option value="Female">Female</option>              
               <option value="Others">Others</option>
             </select>
+            {errors.sex && <p className="text-red-600 font-bold">{errors.sex}</p>}
           </label>
 
           <label className="block mb-2 text-sm font-medium">
@@ -205,10 +261,12 @@ if (profileDetails) {
               type="file"
               name="profile_picture"
               onChange={handleChange}
+              onBlur={handleBlur}
               accept="image/*"
               required
               className="w-full p-4 bg-gray-100 rounded-md"
             />
+            {errors.profile_picture && <p className="text-red-600 font-bold">{errors.profile_picture}</p>}
           </label>
         </div>
       </form>
@@ -221,10 +279,12 @@ if (profileDetails) {
             type="file"
             name="cv"
             onChange={handleChange}
+            onBlur={handleBlur}
             accept=".pdf, .doc, .docx"
             required
             className="w-full p-4 bg-gray-100 rounded-md"
           />
+          {errors.cv && <p className="text-red-600 font-bold">{errors.cv}</p>}
         </label>
       </form>
 
@@ -235,32 +295,36 @@ if (profileDetails) {
         <div>
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
-              <p>Full Name</p>
+              <p>Guarantor Full Name</p>
             </div>
             <input
               type="text"
               name="guarantor_full_name"
               value={formData.guarantor_full_name}
               onChange={handleChange}
+              onBlur={handleBlur}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Enter guarantor's full name"
             />
+            {errors.guarantor_full_name && <p className="text-red-600 font-bold">{errors.guarantor_full_name}</p>}
           </label>
 
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
-              <p>Phone Number</p>
+              <p>Guarantor Phone Number</p>
             </div>
             <input
               type="tel"
               name="guarantor_phone"
               value={formData.guarantor_phone}
               onChange={handleChange}
+              onBlur={handleBlur}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Enter guarantor's phone number"
             />
+            {errors.guarantor_phone && <p className="text-red-600 font-bold">{errors.guarantor_phone}</p>}
           </label>
         </div>
 
@@ -268,16 +332,18 @@ if (profileDetails) {
         <div>
           <label className="block mb-2 text-sm font-medium">
             <div className="flex justify-between">
-              <p>Address</p>
+              <p>Guarantor Address</p>
             </div>
             <input
               name="guarantor_address"
               value={formData.guarantor_address}
               onChange={handleChange}
+              onBlur={handleBlur}
               required
               className="w-full p-4 bg-gray-100 rounded-md"
               placeholder="Enter guarantor's address"
             />
+            {errors.guarantor_address && <p className="text-red-600 font-bold">{errors.guarantor_address}</p>}
           </label>
 
          <label className="block mb-2 text-sm font-medium">
@@ -287,10 +353,12 @@ if (profileDetails) {
               type="file"
               name="guarantor_photo"
               onChange={handleChange}
+              onBlur={handleBlur}
               accept="image/*"
               required
               className="w-full p-4 bg-gray-100 rounded-md"
             />
+            {errors.guarantor_photo && <p className="text-red-600 font-bold">{errors.guarantor_photo}</p>}
           </label>
         </div>
         
@@ -303,8 +371,7 @@ if (profileDetails) {
             type="submit"
             className="w-1/2 flex items-center justify-center bg-[#049805] text-white p-3 rounded mx-auto"
           >
-            {/* {isLoading ? <Spinner /> : "Save"} */}
-            Save
+            {isLoading ? <Spinner /> : "Save"}
           </button>
         </div>
     </div>

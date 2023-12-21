@@ -9,6 +9,7 @@ import { Spinner } from "react-activity";
 
 const Complaints = () => {
   const [isLoading, setIsLoading] = useState(false)
+  const [errors, setErrors] = useState({});
   const [selectedOption, setSelectedOption] = useState('Complaint');
   const [message, setMessage] = useState('');
   const [labelName, setLabelName] = useState('Kindly type in your complaint here');
@@ -31,10 +32,24 @@ const Complaints = () => {
 
   const handleMessageChange = (e) => {
     setMessage(e.target.value);
+    
+    if (e.target.value.trim() !== "") {
+    setErrors({});
+  }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  // form validation
+  const newErrors = {};
+  if (!message) {
+    newErrors.message = 'A complaint or suggestion is required';
+  }
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    return;
+  }
+
     setIsLoading(true);
     try {
       const url = `${baseUrl}/submit-suggestion`;
@@ -50,6 +65,7 @@ const Complaints = () => {
     } finally {
       setIsLoading(false);
       setMessage("")
+      setErrors("")
   };
 }
  const getCurrentDate = () => {
@@ -100,8 +116,8 @@ const Complaints = () => {
               onChange={handleMessageChange}
               className="w-full p-2 rounded-md bg-gray-100"
               rows="10"
-              required
             ></textarea>
+            {errors.message && <span className="text-red-600 font-bold text-center block">{errors.message}</span>}
           </div>
 
           {/* Submit Button */}
