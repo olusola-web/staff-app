@@ -10,6 +10,7 @@ import { Spinner } from "react-activity";
 import { ToastContainer, toast } from "react-toastify";
 
 const ReclaimRequest = () => {
+  const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false)
   const { baseUrl, uploadConfig, GetAllReclaims } = useStateContext();
 
@@ -28,13 +29,56 @@ const ReclaimRequest = () => {
       ...prevForm,
       [fieldName]: value,
     }));
+
+    const newErrors = { ...errors };
+  delete newErrors[name];
+  console.log(errors)
+  setErrors(newErrors);
   };
 
-  const handleDateChange = (e) => {
-    handleFormChange("date_of_expenses", e.target.value);
-  };
+
+const handleBlur = (e) => {
+  const { name, value } = e.target;
+  console.log(errors)
+  setErrors((prevErrors) => ({
+    ...prevErrors,
+    [name]: value.trim() ? null : `${name.split('_').join(' ')} is required`,
+  }));
+};
+  // const handleDateChange = (e) => {
+  //   handleFormChange("date_of_expenses", e.target.value);
+  // };
 
   const handleSubmit = async (e) => {
+        // form validation
+// const requiredFields = [
+//   "details",
+//   "date_of_expenses",
+//   "amount_to_reclaim",
+//   "proof_of_reclaim"
+// ];
+const newErrors = {};
+// requiredFields.forEach((field) => {
+//   if (!form[field]) {
+//     newErrors[field] = `${field.split('_').join(' ')} is required`;
+//   }
+// });
+ if (!form.details) {
+    newErrors.details = 'A complaint or suggestion is required';
+  }
+ if (!form.date_of_expenses) {
+    newErrors.date_of_expenses = 'A complaint or suggestion is required';
+  }
+ if (!form.amount_to_reclaim) {
+    newErrors.amount_to_reclaim = 'A complaint or suggestion is required';
+  }
+ if (!form.proof_of_reclaim) {
+    newErrors.proof_of_reclaim = 'A complaint or suggestion is required';
+  }
+if (Object.keys(newErrors).length > 0) {
+  setErrors(newErrors);
+  return;
+}
     e.preventDefault();
     setIsLoading(true);
     try {
@@ -54,6 +98,29 @@ const ReclaimRequest = () => {
          proof_of_reclaim: "",
       });
   };
+//  const handleSubmit = async () => {
+//     // form validation
+// const requiredFields = [
+//   "details",
+//   "date_of_expenses",
+//   "amount_to_reclaim",
+//   "proof_of_reclaim"
+// ];
+
+// const newErrors = {};
+// requiredFields.forEach((field) => {
+//   if (!form[field]) {
+//     newErrors[field] = `${field.split('_').join(' ')} is required`;
+//   }
+// });
+
+// if (Object.keys(newErrors).length > 0) {
+//   setErrors(newErrors);
+//   return;
+// }
+//     setIsLoading(true);
+//     console.log("Form submitted:", form);  
+//   };
   return (
     <div>
       <div className="container mx-auto">
@@ -79,10 +146,12 @@ const ReclaimRequest = () => {
               id="details"
               name="details"
               value={details}
-              onChange={(e) => handleFormChange("details", e.target.value)}
+              onChange={handleFormChange}
+              onBlur={handleBlur}
               className="w-full h-12 px-4 py-2 text-md text-gray-700 bg-white border-2 border-gray-300 rounded transition ease-in-out outline-none focus:border-green-500"
               placeholder="Give details on expenses spent"
             />
+            {errors.details && <p className="text-red-600 font-bold">{errors.details}</p>}
           </div>
           <div className="mb-4 relative">
             <label htmlFor="calendar">Select a Date</label>
@@ -91,9 +160,11 @@ const ReclaimRequest = () => {
               id="date_of_expenses"
               name="date_of_expenses"
               value={date_of_expenses}
-              onChange={handleDateChange}
+              onChange={handleFormChange}
+              onBlur={handleBlur}
               className="w-full h-12 px-4 py-2 text-md text-gray-700 bg-white border-2 border-gray-300 rounded transition ease-in-out outline-none focus:border-green-500"
             />
+            {errors.date_of_expenses && <p className="text-red-600 font-bold">{errors.date_of_expenses}</p>}
             <div className="absolute right-4 top-1/2 transform -translate-y-1/2"></div>
           </div>
           <div className="mb-4">
@@ -103,10 +174,12 @@ const ReclaimRequest = () => {
               id="amount_to_reclaim"
               name="amount_to_reclaim"
               value={amount_to_reclaim}
-              onChange={(e) => handleFormChange("amount_to_reclaim", e.target.value)}
+              onChange={handleFormChange}
+              onBlur={handleBlur}
               className="w-full h-12 px-4 py-2 text-md text-gray-700 bg-white border-2 border-gray-300 rounded transition ease-in-out outline-none focus:border-green-500"
               placeholder="Enter the amount of the item"
             />
+            {errors.amount_to_reclaim && <p className="text-red-600 font-bold">{errors.amount_to_reclaim}</p>}
           </div>
           <div className="mb-4">
             <label htmlFor="proof_of_reclaim">Kindly Upload a receipt</label>
@@ -116,12 +189,13 @@ const ReclaimRequest = () => {
               name="proof_of_reclaim"
               value={proof_of_reclaim}
               accept=".pdf, .doc, .docx, image/*"
-              onChange={(e) => handleFormChange("proof_of_reclaim", e.target.value)}
+              onChange={handleFormChange}
+              onBlur={handleBlur}
               className="w-full h-12 px-4 py-2 text-md text-gray-700 bg-white border-2 border-gray-300 rounded transition ease-in-out outline-none focus:border-green-500"
             />
+            {errors.proof_of_reclaim && <p className="text-red-600 font-bold">{errors.proof_of_reclaim}</p>}
           </div>
         </div>
-
         <div className="w-full flex justify-center items-center">
           <Button type="submit" className="w-full md:w-[27rem] h-12 flex justify-center items-center">
             {isLoading ? <Spinner/> : "Submit"}
