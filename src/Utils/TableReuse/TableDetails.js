@@ -1,86 +1,47 @@
-import React, { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import $ from 'jquery';
-import 'datatables.net';
-import 'datatables.net-dt/css/jquery.dataTables.min.css';
-import { v4 as uuidv4 } from 'uuid';
-import 'datatables.net-responsive';
-import 'datatables.net-responsive-dt/css/responsive.dataTables.min.css';
+import React, { useEffect } from "react";
+import $ from "jquery";
+import "datatables.net";
+import "datatables.net-dt/css/jquery.dataTables.css";
 
-
-const DataTable = ({ data, columns, options }) => {
-  const tableRef = useRef(null);
-  const tableId = `dataTable-${uuidv4()}`;
-
-
-  
-
+const MyDataTable = ({ data }) => {
   useEffect(() => {
-    // Initialize DataTable only once
-    if (!tableRef.current) {
-      tableRef.current = $(`#${tableId}`).DataTable({
-        ...options,
-        responsive: true // Enable responsive option
-      })
-    }
+    const table = $("#myTable").DataTable({
+      data: data,
+      columns: [
+        { title: "S/N", data: "serialNumber" },
+        { title: "Item Name", data: "itemName" },
+        { title: "Purchase Request Number", data: "purchaseRequestNumber", className:""},
+        { title: "Amount", data: "amount", className:"" },
+        {
+          title: "Status",
+          data: "status",
+          render: function (data, type, row) {
+            if (data === "Pending") {
+              return `<span class="bg-green-500 text-white rounded-md px-2 py-1">${data}</span>`;
+            } else if (data === "Approved") {
+              return `<span class="bg-blue-500 text-white rounded-md px-2 py-1">${data}</span>`;
+            } else {
+              return data;
+            }
+          },
+        },
+        { title: "Action", data: "action" },
+      ],
+      columnDefs: [
+        {
+          targets: 1, // This targets the second column (zero-based index), i.e., "Item Name"
+          width: "30%", // You can set this to the width you desire
+        },
+      ],
+      // Other DataTable options...
+    });
 
     return () => {
-      // Destroy DataTable instance on component unmount
-      if (tableRef.current) {
-        tableRef.current.destroy();
-        tableRef.current = null;
-      }
+      table.destroy();
     };
-  }, [tableId, options]);
+  }, [data]);
 
-  useEffect(() => {
-    // Update DataTable data
-    if (tableRef.current) {
-      tableRef.current.clear();
-      data.forEach(row => {
-        tableRef.current.row.add(columns.map(col => row[col.key]));
-      });
-      tableRef.current.draw();
-    }
-  }, [data, columns]);
-
-  return (
-    <div className="overflow-x-auto">
-      <table id={tableId} className="min-w-full display">
-        <thead>
-          <tr>
-            {columns.map(({ header }, index) => (
-              <th key={index}>{header}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, rowIndex) => (
-            <tr key={rowIndex}>
-              {columns.map(({ key, className}, colIndex) => (
-                <td key={colIndex} className={className}>{item[key]}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+  return <table id="myTable" className="display"></table>;
 };
 
-DataTable.propTypes = {
-  data: PropTypes.array.isRequired,
-  columns: PropTypes.arrayOf(
-    PropTypes.shape({
-      header: PropTypes.string.isRequired,
-      key: PropTypes.string.isRequired
-    })
-  ).isRequired,
-  options: PropTypes.object
-};
-
-DataTable.defaultProps = {
-  options: {}
-};
-
-export default DataTable;
+export default MyDataTable;

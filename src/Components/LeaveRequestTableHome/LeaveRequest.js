@@ -26,7 +26,9 @@ const { dashDetails, isLoading } = useStateContext();
     displayedData = leave_request.map((leavereq, index) => ({
       id: index + 1,
       request_type: leavereq.request_type,
-      date: leavereq.leave_start_date,
+      created_at: leavereq.created_at
+        ? new Date(leavereq.created_at).toLocaleDateString()
+        : "Not Available", // Fallback text if the date is not available
       status: leavereq.status,
     }));
   }
