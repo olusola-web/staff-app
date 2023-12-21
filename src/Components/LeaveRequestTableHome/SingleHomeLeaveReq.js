@@ -1,5 +1,5 @@
 const SingleHomeLeaveReq = ({ item, index }) => {
-  const { request_type, date, status } = item || {};
+  const { request_type, created_at, status } = item || {};
 
   // Determine the Tailwind class based on the status
   const statusClass = status === 'Pending' 
@@ -13,7 +13,7 @@ const SingleHomeLeaveReq = ({ item, index }) => {
       <div>{index + 1}</div>
       <div>{request_type}</div>
       {/* <div>{amount}</div> */}
-      <div>{date}</div>
+      <div>{created_at}</div>
       <div className={`text-white ${statusClass} p-2 rounded`}>{status}</div>
     
     </div>

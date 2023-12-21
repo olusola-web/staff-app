@@ -10,7 +10,7 @@ import { CgHome } from "react-icons/cg";
 import { Link } from "react-router-dom";
 
 const Landing = () => {
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token");
   // console.log(token)
   const { getDashboardDetails, dashDetails, isLoading } = useStateContext();
   const {
@@ -76,7 +76,7 @@ const Landing = () => {
 
         {/* 2nd card  */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center my-12">
-          <div className="bg-white p-2 rounded-lg shadow-md w-full h-full flex flex-col justify-center items-center">
+          <div className="bg-white p-2 rounded-lg shadow-md w-full h-full fle flex-col justify-center items-center">
             <div className="flex justify-around items-center pb-6 gap-2 sm:gap-4 md:gap-8 lg:gap-16 xl:gap-20">
               <h2 className="relative inline-block font-bold text-sm sm:text-md md:text-lg lg:text-xl">
                 Reclaim
@@ -84,7 +84,9 @@ const Landing = () => {
                   {reclaimCount}
                 </span>
               </h2>
-              <Link to="reclaim" className="text-[#049805] sm:hidden md:block">View all</Link>
+              <Link to="reclaim" className="text-[#049805] sm:hidden md:block">
+                View all
+              </Link>
             </div>
 
             <div className="text-gray-600 font-bold overflow-x-auto w-full">
@@ -100,7 +102,12 @@ const Landing = () => {
                   {leaveCount}
                 </span>
               </h2>
-              <Link to="leaverequest" className="text-[#049805] sm:hidden md:block">View all</Link>
+              <Link
+                to="leaverequest"
+                className="text-[#049805] sm:hidden md:block"
+              >
+                View all
+              </Link>
             </div>
             {/* <Link to="totalbankdetails" className="text-[#049805] pr-6">View all</Link> */}
             <div className="text-gray-600 font-bold overflow-x-auto w-full">
@@ -183,32 +190,19 @@ const Landing = () => {
           </div>
         </div>
         {/* pending purchase request receipt table home */}
-         
-        <div className="bg-whit p-2 rounded-lg shadow-m w-full h-full flex flex-col justify-center items-center">
-    {/* <div className="flex justify-between items-center pb-6 gap-2 sm:gap-4 md:gap-8 lg:gap-16 xl:gap-20">
-        <h2 className="relative inline-block font-bold text-sm sm:text-md md:text-lg lg:text-xl">
-            Pending Purchase Request
-            <span className="absolute top-0 -right-2 md:-right-8 bg-red-500 text-white text-xs sm:text-sm px-2 py-1 rounded-full">
-                {prCount}
-            </span>
-        </h2>
-        <h2 className="text-[#049805] sm:hidden md:block">View PR</h2>
-      
-    </div> */}
-    
-    <div className="flex gap-3 justify-between text-gray-600 font-bold overflow-x-auto w-full">
-          <div className="w-3/5 "> {/* Adjusted width to ensure total does not exceed 100% */}
-            
-            <PendingPurchReqHome />
-        </div>
-        <div className="w-2/5"> {/* Adjusted width accordingly */}
-            <ProgressBarTable />
-        </div>
-    </div>
-</div>
 
+        <div className="bg-whit p-2 rounded-lg shadow-m w-full h-full flex flex-col justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-between text-gray-600 font-bold overflow-x-auto w-full">
+            <div className="w-full sm:w-3/5">
+              <PendingPurchReqHome />
+            </div>
+            <div className="w-full sm:w-2/5">
+              <ProgressBarTable />
+            </div>
+          </div>
+        </div>
       </div>
-     </div>
+    </div>
   );
 };
 

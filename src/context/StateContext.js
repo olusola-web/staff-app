@@ -44,7 +44,7 @@ export const StateProvider = ({ children }) => {
   const imgUrl = "https://sandbox.myafrimall.com.ng"
 
   const getAllPurchaseReq = async () => {
-    const url = `${baseUrl}/get-purchase-requests?page=${page}`;
+    const url = `${baseUrl}/get-purchase-requests`;
     setIsLoading(true);
     try {
       const res = await axios.get(url, config(token));

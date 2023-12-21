@@ -1,5 +1,5 @@
 const SingleHomeReclaim = ({ item, index }) => {
-  const { reclaim_number, amount_to_reclaim, date, status } = item || {};
+  const { reclaim_number, amount_to_reclaim, created_at, status } = item || {};
 
   // Determine the Tailwind class based on the status
   const statusClass = status === 'Not granted' 
@@ -13,7 +13,7 @@ const SingleHomeReclaim = ({ item, index }) => {
       <div>{index + 1}</div>
       <div>{reclaim_number}</div>
       <div>{amount_to_reclaim}</div>
-      <div>{date}</div>
+      <div>{created_at}</div>
       <div className={`text-white ${statusClass} p-2 rounded`}>{status}</div>
     
     </div>

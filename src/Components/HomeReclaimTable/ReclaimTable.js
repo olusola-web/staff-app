@@ -7,38 +7,31 @@ import { useEffect } from "react";
 const tableHeader = ["S/N", "RN", "Amount", "Date", "Status"];
 
 const ReclaimTable = () => {
-  // For simplicity, using sample data directly
   const { dashDetails, isLoading } = useStateContext();
-  console.log("Reclaim Requests:", dashDetails.reclaim_request);
   const { reclaim_request } = dashDetails;
-  console.log(dashDetails);
-
+  
   let displayedData = [];
-
-  // Check if reclaim_request is loaded and is an array
   if (reclaim_request && Array.isArray(reclaim_request)) {
     displayedData = reclaim_request.map((reclaim, index) => {
-
+      console.log("Original created_at:", reclaim.created_at);
+      // Format or handle null dates
       let formattedDate = reclaim.created_at
       ? new Date(reclaim.created_at).toLocaleDateString()
-      : "Not Available"; // or any default text
-
-      
-      // Format the amount to include commas as thousands separators
-      const formattedAmount = new Intl.NumberFormat("en-US").format(
-        reclaim.amount_to_reclaim
-      );
+      : "Not Available";
+        console.log("Formatted date:", formattedDate);
 
       return {
         id: index + 1,
-        reclaim_number: reclaim.reclaim_number,
-        amount_to_reclaim: `₦${formattedAmount}`, // Using the formatted amount here
-        date: reclaim.date_of_expenses,
+        reclaim_number: reclaim.reclaim_number, // Correct field from the endpoint
+        amount_to_reclaim: `₦${new Intl.NumberFormat("en-US").format(
+          reclaim.amount_to_reclaim
+        )}`,
+        created_at: formattedDate,
         status: reclaim.status,
       };
     });
   }
-
+  
   return (
     <div className="w-full max-w-5xl mb-4 overflow-x-auto table-responsive">
       <Table
