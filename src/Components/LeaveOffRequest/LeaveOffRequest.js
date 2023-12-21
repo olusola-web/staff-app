@@ -47,7 +47,12 @@ const LeaveOffRequest = () => {
   };
 
   const confirmDelete = () => {
-    setLeaveRequests(leaveRequests.filter((request) => request.id !== deleteConfirmation.id));
+    setLeaveRequests(
+      leaveRequests.filter((request) => request.id !== deleteConfirmation.id)
+    );
+
+    // Set showForm to true after confirming the deletion
+    setShowForm(true);
 
     setDeleteConfirmation(null);
   };
@@ -271,11 +276,11 @@ const LeaveOffRequest = () => {
         </div>
       )}
 
-      {!showForm && leaveRequests.length === 0 && (
+      {/* {!showForm && leaveRequests.length === 0 && (
         <div className="flex justify-center items-center h-[40vh]">
           <p className="text-[#00000080]">You have 0 leave/off requests</p>
         </div>
-      )}
+      )} */}
 
       {/* Delete Confirmation Modal */}
       {deleteConfirmation && (
