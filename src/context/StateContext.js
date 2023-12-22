@@ -10,6 +10,7 @@ export const StateProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [allPurchaseReq, setAllPurchaseReq] = useState([]);
   const [profileDetails, setProfileDetails] = useState({})
+  const [purchaseRequests, setPurchaseRequests] = useState([]);
   // const [createPurchaseReq, setCreatePurchaseReq] =useState([])
   // const [allReclaim, setAllReclaim] = useState([]);
   const [allLeaveReq, setAllLeaveReq] = useState([]);
@@ -45,6 +46,11 @@ export const StateProvider = ({ children }) => {
   const imgUrl = "https://sandbox.myafrimall.com.ng"
 
   const [formData, setFormData] = useState({});
+
+  // 
+  const addPurchaseRequest = newRequest => {
+    setPurchaseRequests(prev => [...prev, newRequest]);
+  };
 
   const getAllPurchaseReq = async () => {
     const url = `${baseUrl}/get-purchase-requests`;
@@ -152,6 +158,9 @@ useEffect(()=>{
         GetAllReclaims,
         formData,
         setFormData,
+        purchaseRequests,
+        addPurchaseRequest,
+        setPurchaseRequests
         // createPurchaseRequest,
         // setCreatePurchaseReq
       }}

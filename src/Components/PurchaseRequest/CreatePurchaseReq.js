@@ -2,54 +2,32 @@ import React, { useState } from "react";
 import Button from "../Button/ButtonReusable";
 import { FaHome, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import PurchaseRequestTable from "./PurchaseRequestTable";
 import { useStateContext } from "../../context/StateContext";
-import { Spinner } from "react-activity";
-import { ToastContainer, toast } from "react-toastify"; 
+
 
 const CreatePurchaseReq = () => {
-  const {
-    formData,
-    setFormData,
-    token,
-    baseUrl,
-    config,
-    getAllPurchaseReq,
-    setAllPurchaseReq,
-    isLoading,
-    setIsLoading
-  } = useStateContext(); // Use useStateContext instead of useContext
-  // const [purchaseReq, setPurchaseReq] = useState({
-  //   description: "",
-  //   Quantity: "",
-  //   Amount: "",
-  // });
+  const { addPurchaseRequest } = useStateContext();
+  const [createPurchaseReq, setCreatePurchaseReq] = useState({
+    description: "",
+    quantity: "",
+    amount: "",
+  });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };;
-
-  const handleSubmit = async (e) => {
+  const handleFormSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    const url = `${baseUrl}/create-purchase-request`;
-    try {
-      const res = await axios.post(url, formData, config(token));
-      toast.success("created successfully");
-      setAllPurchaseReq(prev => [...prev, res.data]);
-      getAllPurchaseReq();
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message || "An error occurred");
-    } finally {
-      setIsLoading(false);
-    }
+    addPurchaseRequest(createPurchaseReq); // Check createPurchaseReq's structure here
+    setCreatePurchaseReq({ description: "", quantity: "", amount: "" });
   };
+  
+
+  const handleCreatePurchaseReqChange = (e) => {
+    setCreatePurchaseReq({
+      ...createPurchaseReq,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
     <div>
       <div className="p-6 flex flex-col md:flex-row justify-between">
@@ -76,7 +54,7 @@ const CreatePurchaseReq = () => {
           <div className="text-center p-3">
             <p className="text-2xl font-bold">Purchase Request</p>
           </div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleFormSubmit}>
             <div className="mb-4">
               <label
                 htmlFor="description"
@@ -87,9 +65,9 @@ const CreatePurchaseReq = () => {
               <input
                 type="text"
                 id="description"
-                value={formData.description}
+                value={createPurchaseReq.description}
                 name="description"
-                onChange={handleChange}
+                onChange={handleCreatePurchaseReqChange}
                 className="w-full p-2 border rounded"
                 placeholder="What do you want to buy and explain what it will be used for"
               />
@@ -105,9 +83,9 @@ const CreatePurchaseReq = () => {
               <input
                 type="text"
                 id="Quantity"
-                value={formData.quantity}
-                name="Quantity"
-                onChange={handleChange}
+                value={createPurchaseReq.quantity}
+                name="quantity"
+                onChange={handleCreatePurchaseReqChange}
                 className="w-full p-2 border rounded"
                 placeholder="Enter the quantity of the item you need"
               />
@@ -123,9 +101,9 @@ const CreatePurchaseReq = () => {
               <input
                 type="number"
                 id="Amount"
-                value={formData.price}
-                name="Amount"
-                onChange={handleChange}
+                value={createPurchaseReq.amount}
+                name="amount"
+                onChange={handleCreatePurchaseReqChange}
                 className="w-full p-2 border rounded"
                 placeholder="Enter the amount of the item"
               />
@@ -135,7 +113,7 @@ const CreatePurchaseReq = () => {
               type="submit"
               className="w-full bg-[#049805] text-white p-2 rounded"
             >
-              {isLoading ? <Spinner /> :  "Add More" }
+              Add More
             </Button>
           </form>
         </div>
