@@ -1,21 +1,33 @@
-import React, { useState } from 'react';
-import { FaHome, FaChevronRight } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { FaHome, FaChevronRight } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import Button from '../Button/ButtonReusable';
-import DeleteModal from '../../Assets/Images/deleteModal.png'
+import Button from "../Button/ButtonReusable";
+import DeleteModal from "../../Assets/Images/deleteModal.png";
 
 const LeaveOffRequest = () => {
   const [showForm, setShowForm] = useState(true);
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [newRequest, setNewRequest] = useState({
-    leaveType: 'Leave',
-    startDate: '',
-    endDate: '',
-    status: 'Pending',
+    leaveType: "Leave",
+    startDate: "",
+    endDate: "",
+    status: "Pending",
   });
 
   const [expandedRequest, setExpandedRequest] = useState(null);
   const [deleteConfirmation, setDeleteConfirmation] = useState(null);
+
+  useEffect(() => {
+    // Load leave requests from localStorage on component mount
+    const storedLeaveRequests =
+      JSON.parse(localStorage.getItem("leaveRequests")) || [];
+    setLeaveRequests(storedLeaveRequests);
+  }, []);
+
+  useEffect(() => {
+    // Save leave requests to localStorage whenever leaveRequests changes
+    localStorage.setItem("leaveRequests", JSON.stringify(leaveRequests));
+  }, [leaveRequests]);
 
   const handleInputChange = (e) => {
     setNewRequest({ ...newRequest, [e.target.name]: e.target.value });
@@ -23,20 +35,27 @@ const LeaveOffRequest = () => {
 
   const handleCreateRequest = () => {
     if (!newRequest.startDate || !newRequest.endDate) {
-      alert('Please fill in all fields before submitting.');
+      alert("Please fill in all fields before submitting.");
       return;
     }
 
     if (new Date(newRequest.startDate) > new Date(newRequest.endDate)) {
-      alert('End date must be after the start date.');
+      alert("End date must be after the start date.");
       return;
     }
 
     setLeaveRequests([{ ...newRequest, id: Date.now() }, ...leaveRequests]);
 
-    setNewRequest({ name: '', leaveType: 'Leave', startDate: '', endDate: '', status: 'Pending' });
+    setNewRequest({
+      leaveType: "Leave",
+      startDate: "",
+      endDate: "",
+      status: "Pending",
+    });
+
     setShowForm(false);
   };
+
 
   const handleCancel = () => {
     setShowForm(true);
@@ -51,7 +70,7 @@ const LeaveOffRequest = () => {
       leaveRequests.filter((request) => request.id !== deleteConfirmation.id)
     );
 
-    // Set showForm to true after confirming the deletion
+    // This Sets showForm to true after confirming the deletion
     setShowForm(true);
 
     setDeleteConfirmation(null);
@@ -62,27 +81,33 @@ const LeaveOffRequest = () => {
   };
 
   const getPendingRequestsCount = () => {
-    return leaveRequests.filter((request) => request.status === 'Pending').length;
+    return leaveRequests.filter((request) => request.status === "Pending")
+      .length;
   };
 
   const getApprovedRequestsCount = () => {
-    return leaveRequests.filter((request) => request.status === 'Approved').length;
+    return leaveRequests.filter((request) => request.status === "Approved")
+      .length;
   };
 
   const formatDate = (dateString) => {
-    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    const options = {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    };
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', options);
+    return date.toLocaleDateString("en-GB", options);
   };
-
 
   const getDayPosition = (day) => {
     day = parseInt(day, 10);
-  
+
     if (day >= 11 && day <= 13) {
       return `${day}th`;
     }
-  
+
     const lastDigit = day % 10;
     switch (lastDigit) {
       case 1:
@@ -97,20 +122,22 @@ const LeaveOffRequest = () => {
   };
 
   const generateCardContent = (request) => {
-    const leaveTypeText = request.leaveType === 'Leave' ? 'leave' : 'off';
-    const article = leaveTypeText === 'off' ? 'an' : 'a';
-  
+    const leaveTypeText = request.leaveType === "Leave" ? "leave" : "off";
+    const article = leaveTypeText === "off" ? "an" : "a";
+
     const startDate = new Date(request.startDate);
     const dayOfMonth = startDate.getDate();
     const position = getDayPosition(dayOfMonth);
-    
-    const formattedDate = `${startDate.toLocaleDateString('en-GB', { weekday: 'long' })} ${position} ${startDate.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}`;
-  
+
+    const formattedDate = `${startDate.toLocaleDateString("en-GB", {
+      weekday: "long",
+    })} ${position} ${startDate.toLocaleDateString("en-GB", {
+      month: "long",
+      year: "numeric",
+    })}`;
+
     return `You requested for ${article} ${leaveTypeText} on ${formattedDate}`;
   };
-  
-  
-
 
   const handleCardClick = (id) => {
     setExpandedRequest((prevExpandedRequest) =>
@@ -127,10 +154,9 @@ const LeaveOffRequest = () => {
           <FaChevronRight className="m-1 text-[#049805]" />
           <p className="text-[#049805]">Leave/Off Request</p>
         </div>
-     
       </div>
 
-      {showForm && (
+      {showForm && leaveRequests.length === 0 && (
         <form className="flex justify-center pt-14">
           <div className="flex flex-col w-full md:w-[60%] gap-5">
             <div className="flex flex-col">
@@ -184,7 +210,7 @@ const LeaveOffRequest = () => {
         </form>
       )}
 
-      {!showForm && leaveRequests.length > 0 && (
+      {(!showForm || leaveRequests.length > 0) && (
         <div>
           <div className="p-4">
             <h2 className="text-2xl text-[#1F1E1E] font-semibold text-center mb-6">
@@ -220,7 +246,6 @@ const LeaveOffRequest = () => {
                   </div>
                   {expandedRequest === request.id && (
                     <div>
-                      <p>Name: {request.name}</p>
                       <p>Type: {request.leaveType}</p>
                       <p>Start Date: {formatDate(request.startDate)}</p>
                       <p>End Date: {formatDate(request.endDate)}</p>
@@ -276,12 +301,6 @@ const LeaveOffRequest = () => {
         </div>
       )}
 
-      {/* {!showForm && leaveRequests.length === 0 && (
-        <div className="flex justify-center items-center h-[40vh]">
-          <p className="text-[#00000080]">You have 0 leave/off requests</p>
-        </div>
-      )} */}
-
       {/* Delete Confirmation Modal */}
       {deleteConfirmation && (
         <div className="p-5 overflow-hidden fixed inset-0 z-10 flex flex-col items-center justify-center bg-white h-[100vh] gap-8">
@@ -313,10 +332,6 @@ const LeaveOffRequest = () => {
 };
 
 export default LeaveOffRequest;
-
-
-
-
 
 // TRYING IF I CAN SET IT UP FOR API CONSUMPTION
 
@@ -366,7 +381,7 @@ export default LeaveOffRequest;
 //       if (response.ok) {
 //         setLeaveRequests([...leaveRequests, newRequest]);
 //         setShowForm(false);
-        
+
 //       } else {
 //         console.error('Failed to create leave request');
 //       }
@@ -424,14 +439,13 @@ export default LeaveOffRequest;
 //       });
 
 //       if (response.ok) {
-        
+
 //         setLeaveRequests(
 //           leaveRequests.map((request) =>
 //             request.id === id ? { ...request, status: 'Approved' } : request
 //           )
 //         );
 
-        
 //       } else {
 //         console.error('Failed to approve leave request');
 //       }
