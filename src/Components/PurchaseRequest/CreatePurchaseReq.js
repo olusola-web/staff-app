@@ -11,13 +11,13 @@ const CreatePurchaseReq = () => {
   const [createPurchaseReq, setCreatePurchaseReq] = useState({
     description: "",
     quantity: "",
-    amount: "",
+    price: "",
   });
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     addPurchaseRequest(createPurchaseReq); // Check createPurchaseReq's structure here
-    setCreatePurchaseReq({ description: "", quantity: "", amount: "" });
+    setCreatePurchaseReq({ description: "", quantity: "", price: "" });
   };
   
 
@@ -101,8 +101,8 @@ const CreatePurchaseReq = () => {
               <input
                 type="number"
                 id="Amount"
-                value={createPurchaseReq.amount}
-                name="amount"
+                value={createPurchaseReq.price}
+                name="price"
                 onChange={handleCreatePurchaseReqChange}
                 className="w-full p-2 border rounded"
                 placeholder="Enter the amount of the item"

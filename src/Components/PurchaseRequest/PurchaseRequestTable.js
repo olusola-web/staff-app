@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 import Table from "../../Utils/Table";
 import Button from "../Button/ButtonReusable";
 import SinglePurchaseRequest from "./SinglePurchaseRequest";
@@ -13,26 +15,39 @@ const tableHeader = [
 ];
 
 const PurchaseRequestTable = () => {
-  const { purchaseRequests, setPurchaseRequests } = useStateContext();
-  console.log("setPurchaseRequests in context:", setPurchaseRequests);
+  const { purchaseRequests, setPurchaseRequests, baseUrl, config } = useStateContext();
 
   const handleDelete = (id) => {
-    // Filter out the item with the matching id
     const newData = purchaseRequests.filter(item => item.id !== id);
     setPurchaseRequests(newData);
   };
 
-  const totalQuantity = purchaseRequests.reduce(
-    (acc, item) => acc + parseInt(item.quantity, 10),
-    0
-  );
   const totalAmount = purchaseRequests.reduce((acc, item) => {
-    // Ensure item.amount exists and is a string before calling replace
-    if (item.amount && typeof item.amount === 'string') {
-      return acc + parseInt(item.amount.replace("₦", "").replace(",", ""), 10);
-    }
-    return acc;
+    return acc + (parseInt(item.quantity, 10) * parseInt(item.price, 10));
   }, 0);
+
+  const handleSubmit = async () => {
+    const details = purchaseRequests.map(item => ({
+      description: item.description,
+      quantity: item.quantity,
+      price: item.price
+    }));
+
+    const data = {
+      total_amount: totalAmount.toString(),
+      details: details
+    };
+
+    try {
+      const response = await axios.post(`${baseUrl}/create-purchase-request`, data, config());
+      console.log("Response Data:", response.data);
+      setPurchaseRequests([]);
+      toast.success("Purchase request submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting purchase request:", error);
+      toast.error("Failed to submit purchase request.");
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -55,20 +70,20 @@ const PurchaseRequestTable = () => {
               <hr className="my-4 border-green-50" />
             </div>
           ))}
-
           {/* Totals row */}
-          <div className="grid text-sm grid-cols-5 gap-2  font-bold">
-            <h2></h2> {/* Empty cell for description */}
-            {/* <h2>{totalQuantity}</h2> */}
-            <h2></h2> {/* Empty cell for action */}
-            <h2 className="px-6"> Total</h2>
-            <h2 className="px-3">₦{totalAmount.toLocaleString()}</h2>
+          <div className="grid text-sm grid-cols-5 gap-2 font-bold">
+            <div></div> {/* Empty cell for description */}
+            <div></div> {/* Empty cell for action */}
+            <div className="px-6">Total</div>
+            <div className="px-3">₦{totalAmount.toLocaleString()}</div>
+            <div></div> {/* Empty cell for action */}
           </div>
         </Table>
       </div>
       <div className="px-4 sm:px-6 md:px-8 lg:px-10 py-2">
         <Button
-          type="submit"
+          type="button"
+          onClick={handleSubmit}
           className="w-full bg-[#049805] text-white rounded"
         >
           Submit Purchase Request

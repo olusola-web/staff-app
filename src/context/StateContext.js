@@ -11,7 +11,7 @@ export const StateProvider = ({ children }) => {
   const [allPurchaseReq, setAllPurchaseReq] = useState([]);
   const [profileDetails, setProfileDetails] = useState({})
   const [purchaseRequests, setPurchaseRequests] = useState([]);
-  // const [createPurchaseReq, setCreatePurchaseReq] =useState([])
+  const [createPurchaseReq, setCreatePurchaseReq] =useState([])
   // const [allReclaim, setAllReclaim] = useState([]);
   const [allLeaveReq, setAllLeaveReq] = useState([]);
   // const [dashDetails, setDashdetails] = useState({});
@@ -160,9 +160,9 @@ useEffect(()=>{
         setFormData,
         purchaseRequests,
         addPurchaseRequest,
-        setPurchaseRequests
-        // createPurchaseRequest,
-        // setCreatePurchaseReq
+        setPurchaseRequests,
+        createPurchaseReq,
+        setCreatePurchaseReq
       }}
     >
       {children}
