@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaHome, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import ReclaimTableDetails from "../../Utils/TableReuse/ReclaimTableDetails";
 
 const Reclaim = () => {
   return (
@@ -24,7 +25,7 @@ const Reclaim = () => {
 
       <div className="flex items-center justify-center flex-grow bg-white">
         <p className="text-3x1 text-center text-gray-500">
-          You have 0 reclaim requests
+          <ReclaimTableDetails/>
         </p>
       </div>
     </div>

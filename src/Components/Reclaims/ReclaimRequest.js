@@ -169,7 +169,7 @@ if (Object.keys(newErrors).length > 0) {
         </div>
       </form>
 
-      <ReclaimRequestTable />
+      {/* <ReclaimRequestTable /> */}
       <ToastContainer/>
     </div>
   );

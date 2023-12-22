@@ -83,6 +83,7 @@ if (Object.keys(newErrors).length > 0) {
       toast.success("Login Successful");
       console.log(res.data);
       await localStorage.setItem("token", res.data.token)
+      await localStorage.setItem("firstname", res.data.data.firstname)
       const user = JSON.stringify(res.data.data)
       localStorage.setItem("user", user)
       setTimeout(() => {

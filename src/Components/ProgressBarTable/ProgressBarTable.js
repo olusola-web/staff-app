@@ -28,10 +28,6 @@ const ProgressBarTable = () => {
     });
   }
 
-  // const totalPoints = displayedData.reduce(
-  //   (total, item) => total + (item.point || 0),
-  //   0
-  // );
   const maxPointValue = displayedData.length * 100;
 
   // Determine color based on totalPoints and table data

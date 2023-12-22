@@ -1,8 +1,8 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import Table from "../../Utils/Table";
 import Button from "../Button/ButtonReusable";
 import SinglePurchaseRequest from "./SinglePurchaseRequest";
-import { useStateContext } from "../../context/StateContext"; 
+import { useStateContext } from "../../context/StateContext";
 
 const tableHeader = [
   <th className="py-3 px-6">S/N</th>,
@@ -13,32 +13,26 @@ const tableHeader = [
 ];
 
 const PurchaseRequestTable = () => {
-  const { allPurchaseReq, isLoading } = useStateContext();
-  const [displayedData, setDisplayedData] = useState([])
-  const [itemToDelete, setItemToDelete] = useState(null);
+  const { purchaseRequests, setPurchaseRequests } = useStateContext();
+  console.log("setPurchaseRequests in context:", setPurchaseRequests);
 
-  const {
-    description,
-    quantity,
-    price
-} =itemToDelete ||{}
-
-  const handleDelete = (index) => {
-    const newData = displayedData.filter((_, i) => i !== index);
-    setDisplayedData(newData);
+  const handleDelete = (id) => {
+    // Filter out the item with the matching id
+    const newData = purchaseRequests.filter(item => item.id !== id);
+    setPurchaseRequests(newData);
   };
 
-  // const handleDelete = () => {};
-
-  const totalQuantity = displayedData.reduce(
+  const totalQuantity = purchaseRequests.reduce(
     (acc, item) => acc + parseInt(item.quantity, 10),
     0
   );
-  const totalAmount = displayedData.reduce(
-    (acc, item) =>
-      acc + parseInt(item.amount.replace("₦", "").replace(",", ""), 10),
-    0
-  );
+  const totalAmount = purchaseRequests.reduce((acc, item) => {
+    // Ensure item.amount exists and is a string before calling replace
+    if (item.amount && typeof item.amount === 'string') {
+      return acc + parseInt(item.amount.replace("₦", "").replace(",", ""), 10);
+    }
+    return acc;
+  }, 0);
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -47,16 +41,16 @@ const PurchaseRequestTable = () => {
           headerContent={tableHeader}
           minSize={"1200px"}
           cols={5}
-          data={allPurchaseReq}
-          // data={displayedData}
+          data={purchaseRequests}
           showSearch={false}
-          searchKey="">
-          {allPurchaseReq.map((item, index) => (
+          searchKey=""
+        >
+          {purchaseRequests.map((item, index) => (
             <div key={item.id}>
               <SinglePurchaseRequest
                 item={item}
                 index={index}
-                onDelete={() => handleDelete(index)}
+                onDelete={() => handleDelete(item.id)}
               />
               <hr className="my-4 border-green-50" />
             </div>
@@ -75,7 +69,8 @@ const PurchaseRequestTable = () => {
       <div className="px-4 sm:px-6 md:px-8 lg:px-10 py-2">
         <Button
           type="submit"
-          className="w-full bg-[#049805] text-white rounded">
+          className="w-full bg-[#049805] text-white rounded"
+        >
           Submit Purchase Request
         </Button>
       </div>
