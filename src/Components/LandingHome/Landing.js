@@ -27,7 +27,8 @@ const Landing = () => {
   const reclaimCount = dashDetails?.reclaim_request?.length || 0;
   const leaveCount = dashDetails?.leave_request?.length || 0;
   const prCount = dashDetails?.purchase_request?.length || 0;
-  const totalPoint = dashDetails?.total_point?.length || 0;
+  const totalPoint = dashDetails?.total_point || 0;
+
 
   return (
     <div>
@@ -109,7 +110,6 @@ const Landing = () => {
                 View all
               </Link>
             </div>
-            {/* <Link to="totalbankdetails" className="text-[#049805] pr-6">View all</Link> */}
             <div className="text-gray-600 font-bold overflow-x-auto w-full">
               <LeaveRequest />
             </div>
@@ -118,7 +118,6 @@ const Landing = () => {
           {/* chartjs */}
           <div className="bg-white p-2 rounded-lg shadow-md w-full h-full flex flex-col justify-center items-center">
             <div className="">
-              {/* <img src={charts} alt="chart" className="w-[7rem] pb-[5rem]" /> */}
               <div class="flex justify-center items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

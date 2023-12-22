@@ -16,7 +16,7 @@ const PurchaseRequest = () => {
     if (allPurchaseReq.length > 0) {
       // Format the data for DataTables
       const formattedData = allPurchaseReq.map((req, index) => ({
-        serialNumber: index + 1, // Assuming you want to use a simple index for S/N
+        serialNumber: index + 1, // S/N
         itemName: req.purchase_request_items.map(item => item.description).join(", "), // Join item names
         purchaseRequestNumber: req.Pr_Number,
         amount: req.total_amount,
@@ -29,7 +29,7 @@ const PurchaseRequest = () => {
 
   return (
     <div>
-  <div className="p-8 flex flex-col md:flex-row justify-between items-center">
+  <div className="p-6 flex flex-col md:flex-row justify-between items-center">
         <div className="flex gap-2 items-center mb-4 md:mb-0">
           <FaHome className="m-1" />
           <p>Home</p>
@@ -43,7 +43,10 @@ const PurchaseRequest = () => {
           Create Purchase Request
         </Link>
       </div>
-      <MyDataTable data={data} />;
+      {/* purchase req data on table */}
+      <div className='p-3'>
+      <MyDataTable data={data} />
+      </div>
     </div>
   )
   

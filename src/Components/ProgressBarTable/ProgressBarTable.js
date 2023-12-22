@@ -8,11 +8,13 @@ const tableHeader = ["Date", "Details", "Point"];
 
 const ProgressBarTable = () => {
   const { dashDetails } = useStateContext();
-  const { point_tranaction } = dashDetails;
+  const { point_tranaction, total_point } = dashDetails;
+  // console.log(point_tranaction)
   let displayedData = [];
 
   if (point_tranaction && Array.isArray(point_tranaction)) {
     displayedData = point_tranaction.map((point, index) => {
+      // console.log(displayedData)
       let formattedDate = point.created_at
         ? new Date(point.created_at).toLocaleDateString()
         : "Not Available";
@@ -20,26 +22,29 @@ const ProgressBarTable = () => {
       return {
         id: index + 1,
         created_at: formattedDate,
-        details: point.details,
+        reason_for_point: point.reason_for_point,
         point: point.point,
       };
     });
   }
 
-  const totalPoints = displayedData.reduce(
-    (total, item) => total + (item.point || 0),
-    0
-  );
+  // const totalPoints = displayedData.reduce(
+  //   (total, item) => total + (item.point || 0),
+  //   0
+  // );
   const maxPointValue = displayedData.length * 100;
 
   // Determine color based on totalPoints and table data
- let progressBarColor = "green"; // Default to green (using color name)
- if (totalPoints > 0 && totalPoints <= 1.5) {
-   progressBarColor = "yellow"; // Use color name
- } else if (totalPoints > 1.5 && totalPoints <= 3) {
-   progressBarColor = "red"; // Use color name
- }
-
+  let progressBarColor = "green"; // Default to green (using color name)
+  let progressBarValue = total_point; // Default value is the total_point
+  if (total_point === 0) {
+    progressBarColor = "green"; // When total points are 0
+  } else if (total_point > 0 && total_point <= 2) {
+    progressBarColor = "yellow"; // When total points are greater than 0 and up to 2
+  } else if (total_point > 2 && total_point <= 3) {
+    progressBarColor = "red"; // When total points are more than 2 and up to 3
+    progressBarValue = total_point; // Set the progress bar to full for red color
+  }
   return (
     <div>
       <div className="bg-white">
@@ -47,7 +52,7 @@ const ProgressBarTable = () => {
           Progress
         </h2>
         <div className="py-4">
-          <ProgressBar value={totalPoints} max={maxPointValue} color={progressBarColor} />
+        <ProgressBar value={progressBarValue} max={total_point} color={progressBarColor} />
         </div>
       </div>
 

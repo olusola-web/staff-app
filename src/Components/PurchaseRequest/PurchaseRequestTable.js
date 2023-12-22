@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import Table from "../../Utils/Table";
 import Button from "../Button/ButtonReusable";
 import SinglePurchaseRequest from "./SinglePurchaseRequest";
+import { useStateContext } from "../../context/StateContext"; 
 
 const tableHeader = [
   <th className="py-3 px-6">S/N</th>,
@@ -12,28 +13,22 @@ const tableHeader = [
 ];
 
 const PurchaseRequestTable = () => {
-  const [displayedData, setDisplayedData] = useState([
-    {
-      id: 1,
-      description: "I would like to get a printer ",
-      quantity: "6",
-      amount: "₦40,000",
-      status: "Success",
-    },
-    {
-      id: 2,
-      description: "Leave Req",
-      quantity: "1",
-      amount: "₦40,000",
-      status: "Pending",
-    },
-    // Add more data items as needed
-  ]);
+  const { allPurchaseReq, isLoading } = useStateContext();
+  const [displayedData, setDisplayedData] = useState([])
+  const [itemToDelete, setItemToDelete] = useState(null);
+
+  const {
+    description,
+    quantity,
+    price
+} =itemToDelete ||{}
 
   const handleDelete = (index) => {
     const newData = displayedData.filter((_, i) => i !== index);
     setDisplayedData(newData);
   };
+
+  // const handleDelete = () => {};
 
   const totalQuantity = displayedData.reduce(
     (acc, item) => acc + parseInt(item.quantity, 10),
@@ -52,10 +47,11 @@ const PurchaseRequestTable = () => {
           headerContent={tableHeader}
           minSize={"1200px"}
           cols={5}
-          data={displayedData}
+          data={allPurchaseReq}
+          // data={displayedData}
           showSearch={false}
           searchKey="">
-          {displayedData.map((item, index) => (
+          {allPurchaseReq.map((item, index) => (
             <div key={item.id}>
               <SinglePurchaseRequest
                 item={item}
