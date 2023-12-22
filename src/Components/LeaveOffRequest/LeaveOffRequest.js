@@ -22,6 +22,13 @@ const LeaveOffRequest = () => {
     const storedLeaveRequests =
       JSON.parse(localStorage.getItem("leaveRequests")) || [];
     setLeaveRequests(storedLeaveRequests);
+
+    // If there are leave requests, hide the form
+    if (storedLeaveRequests.length > 0) {
+      setShowForm(false);
+    }
+      
+
   }, []);
 
   useEffect(() => {
@@ -33,29 +40,37 @@ const LeaveOffRequest = () => {
     setNewRequest({ ...newRequest, [e.target.name]: e.target.value });
   };
 
-  const handleCreateRequest = () => {
-    if (!newRequest.startDate || !newRequest.endDate) {
-      alert("Please fill in all fields before submitting.");
-      return;
-    }
+ const handleCreateRequest = () => {
+   if (!newRequest.startDate || !newRequest.endDate) {
+     alert("Please fill in all fields before submitting.");
+     return;
+   }
 
-    if (new Date(newRequest.startDate) > new Date(newRequest.endDate)) {
-      alert("End date must be after the start date.");
-      return;
-    }
+   if (new Date(newRequest.startDate) > new Date(newRequest.endDate)) {
+     alert("End date must be after the start date.");
+     return;
+   }
 
-    setLeaveRequests([{ ...newRequest, id: Date.now() }, ...leaveRequests]);
+   const updatedLeaveRequests = [
+     { ...newRequest, id: Date.now() },
+     ...leaveRequests,
+   ];
+   setLeaveRequests(updatedLeaveRequests);
 
-    setNewRequest({
-      leaveType: "Leave",
-      startDate: "",
-      endDate: "",
-      status: "Pending",
-    });
+   // Instead of hiding the form, let's keep it visible
+   setShowForm(true);
 
-    setShowForm(false);
-  };
+   // Update the newRequest state to clear the form
+   setNewRequest({
+     leaveType: "Leave",
+     startDate: "",
+     endDate: "",
+     status: "Pending",
+   });
 
+   // Set the expandedRequest to show the newly added leave request
+   setExpandedRequest(updatedLeaveRequests[0].id);
+ };
 
   const handleCancel = () => {
     setShowForm(true);
@@ -80,15 +95,16 @@ const LeaveOffRequest = () => {
     setDeleteConfirmation(null);
   };
 
-  const getPendingRequestsCount = () => {
-    return leaveRequests.filter((request) => request.status === "Pending")
-      .length;
-  };
+ const getPendingRequestsCount = () => {
+   return leaveRequests.filter((request) => request.status === "Pending")
+     .length;
+ };
 
-  const getApprovedRequestsCount = () => {
-    return leaveRequests.filter((request) => request.status === "Approved")
-      .length;
-  };
+ const getApprovedRequestsCount = () => {
+   return leaveRequests.filter((request) => request.status === "Approved")
+     .length;
+ };
+
 
   const formatDate = (dateString) => {
     const options = {
