@@ -10,6 +10,7 @@ export const StateProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [allPurchaseReq, setAllPurchaseReq] = useState([]);
   const [profileDetails, setProfileDetails] = useState({})
+  // const [createPurchaseReq, setCreatePurchaseReq] =useState([])
   // const [allReclaim, setAllReclaim] = useState([]);
   const [allLeaveReq, setAllLeaveReq] = useState([]);
   // const [dashDetails, setDashdetails] = useState({});
@@ -42,6 +43,8 @@ export const StateProvider = ({ children }) => {
 };
   const baseUrl = "https://sandbox.myafrimall.com.ng/api/staff/v1";
   const imgUrl = "https://sandbox.myafrimall.com.ng"
+
+  const [formData, setFormData] = useState({});
 
   const getAllPurchaseReq = async () => {
     const url = `${baseUrl}/get-purchase-requests`;
@@ -98,7 +101,7 @@ export const StateProvider = ({ children }) => {
     }
   }
 
-  const GetAllReclaims = async () => {  
+  const GetAllReclaims = async () => {
     try {
       const url = `${baseUrl}/get-all-reclaims`;
       const res = await axios.get(url, config());
@@ -106,7 +109,17 @@ export const StateProvider = ({ children }) => {
     } catch (error) {
       toast.error(error);
     }
-  }
+  };
+
+  // const createPurchaseRequest = async (totalAmount, details) => {
+  //   const url = `${baseUrl}/create-purchase-request`;
+  //   try {
+  //     await axios.post(url, { total_amount: totalAmount, details }, config());
+  //     toast.success("Purchase request created successfully!");
+  //   } catch (error) {
+  //     toast.error("Failed to create purchase request.");
+  //   }
+  // };
   
 useEffect(()=>{
   if(token !== null){
@@ -136,7 +149,11 @@ useEffect(()=>{
         imgUrl,
         handleGetProfile,
         profileDetails,
-        GetAllReclaims
+        GetAllReclaims,
+        formData,
+        setFormData,
+        // createPurchaseRequest,
+        // setCreatePurchaseReq
       }}
     >
       {children}
