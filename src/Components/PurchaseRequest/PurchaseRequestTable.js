@@ -18,8 +18,9 @@ const PurchaseRequestTable = () => {
   const { purchaseRequests, setPurchaseRequests, baseUrl, config } = useStateContext();
 
   const handleDelete = (id) => {
-    const newData = purchaseRequests.filter(item => item.id !== id);
+    const newData = purchaseRequests.filter((item,index) => index !== id);
     setPurchaseRequests(newData);
+    console.log(newData)
   };
 
   const totalAmount = purchaseRequests.reduce((acc, item) => {
@@ -65,7 +66,7 @@ const PurchaseRequestTable = () => {
               <SinglePurchaseRequest
                 item={item}
                 index={index}
-                onDelete={() => handleDelete(item.id)}
+                onDelete={handleDelete}
               />
               <hr className="my-4 border-green-50" />
             </div>

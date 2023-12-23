@@ -6,12 +6,14 @@ const StateContext = createContext();
 
 export const StateProvider = ({ children }) => {
   const token = localStorage.getItem("token");
+  
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [allPurchaseReq, setAllPurchaseReq] = useState([]);
   const [profileDetails, setProfileDetails] = useState({})
   const [purchaseRequests, setPurchaseRequests] = useState([]);
-  const [createPurchaseReq, setCreatePurchaseReq] =useState([])
+  const [createPurchaseReq, setCreatePurchaseReq] = useState([])
+  const [singlePurchaseRequest, setSinglePurchaseRequest] = useState(null);
   // const [allReclaim, setAllReclaim] = useState([]);
   const [allLeaveReq, setAllLeaveReq] = useState([]);
   // const [dashDetails, setDashdetails] = useState({});
@@ -26,6 +28,8 @@ export const StateProvider = ({ children }) => {
   const [page, setPage] = useState(1);
   // const [profile, setProfile]
 
+
+ // header authorization is commonly used in APIs to ensure that the request is coming from an authenticated user or service.
    const config = () => {
     return {
       headers: {
@@ -33,6 +37,8 @@ export const StateProvider = ({ children }) => {
       },
     };
   };
+  
+  // Similar to the config function, but specifically tailored for uploading data, likely files.
   const uploadConfig = () => {
   // const token = await getToken();
   return {
@@ -52,6 +58,27 @@ export const StateProvider = ({ children }) => {
     setPurchaseRequests(prev => [...prev, newRequest]);
   };
 
+  // Function to get a single purchase request
+  const getSinglePurchaseRequest = async (id) => {
+    const url = `${baseUrl}/single-purchase-request/${id}`;
+    setIsLoading(true);
+    try {
+      const res = await axios.get(url, config(token));
+      if (res.data && res.data.status) {
+        return res.data.data; // Directly accessing the data object
+      } else {
+        console.error("No data found in the response");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching single purchase request:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  
+
   const getAllPurchaseReq = async () => {
     const url = `${baseUrl}/get-purchase-requests`;
     setIsLoading(true);
@@ -67,7 +94,7 @@ export const StateProvider = ({ children }) => {
   };
 
   const getAllLeaveReq = async () => {
-    const url = `${baseUrl}/get-all-leave-requests${page}`
+    const url = `${baseUrl}/get-all-leave-requests`
     setIsLoading(true)
     try {
       const res = await axios.get(url, config(token))
@@ -116,16 +143,6 @@ export const StateProvider = ({ children }) => {
       toast.error(error);
     }
   };
-
-  // const createPurchaseRequest = async (totalAmount, details) => {
-  //   const url = `${baseUrl}/create-purchase-request`;
-  //   try {
-  //     await axios.post(url, { total_amount: totalAmount, details }, config());
-  //     toast.success("Purchase request created successfully!");
-  //   } catch (error) {
-  //     toast.error("Failed to create purchase request.");
-  //   }
-  // };
   
 useEffect(()=>{
   if(token !== null){
@@ -145,6 +162,7 @@ useEffect(()=>{
         setAllPurchaseReq,
         allPurchaseReq,
         getAllPurchaseReq,
+        getSinglePurchaseRequest,
         // allReclaim,
         getDashboardDetails,
         allLeaveReq,
@@ -162,7 +180,9 @@ useEffect(()=>{
         addPurchaseRequest,
         setPurchaseRequests,
         createPurchaseReq,
-        setCreatePurchaseReq
+        setCreatePurchaseReq,
+        singlePurchaseRequest,
+        setSinglePurchaseRequest
       }}
     >
       {children}

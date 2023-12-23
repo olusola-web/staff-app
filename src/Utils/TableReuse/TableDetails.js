@@ -2,8 +2,12 @@ import React, { useEffect } from "react";
 import $ from "jquery";
 import "datatables.net";
 import "datatables.net-dt/css/jquery.dataTables.css";
+import { useNavigate } from 'react-router-dom';
+
+
 
 const MyDataTable = ({ data }) => {
+  const navigate = useNavigate();
   useEffect(() => {
     const table = $("#myTable").DataTable({
       data: data,
@@ -25,7 +29,13 @@ const MyDataTable = ({ data }) => {
             }
           },
         },
-        { title: "Action", data: "action" },
+        {
+          title: "Action",
+          data: "null",
+          render: function (data, type, row) {
+           return `<button class='view-btn' data-id='${row.id}'>View</button>`; // Added button with a class 'view-btn' and data-id attribute
+          },
+        },
       ],
       columnDefs: [
         {
@@ -34,6 +44,12 @@ const MyDataTable = ({ data }) => {
         },
       ],
       // Other DataTable options...
+    });
+
+     // Event listener for the 'View' button click
+     $('#myTable').on('click', 'button.view-btn', function () {
+      const id = $(this).data('id');
+      navigate(`/home/purchaserequest/view/${id}`);
     });
 
     return () => {
