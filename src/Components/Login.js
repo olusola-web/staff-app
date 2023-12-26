@@ -17,64 +17,61 @@ const Login = () => {
     setUserData({ ...userData, [name]: value });
 
     const newErrors = { ...errors };
-  delete newErrors[name];
-  setErrors(newErrors);
+    delete newErrors[name];
+    setErrors(newErrors);
   };
-//   const handleChange = (e) => {
-//   const { name, value, type, files } = e.target;
-//   setFormData({
-//     ...formData,
-//     [name]: type === "file" ? files[0] : value,
-//   });
+  //   const handleChange = (e) => {
+  //   const { name, value, type, files } = e.target;
+  //   setFormData({
+  //     ...formData,
+  //     [name]: type === "file" ? files[0] : value,
+  //   });
 
-//   const newErrors = { ...errors };
-//   delete newErrors[name];
-//   setErrors(newErrors);
-// };
-const handleBlur = (e) => {
-  const { name, value } = e.target;
-  setErrors((prevErrors) => ({
-    ...prevErrors,
-    [name]: value.trim() ? null : `${name.split('_').join(' ')} is required`,
-  }));
-  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   const newErrors = { ...errors };
+  //   delete newErrors[name];
+  //   setErrors(newErrors);
+  // };
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: value.trim() ? null : `${name.split("_").join(" ")} is required`,
+    }));
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (name === "email") {
-    if (!value.trim()) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        email: "Email is required",
-      }));
-    } else if (!isValidEmail.test(value)) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        email: "Invalid email format",
-      }));
-    } else {
-      const newErrors = { ...errors };
-      delete newErrors.email;
-      setErrors(newErrors);
+      if (!value.trim()) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          email: "Email is required",
+        }));
+      } else if (!isValidEmail.test(value)) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          email: "Invalid email format",
+        }));
+      } else {
+        const newErrors = { ...errors };
+        delete newErrors.email;
+        setErrors(newErrors);
+      }
     }
-  }
-};
+  };
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
-  const requiredFields = [
-  'email',
-  'password'
-];
-const newErrors = {};
+    const requiredFields = ["email", "password"];
+    const newErrors = {};
 
-requiredFields.forEach((field) => {
-  if (!userData[field]) {
-    newErrors[field] = `${field.split('_').join(' ')} is required`;
-  }
-});
-if (Object.keys(newErrors).length > 0) {
-  setErrors(newErrors);
-  return;
-}
+    requiredFields.forEach((field) => {
+      if (!userData[field]) {
+        newErrors[field] = `${field.split("_").join(" ")} is required`;
+      }
+    });
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
     setIsLoading(true);
     event.preventDefault();
     const url = `${baseUrl}/login`;
@@ -82,13 +79,13 @@ if (Object.keys(newErrors).length > 0) {
       const res = await axios.post(url, userData);
       toast.success("Login Successful");
       console.log(res.data);
-      await localStorage.setItem("token", res.data.token)
-      await localStorage.setItem("firstname", res.data.data.firstname)
-      const user = JSON.stringify(res.data.data)
-      localStorage.setItem("user", user)
+      await localStorage.setItem("token", res.data.token);
+      await localStorage.setItem("firstname", res.data.data.firstname);
+      const user = JSON.stringify(res.data.data);
+      localStorage.setItem("user", user);
       setTimeout(() => {
         navigate("/home");
-      }, 3000)
+      }, 3000);
       setIsLoggedIn(true);
       setUserData({});
     } catch (error) {
@@ -97,7 +94,6 @@ if (Object.keys(newErrors).length > 0) {
     } finally {
       setIsLoading(false);
     }
-   
   };
 
   return (
@@ -124,7 +120,9 @@ if (Object.keys(newErrors).length > 0) {
               required
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
             />
-            {errors.email && <p className="text-red-600 text-left font-bold">{errors.email}</p>}
+            {errors.email && (
+              <p className="text-red-600 text-left font-bold">{errors.email}</p>
+            )}
           </div>
           <div className="mb-6 lg:mx-8">
             <label
@@ -143,14 +141,18 @@ if (Object.keys(newErrors).length > 0) {
               required
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
             />
-            {errors.password && <p className="text-red-600 text-left font-bold">{errors.password}</p>}
+            {errors.password && (
+              <p className="text-red-600 text-left font-bold">
+                {errors.password}
+              </p>
+            )}
           </div>
           <button
             type="submit"
             disabled={isLoading}
             className="bg-[#049805] text-white py-2 rounded-md focus:outline-none w-full flex items-center justify-center"
           >
-          {isLoading ? <Spinner /> : "Login"}
+            {isLoading ? <Spinner /> : "Login"}
           </button>
         </form>
       </div>
