@@ -29,6 +29,19 @@ const View = () => {
     }
   }, []);
 
+
+    // Function to format the date
+    const formatDate = (dateString) => {
+      if (!dateString) return 'Not Available'; 
+  
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    };
+
   const tableHeader = ["S/N", "Details", "Price"];
 
   // Calculate the total amount if purchaseRequest data is available
@@ -63,8 +76,8 @@ const View = () => {
         <p className="mb-4 md:mb-0">
           PR No : {singlePurchaseRequest?.Pr_Number}
         </p>
-        <p>Date: {singlePurchaseRequest?.created_at}
- {/* Format date as needed */}</p>
+ {/* Format date as needed */}
+        <p>Date: {formatDate(singlePurchaseRequest?.created_at)}</p>
       </div>
 
       {/* acct & mgt status */}

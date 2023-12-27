@@ -16,7 +16,7 @@ const Nav = ({ toggleSidebar }) => {
         </div>
         <div className="flex items-center gap-2">
           <img className="w-20 rounded-full"
-            src={imgUrl + profileDetails.profile_picture}
+            src={imgUrl + profileDetails?.profile_picture}
             onError={(e) => { e.target.onerror = null; e.target.src = defaultImageUrl; }}alt="Profile" />
       
         </div>
