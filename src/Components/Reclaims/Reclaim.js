@@ -1,9 +1,17 @@
 import { useState } from "react";
 import { FaHome, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import ReclaimTableDetails from "../../Utils/TableReuse/ReclaimTableDetails";
+import DataTable from "../../Utils/TableReuse/TableDetails";
+
 
 const Reclaim = () => {
+  const sampleData = [
+    { serialNumber: 1, staffName: 'Sofia Drawsley', ReclaimNumber: 'PRN001', amount: '100', action: 'Action 1' },
+    { serialNumber: 2, staffName: 'Vera', ReclaimNumber: 'PRN002', amount: '200', action: 'Action 2' },
+  ];
+
+
+  console.log(sampleData);
   return (
     <div className="mx-auto mt-0 p-4 bg-white min-h-screen flex flex-col justify-between">
       <div className="p-2 flex flex-col md:flex-row justify-between items-center">
@@ -25,7 +33,7 @@ const Reclaim = () => {
 
       <div className="flex items-center justify-center flex-grow bg-white">
         <p className="text-3x1 text-center text-gray-500">
-          <ReclaimTableDetails/>
+        {/* <DataTable data={sampleData} tableId="reclaimTable" /> */}
         </p>
       </div>
     </div>

@@ -58,7 +58,7 @@ const Complaints = () => {
         comment: message
       }
       const res = await axios.post(url, option, config());
-      getDashboardDetails()
+      getDashboardDetails() // auto update
       toast.success(res?.data?.message);
     } catch (error) {
       toast.error(error?.response?.data?.message);

@@ -6,6 +6,7 @@ import Button from "../Button/ButtonReusable";
 import SinglePurchaseRequest from "./SinglePurchaseRequest";
 import { useStateContext } from "../../context/StateContext";
 import { Spinner } from "react-activity";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -19,7 +20,8 @@ const tableHeader = [
 
 const PurchaseRequestTable = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const { purchaseRequests, setPurchaseRequests, baseUrl, config } = useStateContext();
+  const { purchaseRequests, setPurchaseRequests, baseUrl, config, getDashboardDetails } = useStateContext();
+  const navigate = useNavigate();
 
   const handleDelete = (id) => {
     const newData = purchaseRequests.filter((item,index) => index !== id);
@@ -49,7 +51,9 @@ const PurchaseRequestTable = () => {
       const response = await axios.post(`${baseUrl}/create-purchase-request`, data, config());
       console.log("Response Data:", response.data);
       setPurchaseRequests([]);
+      getDashboardDetails() // auto update
       toast.success("Purchase request submitted successfully!");
+      navigate('/home/purchaserequest');
     } catch (error) {
       console.error("Error submitting purchase request:", error);
       toast.error("Failed to submit purchase request.");
@@ -90,17 +94,18 @@ const PurchaseRequestTable = () => {
           </div>
         </Table>
       </div>
-      <div className="px-4 sm:px-6 md:px-8 lg:px-10 py-2">
-        <Button
-          type="button"
-          disabled={isLoading}
-          onClick={handleSubmit}
-          className="w-full bg-[#049805] text-white rounded"
-        >
+      {purchaseRequests.length > 0 && ( // Conditionally render the button
+        <div className="px-4 sm:px-6 md:px-8 lg:px-10 py-2">
+          <Button
+            type="button"
+            disabled={isLoading}
+            onClick={handleSubmit}
+            className="w-full bg-[#049805] text-white rounded"
+          >
             {isLoading ? <Spinner /> : "  Submit Purchase Request"}
-        
-        </Button>
-      </div>
+          </Button>
+        </div>
+      )}
       <ToastContainer />
     </div>
   );
