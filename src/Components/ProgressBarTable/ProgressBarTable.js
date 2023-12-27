@@ -31,16 +31,17 @@ const ProgressBarTable = () => {
   const maxPointValue = displayedData.length * 100;
 
   // Determine color based on totalPoints and table data
-  let progressBarColor = "green"; // Default to green (using color name)
-  let progressBarValue = total_point; // Default value is the total_point
+  let progressBarColor = "green"; // Default to green
+  let progressBarValue = total_point || 0; // Set to 0 if total_point is falsy
+  
   if (total_point === 0) {
-    progressBarColor = "green"; // When total points are 0
+      progressBarColor = "green"; // When total points are 0
   } else if (total_point > 0 && total_point <= 2) {
-    progressBarColor = "yellow"; // When total points are greater than 0 and up to 2
+      progressBarColor = "yellow"; // When total points are greater than 0 and up to 2
   } else if (total_point > 2 && total_point <= 3) {
-    progressBarColor = "red"; // When total points are more than 2 and up to 3
-    progressBarValue = total_point; // Set the progress bar to full for red color
+      progressBarColor = "red"; // When total points are more than 2 and up to 3
   }
+  
   return (
     <div>
       <div className="bg-white">

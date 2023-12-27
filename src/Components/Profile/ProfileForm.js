@@ -270,7 +270,7 @@ if (Object.keys(newErrors).length > 0) {
 
           <label className="block mb-2 text-sm font-medium">
             Kindly upload a picture of yourself
-            <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails.profile_picture}`} target="__blank">view</a>
+            <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails?.profile_picture}`} target="__blank">view</a>
             <input
               type="file"
               name="profile_picture"
@@ -288,7 +288,7 @@ if (Object.keys(newErrors).length > 0) {
       <form>
         <label className="block mb-2 text-sm font-medium ">
           Kindly upload your cv
-          <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails.cv}`} target="__blank">view</a>
+          <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails?.cv}`} target="__blank">view</a>
           <input
             type="file"
             name="cv"
@@ -356,7 +356,7 @@ if (Object.keys(newErrors).length > 0) {
 
           <label className="block mb-2 text-sm font-medium">
             Guarantor Photo
-            <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails.guarantor_photo}`} target="__blank">view</a>
+            <a className="text-green-600 italic ml-5" href={`${imgUrl}/${profileDetails?.guarantor_photo}`} target="__blank">view</a>
             <input
               type="file"
               name="guarantor_photo"

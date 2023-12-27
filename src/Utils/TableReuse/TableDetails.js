@@ -33,7 +33,7 @@ const MyDataTable = ({ data }) => {
           title: "Action",
           data: "null",
           render: function (data, type, row) {
-           return `<button class='view-btn' data-id='${row.id}'>View</button>`; // Added button with a class 'view-btn' and data-id attribute
+           return `<button class='view-btn bg-blue-500 text-white rounded-md px-2 py-1' data-id='${row.id}'>View</button>`; // Added button with a class 'view-btn' and data-id attribute
           },
         },
       ],
