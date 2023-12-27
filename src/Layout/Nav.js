@@ -12,12 +12,12 @@ const Nav = ({ toggleSidebar }) => {
       <nav className="flex items-center justify-between mx-5">
         <div>
           <h1 className="font-bold">Good day, {firstname}</h1>
-          <p className="text-xs">Take a look at your home page</p>
+          <p className="text-xs">Take a look at your home page hope you are good</p>
         </div>
         <div className="flex items-center gap-2">
           <img className="w-20 rounded-full"
-            src={imgUrl + profileDetails.profile_picture}
-            onError={(e) => { e.target.onerror = null; e.target.src = defaultImageUrl; }}alt="Profile" />
+            src={imgUrl + profileDetails?.profile_picture}
+            onError={(e) => { e.target.onerror = null; e.target.src = defaultImageUrl; }}alt="Profile-you" />
       
         </div>
         <RiMenu5Fill
