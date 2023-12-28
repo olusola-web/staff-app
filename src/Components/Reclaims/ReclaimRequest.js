@@ -72,8 +72,8 @@ if (Object.keys(newErrors).length > 0) {
     try {
       const url = `${baseUrl}/create-reclaim-request`;
       const res = await axios.post(url, form, uploadConfig());
-      GetAllReclaims()
       toast.success(res?.data?.message);
+      GetAllReclaims()
     } catch (error) {
       toast.error(error?.response?.data?.message);
     } finally {

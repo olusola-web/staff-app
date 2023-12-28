@@ -14,7 +14,7 @@ export const StateProvider = ({ children }) => {
   const [purchaseRequests, setPurchaseRequests] = useState([]);
   const [createPurchaseReq, setCreatePurchaseReq] = useState([])
   const [singlePurchaseRequest, setSinglePurchaseRequest] = useState(null);
-  // const [allReclaim, setAllReclaim] = useState([]);
+  const [allReclaim, setAllReclaim] = useState([]);
   const [allLeaveReq, setAllLeaveReq] = useState([]);
   // const [dashDetails, setDashdetails] = useState({});
   const [dashDetails, setDashdetails] = useState({
@@ -84,7 +84,7 @@ export const StateProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const res = await axios.get(url, config(token));
-      console.log(res.data);
+      // console.log(res.data);
       setAllPurchaseReq(res.data.data);
     } catch (error) {
       console.log(error);
@@ -98,7 +98,7 @@ export const StateProvider = ({ children }) => {
     setIsLoading(true)
     try {
       const res = await axios.get(url, config(token))
-      console.log(res.data)
+      // console.log(res.data)
       setAllLeaveReq(res.data.data)
     } catch (error) {
       console.log(error)
@@ -109,13 +109,13 @@ export const StateProvider = ({ children }) => {
 
 
   const getDashboardDetails = async () => {
-    console.log(token)
+    // console.log(token)
     const url = `${baseUrl}/dashboard`;
-    console.log(url)
+    // console.log(url)
     setIsLoading(true);
     try {
       const res = await axios.get(url, config(token));
-      console.log('Reclaim Requests:', dashDetails); // Log to check data
+      // console.log('Reclaim Requests:', dashDetails); // Log to check data
       setDashdetails(res.data.data);
     } catch (error) {
       console.error('Error fetching dashboard details:', error)
@@ -138,20 +138,20 @@ export const StateProvider = ({ children }) => {
     try {
       const url = `${baseUrl}/get-all-reclaims`;
       const res = await axios.get(url, config());
-      console.log(res.data.data);
+      setAllReclaim(res.data.data.data);
+      console.log(res.data.data.data);
     } catch (error) {
       toast.error(error);
     }
   };
-  
+
 useEffect(()=>{
   if(token !== null){
     getDashboardDetails()
     handleGetProfile()
-    GetAllReclaims()
+    // GetAllReclaims()
   }
-}, [isLoggedIn, token])
-
+}, [isLoggedIn, token ])
   return (
     <StateContext.Provider
       value={{
@@ -163,7 +163,6 @@ useEffect(()=>{
         allPurchaseReq,
         getAllPurchaseReq,
         getSinglePurchaseRequest,
-        // allReclaim,
         getDashboardDetails,
         allLeaveReq,
         getAllLeaveReq,
@@ -174,6 +173,8 @@ useEffect(()=>{
         handleGetProfile,
         profileDetails,
         GetAllReclaims,
+        allReclaim,
+        setAllReclaim,
         formData,
         setFormData,
         purchaseRequests,
