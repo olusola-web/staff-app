@@ -10,7 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 const ReclaimRequest = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false)
-  const { baseUrl, uploadConfig, GetAllReclaims } = useStateContext();
+  const { baseUrl, uploadConfig, GetAllReclaims, getDashboardDetails } = useStateContext();
 
   const [form, setForm] = useState({
     details: "",
@@ -72,7 +72,7 @@ if (Object.keys(newErrors).length > 0) {
     try {
       const url = `${baseUrl}/create-reclaim-request`;
       const res = await axios.post(url, form, uploadConfig());
-      GetAllReclaims()
+      getDashboardDetails()
       toast.success(res?.data?.message);
     } catch (error) {
       toast.error(error?.response?.data?.message);
