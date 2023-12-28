@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState} from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import Table from "../../Utils/Table";
 import Button from "../Button/ButtonReusable";
 import SinglePurchaseRequest from "./SinglePurchaseRequest";
 import { useStateContext } from "../../context/StateContext";
+import { Spinner } from "react-activity";
+import { useNavigate } from "react-router-dom";
+
+
 
 const tableHeader = [
   <th className="py-3 px-6">S/N</th>,
@@ -15,7 +19,9 @@ const tableHeader = [
 ];
 
 const PurchaseRequestTable = () => {
-  const { purchaseRequests, setPurchaseRequests, baseUrl, config } = useStateContext();
+  const [isLoading, setIsLoading] = useState(false)
+  const { purchaseRequests, setPurchaseRequests, baseUrl, config, getDashboardDetails } = useStateContext();
+  const navigate = useNavigate();
 
   const handleDelete = (id) => {
     const newData = purchaseRequests.filter((item,index) => index !== id);
@@ -28,27 +34,34 @@ const PurchaseRequestTable = () => {
   }, 0);
 
   const handleSubmit = async () => {
+    setIsLoading(true); // Start loading
+  
     const details = purchaseRequests.map(item => ({
       description: item.description,
       quantity: item.quantity,
       price: item.price
     }));
-
+  
     const data = {
       total_amount: totalAmount.toString(),
       details: details
     };
-
+  
     try {
       const response = await axios.post(`${baseUrl}/create-purchase-request`, data, config());
       console.log("Response Data:", response.data);
       setPurchaseRequests([]);
+      getDashboardDetails() // auto update
       toast.success("Purchase request submitted successfully!");
+      navigate('/home/purchaserequest');
     } catch (error) {
       console.error("Error submitting purchase request:", error);
       toast.error("Failed to submit purchase request.");
+    } finally {
+      setIsLoading(false); // Stop loading regardless of the outcome
     }
   };
+  
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -81,15 +94,19 @@ const PurchaseRequestTable = () => {
           </div>
         </Table>
       </div>
-      <div className="px-4 sm:px-6 md:px-8 lg:px-10 py-2">
-        <Button
-          type="button"
-          onClick={handleSubmit}
-          className="w-full bg-[#049805] text-white rounded"
-        >
-          Submit Purchase Request
-        </Button>
-      </div>
+      {purchaseRequests.length > 0 && ( // Conditionally render the button
+        <div className="px-4 sm:px-6 md:px-8 lg:px-10 py-2">
+          <Button
+            type="button"
+            disabled={isLoading}
+            onClick={handleSubmit}
+            className="w-full bg-[#049805] text-white rounded"
+          >
+            {isLoading ? <Spinner /> : "  Submit Purchase Request"}
+          </Button>
+        </div>
+      )}
+      <ToastContainer />
     </div>
   );
 };

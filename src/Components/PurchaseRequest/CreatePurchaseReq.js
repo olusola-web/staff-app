@@ -70,6 +70,7 @@ const CreatePurchaseReq = () => {
                 onChange={handleCreatePurchaseReqChange}
                 className="w-full p-2 border rounded"
                 placeholder="What do you want to buy and explain what it will be used for"
+                required
               />
             </div>
 
@@ -88,6 +89,7 @@ const CreatePurchaseReq = () => {
                 onChange={handleCreatePurchaseReqChange}
                 className="w-full p-2 border rounded"
                 placeholder="Enter the quantity of the item you need"
+                required
               />
             </div>
 
@@ -106,6 +108,7 @@ const CreatePurchaseReq = () => {
                 onChange={handleCreatePurchaseReqChange}
                 className="w-full p-2 border rounded"
                 placeholder="Enter the amount of the item"
+                required
               />
             </div>
 
