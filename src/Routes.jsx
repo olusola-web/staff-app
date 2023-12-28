@@ -12,6 +12,7 @@ import ComplaintsPage from "./Pages/ComplaintsPage";
 import ReclaimPage from "./Pages/ReclaimPage";
 import ReclaimReqPage from "./Pages/ReclaimReqPage";
 import PurReqViewPage from "./Pages/PurReqViewPage";
+import LeaveOffRequestTable from "./Pages/LeaveOffRequestTable";
 
 const AppRoute = () => {
   return (
@@ -34,7 +35,9 @@ const AppRoute = () => {
             element={<CreatePurchReqPage />}
           />
 
-          <Route path="leaverequest" element={<LeaveOffRequestPage />} />
+                  <Route path="leaverequest" element={<LeaveOffRequestTable />} />
+                  <Route path="leaverequestpage" element={<LeaveOffRequestPage />} />
+                
         </Route>
       </Routes>
     </Router>
