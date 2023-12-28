@@ -13,8 +13,10 @@ export const StateProvider = ({ children }) => {
   const [profileDetails, setProfileDetails] = useState({})
   const [purchaseRequests, setPurchaseRequests] = useState([]);
   const [createPurchaseReq, setCreatePurchaseReq] = useState([])
+  const [singleReclaim, setSingleReclaim] = useState(null);
   const [singlePurchaseRequest, setSinglePurchaseRequest] = useState(null);
-  // const [allReclaim, setAllReclaim] = useState([]);
+
+  const [allReclaim, setAllReclaim] = useState([]);
   const [allLeaveReq, setAllLeaveReq] = useState([]);
   // const [dashDetails, setDashdetails] = useState({});
   const [dashDetails, setDashdetails] = useState({
@@ -37,7 +39,7 @@ export const StateProvider = ({ children }) => {
       },
     };
   };
-  
+
   // Similar to the config function, but specifically tailored for uploading data, likely files.
   const uploadConfig = () => {
   // const token = await getToken();
@@ -76,7 +78,41 @@ export const StateProvider = ({ children }) => {
       setIsLoading(false);
     }
   };
+
+  // Function to get a single reclaim
+  const getSingleReclaim = async (id) => {
+    const url = `${baseUrl}/single-reclaim/${id}`;
+    setIsLoading(true);
+    try {
+      const response = await axios.get(url, config(token));
+      if (response.data && response.data.status) {
+        setSingleReclaim(response.data.data);
+      } else {
+        console.error("No data found in the response");
+      }
+    } catch (error) {
+      console.error("Error fetching single reclaim request:", error);
+      toast.error('Error fetching data');
+    } finally {
+      setIsLoading(false);
+    }
+  };
   
+  
+  const GetAllReclaims = async () => {
+    const url = `${baseUrl}/get-all-reclaims`;
+    setIsLoading(true);
+    try {
+      const res = await axios.get(url, config(token));
+      console.log(res.data);
+      setAllReclaim(res.data.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   
 
   const getAllPurchaseReq = async () => {
@@ -134,21 +170,22 @@ export const StateProvider = ({ children }) => {
     }
   }
 
-  const GetAllReclaims = async () => {
-    try {
-      const url = `${baseUrl}/get-all-reclaims`;
-      const res = await axios.get(url, config());
-      console.log(res.data.data);
-    } catch (error) {
-      toast.error(error);
-    }
-  };
+  // const GetAllReclaims = async () => {
+  //   try {
+  //     const url = `${baseUrl}/get-all-reclaims`;
+  //     const res = await axios.get(url, config());
+  //     console.log(res.data.data);
+  //   } catch (error) {
+  //     toast.error(error);
+  //   }
+  // };
   
 useEffect(()=>{
   if(token !== null){
     getDashboardDetails()
     handleGetProfile()
     GetAllReclaims()
+    getAllPurchaseReq()
   }
 }, [isLoggedIn, token])
 
@@ -163,7 +200,8 @@ useEffect(()=>{
         allPurchaseReq,
         getAllPurchaseReq,
         getSinglePurchaseRequest,
-        // allReclaim,
+        allReclaim,
+        setAllReclaim,
         getDashboardDetails,
         allLeaveReq,
         getAllLeaveReq,
@@ -182,7 +220,10 @@ useEffect(()=>{
         createPurchaseReq,
         setCreatePurchaseReq,
         singlePurchaseRequest,
-        setSinglePurchaseRequest
+        setSinglePurchaseRequest,
+        getSingleReclaim,
+        singleReclaim,
+        setSingleReclaim
       }}
     >
       {children}

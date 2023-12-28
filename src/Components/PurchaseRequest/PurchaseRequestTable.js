@@ -7,6 +7,8 @@ import SinglePurchaseRequest from "./SinglePurchaseRequest";
 import { useStateContext } from "../../context/StateContext";
 import { Spinner } from "react-activity";
 import { useNavigate } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 
@@ -52,8 +54,13 @@ const PurchaseRequestTable = () => {
       console.log("Response Data:", response.data);
       setPurchaseRequests([]);
       getDashboardDetails() // auto update
-      toast.success("Purchase request submitted successfully!");
+      toast.success("Purchase request submitted successfully!", {
+        autoClose: 5000 // 5000 milliseconds = 5 seconds
+      });
+      // Delay navigation to allow the toast to be displayed
+    setTimeout(() => {
       navigate('/home/purchaserequest');
+    }, 2000);
     } catch (error) {
       console.error("Error submitting purchase request:", error);
       toast.error("Failed to submit purchase request.");

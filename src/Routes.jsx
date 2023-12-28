@@ -13,6 +13,7 @@ import ReclaimPage from "./Pages/ReclaimPage";
 import ReclaimReqPage from "./Pages/ReclaimReqPage";
 import PurReqViewPage from "./Pages/PurReqViewPage";
 import LeaveOffRequestTable from "./Pages/LeaveOffRequestTable";
+import ReclaimViewPage from "./Pages/ReclaimViewPage"
 
 const AppRoute = () => {
   return (
@@ -25,6 +26,8 @@ const AppRoute = () => {
           <Route path="profile/edit" element={<ProfileEditPage />} />
           <Route path="Complaints" element={<ComplaintsPage />} />
           <Route path="reclaim" element={<ReclaimPage />} />
+          <Route path="reclaim/view/:id" element={<ReclaimViewPage />} />
+
           <Route path="reclaim/reclaimrequest" element={<ReclaimReqPage />} />
 
           <Route path="purchaserequest" element={<PurchaseRequestPage />} />

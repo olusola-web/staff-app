@@ -15,6 +15,7 @@ const View = () => {
   } = useStateContext();
   // const [purchaseRequest, setPurchaseRequest] = useState(null);
   const { id } = useParams();
+  // const baseUrl = "https://sandbox.myafrimall.com.ng";
   console.log(singlePurchaseRequest);
   console.log(id);
   useEffect(() => {
@@ -42,12 +43,12 @@ const View = () => {
       });
     };
 
-  const tableHeader = ["S/N", "Details", "Price"];
+  const tableHeader = ["S/N", "Details", "Quantity", "Price"];
 
   // Calculate the total amount if purchaseRequest data is available
-  const totalAmount = singlePurchaseRequest
+  const totalAmount = singlePurchaseRequest && singlePurchaseRequest.purchase_request_items
     ? singlePurchaseRequest.purchase_request_items.reduce(
-        (total, item) => total + parseInt(item.price),
+        (total, item) => total + parseInt(item.quantity, 10) * parseInt(item.price, 10),
         0
       )
     : 0;
@@ -116,7 +117,7 @@ const View = () => {
           <Table
             headerContent={tableHeader}
             minSize={"1000px"}
-            cols={3}
+            cols={4}
             showSearch={false}
           >
             {singlePurchaseRequest?.purchase_request_items.map(
@@ -128,10 +129,11 @@ const View = () => {
               )
             )}
             {/* Totals row */}
-            <div className="grid text-sm grid-cols-3 gap-2 font-bold">
+            <div className="grid text-sm grid-cols-4 gap-2 font-bold">
               <div></div> {/* Empty cell for S/N */}
-              <div className="px-6">Total</div>
-              <div className="px-3">₦{totalAmount.toLocaleString()}</div>
+              <div></div> {/* Empty cell for Details */}
+              <div className="px-">Total</div>
+              <div className="px-">₦{totalAmount.toLocaleString()}</div>
             </div>
           </Table>
         </div>
