@@ -17,7 +17,7 @@ const LeaveTable = () => {
 
     return (
       <div>
-        <div className="p-2 flex flex-col md:flex-row justify-between items-center my-4">
+        <div className="p-2 flex flex-col md:flex-row justify-between items-center my-3">
           <div className="flex gap-2 items-center md:mb-0 pt-6 mb-5 ">
             <FaHome className="m-0" />
             <p className="text-black">Home</p>
@@ -25,7 +25,7 @@ const LeaveTable = () => {
             <p className="text-[#049805]">Leave/Off Request</p>
           </div>
           <Link to="/home/leaverequestpage">
-            <Button className="hover:bg-green-600 hover:font-bold mr-7">Create Leave/off request</Button>
+            <Button className="hover:bg-green-600 hover:font-bold mr-7 mt-4 px-5">Create Leave/off request</Button>
           </Link>
         </div>
 
