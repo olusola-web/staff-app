@@ -12,6 +12,7 @@
     "datatables.net-dt": "^1.13.8",
     "datatables.net-responsive": "^2.5.0",
     "datatables.net-responsive-dt": "^2.5.0",
+    "formik": "^2.4.5",
     "jquery": "^3.7.1",
     "rc-progress": "^3.5.1",
     "react": "^18.2.0",
