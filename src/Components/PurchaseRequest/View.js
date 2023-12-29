@@ -15,7 +15,7 @@ const View = () => {
   } = useStateContext();
   // const [purchaseRequest, setPurchaseRequest] = useState(null);
   const { id } = useParams();
-  // const baseUrl = "https://sandbox.myafrimall.com.ng";
+   const baseUrl = "https://sandbox.myafrimall.com.ng";
   console.log(singlePurchaseRequest);
   console.log(id);
   useEffect(() => {
