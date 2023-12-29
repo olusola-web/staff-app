@@ -10,7 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 const ReclaimRequest = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false)
-  const { baseUrl, uploadConfig, GetAllReclaims } = useStateContext();
+  const { baseUrl, uploadConfig, GetAllReclaims, getDashboardDetails } = useStateContext();
 
   const [form, setForm] = useState({
     details: "",
