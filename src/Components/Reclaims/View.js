@@ -31,6 +31,11 @@ const View = () => {
     return <div className="text-center p-8">Loading...</div>; // Handle loading state
   }
 
+//Print
+const handlePrint = () => {
+  window.print();
+};
+
   // Function to determine the background class for statuses
   const getStatusBgClass = (status) => {
     switch (status) {
@@ -44,7 +49,7 @@ const View = () => {
   };
 
   // Constructing the full image URL
-  const imageUrl = baseUrl + singleReclaim.proof_of_reclaim;
+  const imageUrl = baseUrl + singleReclaim?.proof_of_reclaim;
 
   return (
     <div>
@@ -54,7 +59,7 @@ const View = () => {
         </Link>
 
         <p className="text-center font-bold">View Reclaim Request</p>
-        <Button type="button" className="bg-[#76413B] text-white rounded">
+        <Button onClick={handlePrint} type="button" className="bg-[#76413B] text-white rounded">
           Print
         </Button>
       </div>

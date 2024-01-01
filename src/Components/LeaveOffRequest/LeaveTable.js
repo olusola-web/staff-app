@@ -1,19 +1,46 @@
 import React from "react";
+import axios from "axios";
 import Table from "../../Utils/Table";
 import SingleLeaveTable from "./SingleLeaveTable";
 import { Link } from "react-router-dom";
 import { FaHome, FaChevronRight } from "react-icons/fa";
 import Button from "../Button/ButtonReusable";
+import { useStateContext } from "../../context/StateContext";
+import  { useEffect, useState } from 'react';
 
-const tableHeader = ["S/N", "Request Type", "Start Date", "End Date"];
+
+const tableHeader = ["S/N", "Request Type", "Start Date", "End Date", "Status", "Delete"];
 
 const LeaveTable = () => {
-    const displayedData = [
-        { id: 1, SN: "Leave", startDate: "2023-01-01", endDate: "2023-01-01" },
-        { id: 2, SN: "Off", startDate: "2023-01-02", endDate: "2023-01-02" },
-        { id: 3, SN: "Leave", startDate: "2023-01-03", endDate: "2023-01-03" },
-    ];
+  const { getAllLeaveReq, allLeaveReq, isLoading, baseUrl, config } = useStateContext()
+  const [leaveRequests, setLeaveRequests] = useState([]);
+   useEffect(() => {
+    const fetchData = async () => {
+      await getAllLeaveReq();
+      setLeaveRequests(allLeaveReq?.data || []); // Update local state with fetched data
+    };
+    fetchData();
+  }, []); // here
 
+  const handleDeleteRequest = async (id) => {
+    try {
+      const response = await axios.delete(`${baseUrl}/delete-leave-request/${id}`, config());
+      if (response.status === 200) { // or check response.data.status if your API returns that
+        // Use a functional update to ensure we're working with the most recent state
+        setLeaveRequests(currentLeaveRequests => 
+          currentLeaveRequests.filter(request => request.id !== id)
+        );
+      } else {
+        console.error("Failed to delete leave request");
+      }
+    } catch (error) {
+      console.error("Error deleting leave request:", error);
+    }
+  };
+  
+
+
+  const displayedData = allLeaveReq?.data || []; 
 
     return (
       <div>
@@ -30,35 +57,30 @@ const LeaveTable = () => {
         </div>
 
         <div className="w-full max-w-5xl my-14 overflow-x-auto table-responsive ml-5">
-          <Table
-            headerContent={tableHeader}
-            minSize={"1000px"}
-            cols={4}
-            data={displayedData}
-            showSearch={false}
-            searchKey="">
-            {displayedData.length === 0 ? (
-              <p>You have 0 leave/off requests</p>
-            ) : (
-              displayedData.map((item, index) => (
-                <div key={item.id}>
-                  <SingleLeaveTable item={item} index={index} />
-                  <hr className="my-4 border-green-50" />
-                </div>
-              ))
-            )}
-          </Table>
+        <Table
+          headerContent={tableHeader}
+          minSize={"1000px"}
+          cols={6}
+          data={leaveRequests}
+          showSearch={false}
+          searchKey="">
+          {leaveRequests.length === 0 ? (
+            <p>You have 0 leave/off requests</p>
+          ) : (
+            leaveRequests.map((item, index) => (
+              <SingleLeaveTable 
+                key={item.id} 
+                item={item} 
+                index={index} 
+                onDelete={handleDeleteRequest}
+              />
+            ))
+          )}
+        </Table>
         </div>
       </div>
     );
 }
 export default LeaveTable;
 
-//  {
-//    displayedData.map((item, index) => (
-//      <div key={item.id}>
-//        <SingleLeaveTable item={item} index={index} />
-//        <hr className="my-4 border-green-50" />
-//      </div>
-//    ));
-//  }
+
