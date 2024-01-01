@@ -15,7 +15,7 @@ const View = () => {
   } = useStateContext();
   // const [purchaseRequest, setPurchaseRequest] = useState(null);
   const { id } = useParams();
-   const baseUrl = "https://sandbox.myafrimall.com.ng";
+  const baseUrl = "https://sandbox.myafrimall.com.ng";
   console.log(singlePurchaseRequest);
   console.log(id);
   useEffect(() => {
@@ -30,28 +30,34 @@ const View = () => {
     }
   }, []);
 
+  // Function to format the date
+  const formatDate = (dateString) => {
+    if (!dateString) return "Not Available";
 
-    // Function to format the date
-    const formatDate = (dateString) => {
-      if (!dateString) return 'Not Available'; 
-  
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', { 
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
-    };
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   const tableHeader = ["S/N", "Details", "Quantity", "Price"];
 
   // Calculate the total amount if purchaseRequest data is available
-  const totalAmount = singlePurchaseRequest && singlePurchaseRequest.purchase_request_items
-    ? singlePurchaseRequest.purchase_request_items.reduce(
-        (total, item) => total + parseInt(item.quantity, 10) * parseInt(item.price, 10),
-        0
-      )
-    : 0;
+  const totalAmount =
+    singlePurchaseRequest && singlePurchaseRequest.purchase_request_items
+      ? singlePurchaseRequest.purchase_request_items.reduce(
+          (total, item) =>
+            total + parseInt(item.quantity, 10) * parseInt(item.price, 10),
+          0
+        )
+      : 0;
+
+  //Print
+  const handlePrint = () => {
+    window.print();
+  };
 
   return (
     <div className="container mx-auto">
@@ -62,7 +68,7 @@ const View = () => {
 
         <p className="text-base md:text-lg lg:text-xl">View Purchase Request</p>
 
-        <Button type="button" className="bg-[#76413B] text-white rounded">
+        <Button type="button" className="bg-[#76413B] text-white rounded" onClick={handlePrint}>
           Print
         </Button>
       </div>
@@ -77,7 +83,7 @@ const View = () => {
         <p className="mb-4 md:mb-0">
           PR No : {singlePurchaseRequest?.Pr_Number}
         </p>
- {/* Format date as needed */}
+        {/* Format date as needed */}
         <p>Date: {formatDate(singlePurchaseRequest?.created_at)}</p>
       </div>
 

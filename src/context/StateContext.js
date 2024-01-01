@@ -25,6 +25,9 @@ export const StateProvider = ({ children }) => {
   });
 
 
+  const addLeaveRequest = (newRequest) => {
+    setAllLeaveReq(prevLeaveReq => Array.isArray(prevLeaveReq) ? [...prevLeaveReq, newRequest] : [newRequest]);
+  };
 
   const [page, setPage] = useState(1);
   // const [profile, setProfile]
@@ -129,18 +132,18 @@ export const StateProvider = ({ children }) => {
   };
 
   const getAllLeaveReq = async () => {
-    const url = `${baseUrl}/get-all-leave-requests`
-    setIsLoading(true)
+    const url = `${baseUrl}/get-all-leave-requests`;
+    setIsLoading(true);
     try {
-      const res = await axios.get(url, config(token))
-      // console.log(res.data)
-      setAllLeaveReq(res.data.data)
+      const res = await axios.get(url, config(token));
+      setAllLeaveReq(res.data.data || []);
     } catch (error) {
-      console.log(error)
+      console.error("Error fetching leave requests:", error);
+      toast.error("Error fetching leave requests");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
 
   const getDashboardDetails = async () => {
@@ -185,6 +188,7 @@ useEffect(()=>{
     handleGetProfile()
     GetAllReclaims()
     getAllPurchaseReq()
+    getAllLeaveReq();
   }
 }, [isLoggedIn, token ])
   return (
@@ -201,8 +205,10 @@ useEffect(()=>{
         allReclaim,
         setAllReclaim,
         getDashboardDetails,
+        setAllLeaveReq,
         allLeaveReq,
         getAllLeaveReq,
+        addLeaveRequest,
         dashDetails,
         config,
         uploadConfig,
