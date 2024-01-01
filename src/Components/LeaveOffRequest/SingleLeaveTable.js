@@ -10,10 +10,8 @@ const SingleLeaveTable = ({ item, index, onDelete }) => {
       ? 'bg-blue-500'
       : 'bg-green-500';
 
-  // Adjust the width and padding of the status div here
   const statusStyle = `text-white ${statusClass} w-20 p-1  mr-4 my-2 rounded text-center `;
-  // 'w-24' sets the width to 6rem (96px), adjust as needed
-
+ 
   return (
     <div className="grid grid-cols-6 gap-2 font-medium text-sm items-center">
       <div>{index + 1}</div>
@@ -24,7 +22,7 @@ const SingleLeaveTable = ({ item, index, onDelete }) => {
       <div>
         <RiDeleteBin6Line
           className="text-red-600 cursor-pointer"
-          onClick={() => onDelete(id)} // Use item ID for deletion
+          onClick={() => onDelete(id)} 
         />
       </div>
     </div>
