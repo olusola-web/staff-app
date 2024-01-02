@@ -3,22 +3,44 @@ import $ from "jquery";
 import "datatables.net";
 import "datatables.net-dt/css/jquery.dataTables.css";
 import { useNavigate } from 'react-router-dom';
+import { useStateContext } from "../../context/StateContext";
+import axios from 'axios'; 
+
 
 const MyDataTable = ({ data }) => {
+  const {  baseUrl, config } = useStateContext()
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); 
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleDelete = (id) => {
-    setSelectedId(id);
-    setModalOpen(true);
-  };
+const handleDelete = (id) => {
+  setSelectedId(id);
+  setModalOpen(true);
+};
 
-  const confirmDelete = () => {
-    $("#myTable").DataTable().row($(`button[data-id='${selectedId}']`).parents('tr')).remove().draw();
-    // Add backend deletion logic here if necessary
-    setModalOpen(false);
-  };
+const confirmDelete = async () => {
+  setModalOpen(false);
+  setIsLoading(true); // Start loading
+
+  try {
+    // Perform the DELETE request
+    const response = await axios.delete(`${baseUrl}/delete-purchase-request/${selectedId}`, config());
+    if (response.data.status) {
+      // Remove row from DataTable
+      $("#myTable").DataTable().row($(`button[data-id='${selectedId}']`).parents('tr')).remove().draw();
+    } else {
+      // Handle response with error
+      setErrorMessage('Failed to delete the purchase request.');
+    }
+  } catch (error) {
+    // Handle HTTP errors
+    setErrorMessage('An error occurred while deleting the purchase request.');
+  }
+
+  setIsLoading(false); // End loading
+};
 
   useEffect(() => {
     const table = $("#myTable").DataTable({
@@ -87,7 +109,9 @@ const MyDataTable = ({ data }) => {
           </div>
         </div>
       </>
-    )}
+      )}
+           {isLoading && <div>Loading...</div>} {/* Loading indicator */}
+      {errorMessage && <div>{errorMessage}</div>} {/* Error message display */}
   </>
 );
 };
