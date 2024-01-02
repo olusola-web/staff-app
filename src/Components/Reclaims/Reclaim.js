@@ -6,12 +6,16 @@ import { FaHome, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../../context/StateContext";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const Reclaim = () => {
+  const {  baseUrl, config } = useStateContext()
   const { allReclaim, GetAllReclaims } = useStateContext();
-  const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     GetAllReclaims();
@@ -75,14 +79,29 @@ const Reclaim = () => {
     };
   }, [allReclaim, navigate]);
 
+ // handle delete
   const handleDelete = () => {
-    $("#reclaimTable")
-      .DataTable()
-      .row($(`button[data-id='${selectedId}']`).parents("tr"))
-      .remove()
-      .draw();
+    setLoading(true);
+    setError('');
 
-    // Implement the backend deletion logic here if necessary
+    axios.delete(`${baseUrl}/delete-reclaim/${selectedId}`, config())
+      .then(response => {
+        setLoading(false);
+        if (response.data.status) {
+          $("#reclaimTable")
+            .DataTable()
+            .row($(`button[data-id='${selectedId}']`).parents("tr"))
+            .remove()
+            .draw();
+        } else {
+          setError('Deletion failed: ' + response.data.message);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        setError('Error deleting reclaim: ' + error.message);
+      });
+
     setModalOpen(false);
   };
 
@@ -154,6 +173,8 @@ const Reclaim = () => {
           </div>
         </>
       )}
+       {isLoading && <div>Loading...</div>}
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 };
