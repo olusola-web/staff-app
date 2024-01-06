@@ -12,7 +12,6 @@ const Reclaim = () => {
   const {  baseUrl, config } = useStateContext()
   const { allReclaim, GetAllReclaims } = useStateContext();
   const [isModalOpen, setModalOpen] = useState(false);
-  const [isSuccessModalOpen, setSuccessModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -80,42 +79,31 @@ const Reclaim = () => {
     };
   }, [allReclaim, navigate]);
 
-// handle delete
-const handleDelete = () => {
-  setLoading(true);
-  setError('');
+ // handle delete
+  const handleDelete = () => {
+    setLoading(true);
+    setError('');
 
-  axios.delete(`${baseUrl}/delete-reclaim/${selectedId}`, config())
-    .then(response => {
-      setLoading(false);
-      if (response.data.status) {
-        // Remove row from DataTable
-        $("#reclaimTable")
-          .DataTable()
-          .row($(`button[data-id='${selectedId}']`).parents("tr"))
-          .remove()
-          .draw();
+    axios.delete(`${baseUrl}/delete-reclaim/${selectedId}`, config())
+      .then(response => {
+        setLoading(false);
+        if (response.data.status) {
+          $("#reclaimTable")
+            .DataTable()
+            .row($(`button[data-id='${selectedId}']`).parents("tr"))
+            .remove()
+            .draw();
+        } else {
+          setError('Deletion failed: ' + response.data.message);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        setError('Error deleting reclaim: ' + error.message);
+      });
 
-        // Close the delete confirmation modal
-        setModalOpen(false);
-
-        // Show the success modal
-        setSuccessModalOpen(true);
-
-        // Hide the success modal after 2 seconds
-        setTimeout(() => {
-          setSuccessModalOpen(false);
-        }, 2000);
-      } else {
-        setError('Deletion failed: ' + response.data.message);
-      }
-    })
-    .catch(error => {
-      setLoading(false);
-      setError('Error deleting reclaim: ' + error.message);
-    });
-};
-
+    setModalOpen(false);
+  };
 
   return (
     <div className="mx-auto mt-0 p-4 bg-white">
@@ -199,47 +187,6 @@ const handleDelete = () => {
           </div>
         </>
       )}
-
-
- {/* Success modal */}
- {isSuccessModalOpen && (
-        <>
-          <div
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backdropFilter: "blur(5px)",
-              zIndex: 999,
-            }}
-          ></div>
-          <div
-            style={{
-              position: "fixed",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              backgroundColor: "white",
-              padding: "20px",
-              zIndex: 1000,
-            }}
-          >
-            <p className="p-3">Details deleted successfully.</p>
-            <div className="flex justify-around">
-              <button
-                onClick={() => setSuccessModalOpen(false)}
-                className="bg-blue-500 rounded-md p-2 text-white"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </>
-      )}
-
-
        {isLoading && <div>Loading...</div>}
       {error && <div className="error-message">{error}</div>}
     </div>

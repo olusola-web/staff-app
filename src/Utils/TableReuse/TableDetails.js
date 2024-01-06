@@ -11,36 +11,46 @@ const MyDataTable = ({ data }) => {
   const {  baseUrl, config } = useStateContext()
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isSuccessModalOpen, setSuccessModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [isLoading, setIsLoading] = useState(false); 
   const [errorMessage, setErrorMessage] = useState('');
 
-const handleDelete = (id) => {
-  setSelectedId(id);
-  setModalOpen(true);
-};
+  const handleDelete = (id) => {
+    setSelectedId(id);
+    setModalOpen(true);
+  };
 
-const confirmDelete = async () => {
-  setModalOpen(false);
-  setIsLoading(true); // Start loading
+  const confirmDelete = async () => {
+    setModalOpen(false);
+    setIsLoading(true); // Start loading
 
-  try {
-    // Perform the DELETE request
-    const response = await axios.delete(`${baseUrl}/delete-purchase-request/${selectedId}`, config());
-    if (response.data.status) {
-      // Remove row from DataTable
-      $("#myTable").DataTable().row($(`button[data-id='${selectedId}']`).parents('tr')).remove().draw();
-    } else {
-      // Handle response with error
-      setErrorMessage('Failed to delete the purchase request.');
+    try {
+      // Perform the DELETE request
+      const response = await axios.delete(`${baseUrl}/delete-purchase-request/${selectedId}`, config());
+      if (response.data.status) {
+        // Remove row from DataTable
+        $("#myTable").DataTable().row($(`button[data-id='${selectedId}']`).parents('tr')).remove().draw();
+
+        // Show success modal
+        setSuccessModalOpen(true);
+
+        // Hide the success modal after 2 seconds (optional)
+        setTimeout(() => {
+          setSuccessModalOpen(false);
+        }, 2000);
+      } else {
+        // Handle response with error
+        setErrorMessage('Failed to delete the purchase request.');
+      }
+    } catch (error) {
+      // Handle HTTP errors
+      setErrorMessage('An error occurred while deleting the purchase request.');
     }
-  } catch (error) {
-    // Handle HTTP errors
-    setErrorMessage('An error occurred while deleting the purchase request.');
-  }
 
-  setIsLoading(false); // End loading
-};
+    setIsLoading(false); // End loading
+  };
+
 
   useEffect(() => {
     const table = $("#myTable").DataTable({
@@ -110,6 +120,16 @@ const confirmDelete = async () => {
         </div>
       </>
       )}
+
+{isSuccessModalOpen && (
+        <>
+          <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backdropFilter: 'blur(5px)', zIndex: 4000 }}></div>
+          <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: 'white', padding: '30px', zIndex: 5000  }}>
+            <p className="p-3">Details deleted successfully.</p>
+          </div>
+        </>
+      )}
+
            {isLoading && <div>Loading...</div>} {/* Loading indicator */}
       {errorMessage && <div>{errorMessage}</div>} {/* Error message display */}
   </>

@@ -5,8 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import Button from "../Button/ButtonReusable";
 import logo from "../../Assets/Images/logo.png";
 
-const View = () => {
-  
+const AllReclaimView = () => {
   const { singleReclaim, getSingleReclaim } = useStateContext();
   const { id } = useParams();
   const baseUrl = "https://sandbox.myafrimall.com.ng";
@@ -32,10 +31,10 @@ const View = () => {
     return <div className="text-center p-8">Loading...</div>; // Handle loading state
   }
 
-//Print
-const handlePrint = () => {
-  window.print();
-};
+  //Print
+  const handlePrint = () => {
+    window.print();
+  };
 
   // Function to determine the background class for statuses
   const getStatusBgClass = (status) => {
@@ -55,12 +54,16 @@ const handlePrint = () => {
   return (
     <div>
       <div className="p-6 text-center flex justify-between item-center">
-      <Link to="/home/reclaim">
-      <FaArrowLeft/>
+        <Link to="/home/reclaim">
+          <FaArrowLeft />
         </Link>
 
         <p className="text-center font-bold">View Reclaim Request</p>
-        <Button onClick={handlePrint} type="button" className="bg-[#76413B] text-white rounded">
+        <Button
+          onClick={handlePrint}
+          type="button"
+          className="bg-[#76413B] text-white rounded"
+        >
           Print
         </Button>
       </div>
@@ -110,8 +113,12 @@ const handlePrint = () => {
           )}
         </div>
       </div>
+      <div className="flex justify-around items-center">
+        <Button className={`bg-green-500`}>Approve Purchase Request</Button>
+        <Button className={`bg-red-500`}>Reject Purchase Request </Button>
+      </div>
     </div>
   );
 };
 
-export default View;
+export default AllReclaimView;

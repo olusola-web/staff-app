@@ -100,7 +100,7 @@ const Login = () => {
     <div className="flex flex-col items-center justify-center min-h-screen">
       <div className="bg-white p-8 md:p-12 border-2 w-auto lg:w-[36rem] h-auto lg:h-[33rem] text-center">
         <img src={logo} alt="logo" className="w-32 mb-3" />
-        <h1 className="text-2xl font-semibold mb-4">Welcome Admin</h1>
+        <h1 className="text-2xl font-semibold mb-4">Welcome Staff </h1>
         <p className="text-gray-600 mb-6">Log in with your information</p>
         <form onSubmit={handleSubmit}>
           <div className="mb-4 lg:mx-8">
