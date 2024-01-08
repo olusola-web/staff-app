@@ -12,6 +12,7 @@ export const StateProvider = ({ children }) => {
   const [allPurchaseReq, setAllPurchaseReq] = useState([]);
   const [profileDetails, setProfileDetails] = useState({})
   const [purchaseRequests, setPurchaseRequests] = useState([]);
+  const [acctAllPurRequests, setAcctAllPurRequests ] = useState([]);
   const [createPurchaseReq, setCreatePurchaseReq] = useState([])
   const [singleReclaim, setSingleReclaim] = useState(null);
   const [singlePurchaseRequest, setSinglePurchaseRequest] = useState(null);
@@ -130,6 +131,21 @@ export const StateProvider = ({ children }) => {
     }
   };
 
+  // Acct all pur req
+  const getAcctAllPurRequests = async () => {
+    const url = `${baseUrl}/accountant-purchase-request`;
+    setIsLoading(true);
+    try {
+      const res = await axios.get(url, config(token));
+      console.log(res.data);
+      setAcctAllPurRequests(res.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const getAllPurchaseReq = async () => {
     const url = `${baseUrl}/get-purchase-requests`;
     setIsLoading(true);
@@ -241,6 +257,9 @@ useEffect(()=>{
         setCreatePurchaseReq,
         singlePurchaseRequest,
         setSinglePurchaseRequest,
+        getAcctAllPurRequests,
+        acctAllPurRequests,
+        setAcctAllPurRequests,
         getSingleReclaim,
         singleReclaim,
         setSingleReclaim
