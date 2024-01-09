@@ -62,7 +62,7 @@ const AcctAllPurRequest = () => {
   
       $("#purchaseTable tbody").on("click", "button.view-btn", function () {
         const id = $(this).data("id");
-        navigate(`/home/reclaim/view/${id}`);
+        navigate(`/home/allpendingpurchasereq/view/${id}`);
       });
   
       $("#purchaseTable tbody").on("click", "button.delete-btn", function () {
