@@ -10,7 +10,7 @@ const View = () => {
   
   const { singleReclaim, getSingleReclaim } = useStateContext();
   const { id } = useParams();
-  const baseUrl = "https://sandbox.myafrimall.com.ng";
+  const baseUrl = "https://api.myafrimall.com.ng";
   const printComp = useRef();
     //Print
 

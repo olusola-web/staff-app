@@ -11,7 +11,7 @@ import { useReactToPrint } from "react-to-print";
 const AcctAllPrView = () => {
   const { acctSinglePr, setAcctSinglePr, getacctSinglePr } = useStateContext();
   const { id } = useParams();
-  const baseUrl = "https://sandbox.myafrimall.com.ng";
+  const baseUrl = "https://api.myafrimall.com.ng";
 
   useEffect(() => {
     const fetchAcctSinglePurchaseReq = async () => {
