@@ -1,16 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useStateContext } from "../../context/StateContext";
 import { Link, useParams } from "react-router-dom";
 import Button from "../Button/ButtonReusable";
 import logo from "../../Assets/Images/logo.png";
+import { useReactToPrint } from "react-to-print";
 
 const View = () => {
   
   const { singleReclaim, getSingleReclaim } = useStateContext();
   const { id } = useParams();
   const baseUrl = "https://sandbox.myafrimall.com.ng";
+  const printComp = useRef();
+    //Print
 
+const handlePrint = useReactToPrint({
+  content: () => printComp.current,
+});
   useEffect(() => {
     const fetchSingleReclaim = async () => {
       try {
@@ -32,11 +38,6 @@ const View = () => {
     return <div className="text-center p-8">Loading...</div>; // Handle loading state
   }
 
-//Print
-const handlePrint = () => {
-  window.print();
-};
-
   // Function to determine the background class for statuses
   const getStatusBgClass = (status) => {
     switch (status) {
@@ -53,8 +54,8 @@ const handlePrint = () => {
   const imageUrl = baseUrl + singleReclaim?.proof_of_reclaim;
 
   return (
-    <div>
-      <div className="p-6 text-center flex justify-between item-center">
+    <div ref={printComp}>
+      <div className="p-6 text-center flex justify-between item-center"   >
       <Link to="/home/reclaim">
       <FaArrowLeft/>
         </Link>

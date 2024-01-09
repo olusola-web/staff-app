@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import Button from "../Button/ButtonReusable";
@@ -6,6 +6,7 @@ import logo from "../../Assets/Images/logo.png";
 import SingleView from "./SingleView";
 import Table from "../../Utils/Table";
 import { useStateContext } from "../../context/StateContext";
+import { useReactToPrint } from "react-to-print";
 
 const View = () => {
   const {
@@ -13,6 +14,7 @@ const View = () => {
     singlePurchaseRequest,
     setSinglePurchaseRequest,
   } = useStateContext();
+  
   // const [purchaseRequest, setPurchaseRequest] = useState(null);
   const { id } = useParams();
   const baseUrl = "https://api.myafrimall.com.ng";
@@ -29,7 +31,7 @@ const View = () => {
       fetchSinglePurchaseRequest();
     }
   }, []);
-
+  const printComp = useRef();
   // Function to format the date
   const formatDate = (dateString) => {
     if (!dateString) return "Not Available";
@@ -55,12 +57,13 @@ const View = () => {
       : 0;
 
   //Print
-  const handlePrint = () => {
-    window.print();
-  };
+  const handlePrint = useReactToPrint({
+    content: () => printComp.current,
+  });
+
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto" ref={printComp}>
       <div className="flex justify-between p-10">
         <Link to="/home/purchaserequest">
           <FaArrowLeft />
@@ -122,7 +125,7 @@ const View = () => {
         <div className="w-full max-w-5xl mb-4 overflow-x-auto table-responsive">
           <Table
             headerContent={tableHeader}
-            minSize={"1000px"}
+            minSize={"900px"}
             cols={4}
             showSearch={false}
           >

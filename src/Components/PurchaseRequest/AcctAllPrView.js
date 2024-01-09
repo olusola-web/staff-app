@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useStateContext } from "../../context/StateContext";
 import { Link, useParams } from "react-router-dom";
@@ -6,6 +6,7 @@ import Button from "../Button/ButtonReusable";
 import logo from "../../Assets/Images/logo.png";
 import Table from "../../Utils/Table";
 import SingleAcctview from "./SingleAcctview";
+import { useReactToPrint } from "react-to-print";
 
 const AcctAllPrView = () => {
   const { acctSinglePr, setAcctSinglePr, getacctSinglePr } = useStateContext();
@@ -28,6 +29,12 @@ const AcctAllPrView = () => {
       fetchAcctSinglePurchaseReq();
     }
   }, [id]);
+    
+    const printComp = useRef();
+     //Print
+  const handlePrint = useReactToPrint({
+    content: () => printComp.current,
+  });
 
   if (!acctSinglePr) {
     return <div className="text-center p-8">Loading...</div>;
@@ -56,13 +63,8 @@ const AcctAllPrView = () => {
         )
       : 0;
 
-  //Print
-  const handlePrint = () => {
-    window.print();
-  };
-
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto"  ref={printComp}>
       <div className="flex justify-between p-10">
         <Link to="/home/allpendingpurchasereq">
           <FaArrowLeft />
@@ -126,7 +128,7 @@ const AcctAllPrView = () => {
         <div className="w-full max-w-5xl mb-4 overflow-x-auto table-responsive">
           <Table
             headerContent={tableHeader}
-            minSize={"1000px"}
+            minSize={"900px"}
             cols={4}
             showSearch={false}
           >
