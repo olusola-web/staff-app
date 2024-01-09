@@ -56,7 +56,7 @@ const AcctAllReclaim = () => {
             },
           },
           { title: "Action" },
-          { title: "Delete" },
+          // { title: "Delete" },
         ],
         searching: true,
         paging: true,

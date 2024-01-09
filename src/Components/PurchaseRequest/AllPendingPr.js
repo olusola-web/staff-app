@@ -53,7 +53,7 @@ const AcctAllPurRequest = () => {
             },
           },
           { title: "Action" },
-          { title: "Delete" },
+          // { title: "Delete" },
         ],
         searching: true,
         paging: true,
