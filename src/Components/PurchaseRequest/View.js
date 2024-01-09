@@ -125,7 +125,7 @@ const View = () => {
         <div className="w-full max-w-5xl mb-4 overflow-x-auto table-responsive">
           <Table
             headerContent={tableHeader}
-            minSize={"900px"}
+            minSize={"700px"}
             cols={4}
             showSearch={false}
           >
