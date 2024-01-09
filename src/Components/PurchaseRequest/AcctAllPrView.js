@@ -11,7 +11,7 @@ import { useReactToPrint } from "react-to-print";
 const AcctAllPrView = () => {
   const { acctSinglePr, setAcctSinglePr, getacctSinglePr } = useStateContext();
   const { id } = useParams();
-  const baseUrl = "https://sandbox.myafrimall.com.ng";
+  const baseUrl = "https://api.myafrimall.com.ng";
 
   useEffect(() => {
     const fetchAcctSinglePurchaseReq = async () => {
@@ -128,7 +128,7 @@ const AcctAllPrView = () => {
         <div className="w-full max-w-5xl mb-4 overflow-x-auto table-responsive">
           <Table
             headerContent={tableHeader}
-            minSize={"900px"}
+            minSize={"700px"}
             cols={4}
             showSearch={false}
           >
