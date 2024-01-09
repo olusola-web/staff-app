@@ -12,9 +12,11 @@ export const StateProvider = ({ children }) => {
   const [allPurchaseReq, setAllPurchaseReq] = useState([]);
   const [profileDetails, setProfileDetails] = useState({})
   const [purchaseRequests, setPurchaseRequests] = useState([]);
-  const [acctAllPurRequests, setAcctAllPurRequests ] = useState([]);
+  const [acctAllPurRequests, setAcctAllPurRequests] = useState([]);
+  const [acctSinglePr, setAcctSinglePr] = useState([]);
   const [createPurchaseReq, setCreatePurchaseReq] = useState([])
   const [singleReclaim, setSingleReclaim] = useState(null);
+  const [acctSingleReclaim, setAcctSingleReclaim] = useState(null);
   const [singlePurchaseRequest, setSinglePurchaseRequest] = useState(null);
   const [allReclaim, setAllReclaim] = useState([]);
   const [acctAllReclaims, setAcctAllReclaim]= useState([]);
@@ -102,6 +104,45 @@ export const StateProvider = ({ children }) => {
     }
   };
   
+  // Function to get acct single reclaim
+const getacctSingleReclaim = async (id) => {
+  const url = `${baseUrl}/single-reclaim/${id}`;
+  setIsLoading(true);
+  try {
+    const response = await axios.get(url, config(token));
+    if (response.data && response.data.status) {
+      setAcctSingleReclaim(response.data.data);  
+    } else {
+      console.error("No data found in the response");
+    }
+  } catch (error) {
+    console.error("Error fetching single reclaim request:", error);
+    toast.error('Error fetching data');
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+    // Function to get acct single purchase req
+const getacctSinglePr = async (id) => {
+  const url = `${baseUrl}/single-purchase-request/${id}`;
+  setIsLoading(true);
+  try {
+    const response = await axios.get(url, config(token));
+    if (response.data && response.data.status) {
+      setAcctSinglePr(response.data.data);  
+    } else {
+      console.error("No data found in the response");
+    }
+  } catch (error) {
+    console.error("Error fetching single reclaim request:", error);
+    toast.error('Error fetching data');
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
   
   const GetAllReclaims = async () => {
     const url = `${baseUrl}/get-all-reclaims`;
@@ -231,6 +272,9 @@ useEffect(()=>{
         allPurchaseReq,
         getAllPurchaseReq,
         getSinglePurchaseRequest,
+        setAcctSinglePr,
+        getacctSinglePr,
+        acctSinglePr,
         allReclaim,
         setAllReclaim,
         getDashboardDetails,
@@ -262,7 +306,10 @@ useEffect(()=>{
         setAcctAllPurRequests,
         getSingleReclaim,
         singleReclaim,
-        setSingleReclaim
+        setSingleReclaim,
+        getacctSingleReclaim,
+        acctSingleReclaim,
+        setAcctSingleReclaim
       }}
     >
       {children}

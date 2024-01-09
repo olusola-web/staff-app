@@ -5,15 +5,15 @@ import { Link, useParams } from "react-router-dom";
 import Button from "../Button/ButtonReusable";
 import logo from "../../Assets/Images/logo.png";
 
-const AllReclaimView = () => {
-  const { singleReclaim, getSingleReclaim } = useStateContext();
+const AcctViewReclaim = () => {
+  const { acctSingleReclaim, getacctSingleReclaim } = useStateContext();
   const { id } = useParams();
   const baseUrl = "https://sandbox.myafrimall.com.ng";
 
   useEffect(() => {
     const fetchSingleReclaim = async () => {
       try {
-        const data = await getSingleReclaim(id);
+        const data = await getacctSingleReclaim(id);
         if (data) {
           console.log("Fetched Data:", data);
         }
@@ -27,11 +27,11 @@ const AllReclaimView = () => {
     }
   }, []);
 
-  if (!singleReclaim) {
+  if (!acctSingleReclaim) {
     return <div className="text-center p-8">Loading...</div>; // Handle loading state
   }
 
-  //Print
+  // Print
   const handlePrint = () => {
     window.print();
   };
@@ -49,12 +49,12 @@ const AllReclaimView = () => {
   };
 
   // Constructing the full image URL
-  const imageUrl = baseUrl + singleReclaim?.proof_of_reclaim;
+  const imageUrl = baseUrl + acctSingleReclaim?.proof_of_reclaim;
 
   return (
     <div>
       <div className="p-6 text-center flex justify-between item-center">
-        <Link to="/home/reclaim">
+        <Link to="/home/allpendingreclaimreq">
           <FaArrowLeft />
         </Link>
 
@@ -77,48 +77,62 @@ const AllReclaimView = () => {
             Accountant Status:
             <Button>
               <span
-                className={getStatusBgClass(singleReclaim.accountant_status)}
+                className={getStatusBgClass(
+                  acctSingleReclaim.accountant_status
+                )}
               >
-                {singleReclaim.accountant_status}
+                {acctSingleReclaim.accountant_status}
               </span>
             </Button>
           </div>
           <p>
-            Staff Name: {singleReclaim.user.firstname}{" "}
-            {singleReclaim.user.lastname}
+            Staff Name: {acctSingleReclaim.user.firstname}{" "}
+            {acctSingleReclaim.user.lastname}
           </p>
-          <p>Reclaim Number: {singleReclaim.reclaim_number}</p>
-          <p>Details: {singleReclaim.details}</p>
+          <p>Reclaim Number: {acctSingleReclaim.reclaim_number}</p>
+          <p>Details: {acctSingleReclaim.details}</p>
         </div>
         {/* Management status */}
         <div className="md:text-left text-center mt-4 md:mt-0">
           <div className="flex gap-2">
             Management Status:
             <Button>
-              <span className={getStatusBgClass(singleReclaim.mgt_status)}>
-                {singleReclaim.mgt_status}
+              <span
+                className={getStatusBgClass(acctSingleReclaim.mgt_status)}
+              >
+                {acctSingleReclaim.mgt_status}
               </span>
             </Button>
           </div>
-          <p>Amount: ₦{singleReclaim.amount_to_reclaim}</p>
+          <p>Amount: ₦{acctSingleReclaim.amount_to_reclaim}</p>
           <p>
             Date of Expense:{" "}
-            {new Date(singleReclaim.date_of_expenses).toLocaleDateString()}
+            {new Date(
+              acctSingleReclaim.date_of_expenses
+            ).toLocaleDateString()}
           </p>
         </div>
         <div className="text-center">
           <p>Uploaded Receipt:</p>
-          {singleReclaim.proof_of_reclaim && (
-            <img src={imageUrl} alt="Receipt" className="w-32 h-28 mx-auto" />
+          {acctSingleReclaim.proof_of_reclaim && (
+            <img
+              src={imageUrl}
+              alt="Receipt"
+              className="w-32 h-28 mx-auto"
+            />
           )}
         </div>
       </div>
       <div className="flex justify-around items-center">
-        <Button className={`bg-green-500`}>Approve Purchase Request</Button>
-        <Button className={`bg-red-500`}>Reject Purchase Request </Button>
+        <Button className={`bg-green-500`}>
+          Approve Purchase Request
+        </Button>
+        <Button className={`bg-red-500`}>
+          Reject Purchase Request{" "}
+        </Button>
       </div>
     </div>
   );
 };
 
-export default AllReclaimView;
+export default AcctViewReclaim;

@@ -65,7 +65,7 @@ const AcctAllReclaim = () => {
 
       $("#reclaimTable tbody").on("click", "button.view-btn", function () {
         const id = $(this).data("id");
-        navigate(`/home/reclaim/view/${id}`);
+        navigate(`/home/allpendingreclaimreq/view/${id}`);
       });
 
       $("#reclaimTable tbody").on("click", "button.delete-btn", function () {
