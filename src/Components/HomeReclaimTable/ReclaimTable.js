@@ -1,28 +1,66 @@
-import React from 'react'
-import DataTable from '../../Utils/TableReuse/TableDetails';
+import React from "react";
+import Table from "../../Utils/Table";
+import SingleHomeReclaim from "./SingleHomeReclaim";
+import { useStateContext } from "../../context/StateContext";
+import { useEffect } from "react";
 
-const userData = [
- 
-    { id: 1, ReclaimNumber: '1111', Amount: '2000', Date: '11/11/23', Status: 'successful' },
-    { id: 2, ReclaimNumber: '2222', Amount: '1500', Date: '11/11/23', Status: 'Not Granted' },
-    { id: 3, ReclaimNumber: '3333', Amount: '3000', Date: '11/11/23', Status: 'successful' },
-   
-  ];
-  
-const userColumns = [
-  { header: 'Reclaim Number', key: 'ReclaimNumber' },
-  { header: 'Amount', key: 'Amount' },
-  { header: 'Date', key: 'Date' },
-  { header: 'Status', key: 'Status' },
+const tableHeader = ["S/N", "RN", "Amount", "Date", "Status"];
 
-];
 const ReclaimTable = () => {
+  const { dashDetails, isLoading } = useStateContext();
+  const { reclaim_request } = dashDetails;
+  
+  let displayedData = [];
+  if (reclaim_request && Array.isArray(reclaim_request)) {
+    displayedData = reclaim_request.map((reclaim, index) => {
+      console.log("Original created_at:", reclaim.created_at);
+      // Format or handle null dates
+      let formattedDate = reclaim.created_at
+      ? new Date(reclaim.created_at).toLocaleDateString()
+      : "Not Available";
+        console.log("Formatted date:", formattedDate);
+
+      return {
+        id: index + 1,
+        reclaim_number: reclaim.reclaim_number, // Correct field from the endpoint
+        amount_to_reclaim: `₦${new Intl.NumberFormat("en-US").format(
+          reclaim.amount_to_reclaim
+        )}`,
+        created_at: formattedDate,
+        status: reclaim.status,
+      };
+    });
+  }
+  
   return (
-    <div>
-       <DataTable data={userData} columns={userColumns} />
+    <div className="w-full max-w-5xl mb-4 overflow-x-auto table-responsive">
+      <Table
+        headerContent={tableHeader}
+        minSize={"600px"}
+        cols={5}
+        data={displayedData}
+        showSearch={false}
+        searchKey=""
+      >
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : displayedData && displayedData.length > 0 ? (
+          displayedData.map((item, index) => (
+            <div key={index}>
+              <SingleHomeReclaim
+                item={item}
+                index={index}
+                // Additional props if needed
+              />
+              <hr className="my-4 border-green-50" />
+            </div>
+          ))
+        ) : (
+          <div>No reclaims available</div>
+        )}
+      </Table>
     </div>
-  )
-}
+  );
+};
 
-export default ReclaimTable
-
+export default ReclaimTable;
