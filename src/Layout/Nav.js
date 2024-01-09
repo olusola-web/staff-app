@@ -17,7 +17,6 @@ const Nav = ({ toggleSidebar }) => {
         </div>
         <div className='flex items-center gap-2'>
           <img
-            className='w-[4rem] h-[4rem] rounded-full' 
             className='w-[4rem] h-[4rem] rounded-full' // Adjust the width and height as needed
             src={imgUrl + profileDetails?.profile_picture}
             onError={(e) => {
