@@ -4,6 +4,8 @@ import { useStateContext } from "../../context/StateContext";
 import { Link, useParams } from "react-router-dom";
 import Button from "../Button/ButtonReusable";
 import logo from "../../Assets/Images/logo.png";
+import Table from "../../Utils/Table";
+import SingleAcctview from "./SingleAcctview";
 
 const AcctAllPrView = () => {
   const { acctSinglePr, setAcctSinglePr, getacctSinglePr } = useStateContext();
@@ -11,7 +13,7 @@ const AcctAllPrView = () => {
   const baseUrl = "https://sandbox.myafrimall.com.ng";
 
   useEffect(() => {
-    const fetchSinglePurchaseReq = async () => {
+    const fetchAcctSinglePurchaseReq = async () => {
       try {
         const data = await getacctSinglePr(id);
         if (data) {
@@ -23,7 +25,7 @@ const AcctAllPrView = () => {
     };
 
     if (id) {
-      fetchSinglePurchaseReq();
+      fetchAcctSinglePurchaseReq();
     }
   }, [id]);
 
@@ -31,93 +33,128 @@ const AcctAllPrView = () => {
     return <div className="text-center p-8">Loading...</div>;
   }
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "Not Available";
+
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const tableHeader = ["S/N", "Details", "Quantity", "Price"];
+
+  // Calculate the total amount if purchaseRequest data is available
+  const totalAmount =
+    acctSinglePr && acctSinglePr.purchase_request_items
+      ? acctSinglePr.purchase_request_items.reduce(
+          (total, item) =>
+            total + parseInt(item.quantity, 10) * parseInt(item.price, 10),
+          0
+        )
+      : 0;
+
+  //Print
   const handlePrint = () => {
     window.print();
   };
 
-  const getStatusBgClass = (status) => {
-    switch (status) {
-      case "pending":
-        return "bg-gree-500 text-white rounded px-1 py-1";
-      case "approved":
-        return "bg-blue-500 text-white rounded px-1 py-1";
-      default:
-        return "";
-    }
-  };
-
-  const imageUrl = baseUrl + acctSinglePr?.proof_of_reclaim;
-
   return (
-    <div>
-      <div className="p-6 text-center flex justify-between item-center">
+    <div className="container mx-auto">
+      <div className="flex justify-between p-10">
         <Link to="/home/allpendingpurchasereq">
           <FaArrowLeft />
         </Link>
 
-        <p className="text-center font-bold">View Purchase Request</p>
+        <p className="text-base md:text-lg lg:text-xl">View Purchase Request</p>
+
         <Button
-          onClick={handlePrint}
           type="button"
           className="bg-[#76413B] text-white rounded"
+          onClick={handlePrint}
         >
           Print
         </Button>
       </div>
+
+      {/* logo */}
       <div className="px-4 sm:px-8 md:px-14">
         <img src={logo} alt="logo" className="w-40 md:w-60" />
       </div>
-      <div className="flex flex-col md:flex-row justify-around p-12 leading-loose">
-        <div className="md:text-left text-center">
-          <div className="flex gap-2">
-            Accountant Status:
-            <Button>
-              <span
-                className={getStatusBgClass(acctSinglePr.accountant_decison)}
-              >
-                {acctSinglePr.accountant_decison}
-              </span>
-            </Button>
-          </div>
-          <p>
-            Staff Name: {acctSinglePr.user?.firstname}{" "}
-            {acctSinglePr.user?.lastname}
-          </p>
-          <p>PR Number: {acctSinglePr.Pr_Number}</p>
-          {acctSinglePr.purchase_request_items &&
-            acctSinglePr.purchase_request_items.map((item) => (
-              <div key={item.id}>
-                <p>Description: {item.description}</p>
-                <p>Quantity: {item.quantity}</p>
-                <p>Price: ₦{item.price}</p>
-              </div>
-            ))}
-        </div>
-        <div className="md:text-left text-center mt-4 md:mt-0">
-          <div className="flex gap-2">
-            Management Status:
-            <Button>
-              <span className={getStatusBgClass(acctSinglePr.mgt_decision)}>
-                {acctSinglePr.mgt_decision}
-              </span>
-            </Button>
-          </div>
-          <p>Amount: ₦{acctSinglePr.total_amount}</p>
-          <p>
-            Date of Expense:{" "}
-            {new Date(acctSinglePr.date_of_expenses).toLocaleDateString()}
-          </p>
-        </div>
-        <div className="text-center">
-          <p>Uploaded Receipt:</p>
-          {acctSinglePr.proof_of_reclaim && (
-            <img src={imageUrl} alt="Receipt" className="w-32 h-28 mx-auto" />
-          )}
-        </div>
+
+      {/* PR NO & Date */}
+      <div className="flex flex-col md:flex-row justify-between px-4 sm:px-8 md:px-14 py-4 md:py-6">
+        <p className="mb-4 md:mb-0">PR No : {acctSinglePr?.Pr_Number}</p>
+        {/* Format date as needed */}
+        <p>Date: {formatDate(acctSinglePr?.created_at)}</p>
       </div>
-      <div className="flex justify-around items-center">
-        <Button className={`bg-green-500`}>Approve Purchase Request</Button>
-        <Button className={`bg-red-500`}>Reject Purchase Request </Button>
+
+      {/* acct & mgt status */}
+      <div className="flex flex-col md:flex-row justify-between px-4 sm:px-8 md:px-14 py-2">
+        <p className="mb-4 md:mb-0 flex gap-2 items-center">
+          Accountant Status :
+          <Button
+            type="button"
+            className={`text-white rounded ${
+              acctSinglePr?.accountant_decison === "Pending"
+                ? "bg-[#3771C8]"
+                : "bg-[#049805]"
+            }`}
+          >
+            {acctSinglePr?.accountant_decison}
+          </Button>
+        </p>
+        <p className="flex gap-2 items-center">
+          Mgt Status:
+          <Button
+            type="button"
+            className={`text-white rounded ${
+              acctSinglePr?.mgt_decision === "Approved"
+                ? "bg-[#049805]"
+                : "bg-[#3771C8]"
+            }`}
+          >
+            {acctSinglePr?.mgt_decision}
+          </Button>
+        </p>
+      </div>
+
+      {/* Table */}
+      <div className="flex flex-col items-center justify-center">
+        <div className="w-full max-w-5xl mb-4 overflow-x-auto table-responsive">
+          <Table
+            headerContent={tableHeader}
+            minSize={"1000px"}
+            cols={4}
+            showSearch={false}
+          >
+            {acctSinglePr?.purchase_request_items &&
+              acctSinglePr.purchase_request_items.map((item, index) => (
+                <div key={item.id}>
+                  <SingleAcctview item={item} index={index} />
+                  <hr className="my-4 border-green-50" />
+                </div>
+              ))}
+
+            {/* Totals row */}
+            <div className="grid text-sm grid-cols-4 gap-2 font-bold">
+              <div></div> {/* Empty cell for S/N */}
+              <div></div> {/* Empty cell for Details */}
+              <div className="px-">Total</div>
+              <div className="px-">₦{totalAmount.toLocaleString()}</div>
+            </div>
+          </Table>
+        </div>
+          </div>
+          <div className="flex justify-around items-center">
+        <Button className={`bg-green-500`}>
+          Approve Purchase Request
+        </Button>
+        <Button className={`bg-red-500`}>
+          Reject Purchase Request{" "}
+        </Button>
       </div>
     </div>
   );
