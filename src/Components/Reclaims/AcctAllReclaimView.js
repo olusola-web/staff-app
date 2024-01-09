@@ -1,14 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useStateContext } from "../../context/StateContext";
 import { Link, useParams } from "react-router-dom";
 import Button from "../Button/ButtonReusable";
 import logo from "../../Assets/Images/logo.png";
+import { useReactToPrint } from "react-to-print";
 
 const AcctViewReclaim = () => {
   const { acctSingleReclaim, getacctSingleReclaim } = useStateContext();
   const { id } = useParams();
   const baseUrl = "https://sandbox.myafrimall.com.ng";
+  const printComp = useRef();
+
+  // Print
+  const handlePrint = useReactToPrint({
+    content: () => printComp.current,
+  });
 
   useEffect(() => {
     const fetchSingleReclaim = async () => {
@@ -31,11 +38,6 @@ const AcctViewReclaim = () => {
     return <div className="text-center p-8">Loading...</div>; // Handle loading state
   }
 
-  // Print
-  const handlePrint = () => {
-    window.print();
-  };
-
   // Function to determine the background class for statuses
   const getStatusBgClass = (status) => {
     switch (status) {
@@ -52,7 +54,7 @@ const AcctViewReclaim = () => {
   const imageUrl = baseUrl + acctSingleReclaim?.proof_of_reclaim;
 
   return (
-    <div>
+    <div ref={printComp}>
       <div className="p-6 text-center flex justify-between item-center">
         <Link to="/home/allpendingreclaimreq">
           <FaArrowLeft />
@@ -97,9 +99,7 @@ const AcctViewReclaim = () => {
           <div className="flex gap-2">
             Management Status:
             <Button>
-              <span
-                className={getStatusBgClass(acctSingleReclaim.mgt_status)}
-              >
+              <span className={getStatusBgClass(acctSingleReclaim.mgt_status)}>
                 {acctSingleReclaim.mgt_status}
               </span>
             </Button>
@@ -107,29 +107,19 @@ const AcctViewReclaim = () => {
           <p>Amount: ₦{acctSingleReclaim.amount_to_reclaim}</p>
           <p>
             Date of Expense:{" "}
-            {new Date(
-              acctSingleReclaim.date_of_expenses
-            ).toLocaleDateString()}
+            {new Date(acctSingleReclaim.date_of_expenses).toLocaleDateString()}
           </p>
         </div>
         <div className="text-center">
           <p>Uploaded Receipt:</p>
           {acctSingleReclaim.proof_of_reclaim && (
-            <img
-              src={imageUrl}
-              alt="Receipt"
-              className="w-32 h-28 mx-auto"
-            />
+            <img src={imageUrl} alt="Receipt" className="w-32 h-28 mx-auto" />
           )}
         </div>
       </div>
       <div className="flex justify-around items-center">
-        <Button className={`bg-green-500`}>
-          Approve Purchase Request
-        </Button>
-        <Button className={`bg-red-500`}>
-          Reject Purchase Request{" "}
-        </Button>
+        <Button className={`bg-green-500`}>Approve Purchase Request</Button>
+        <Button className={`bg-red-500`}>Reject Purchase Request </Button>
       </div>
     </div>
   );
