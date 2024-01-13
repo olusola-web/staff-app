@@ -63,6 +63,13 @@ export const getLinks = () => {
         text: "All Pending Reclaim",
         icon:<IoBagCheckOutline/>
       },
+
+      {
+        id: 9,
+        url: "accountnumber",
+        text: "Account Number",
+        icon:<MdOutlineEmojiPeople/>
+      },
   ];
   
 
@@ -102,6 +109,13 @@ export const getLinks = () => {
       id: 6,
       url: "complaints",
       text: "Complaints/Suggestions",
+      icon:<MdOutlineEmojiPeople/>
+    },
+
+    {
+      id: 7,
+      url: "acctnumber",
+      text: "Account Number",
       icon:<MdOutlineEmojiPeople/>
     },
   ];
