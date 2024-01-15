@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { Spinner } from "react-activity";
 import axios from "axios";
 import { useStateContext } from "../../context/StateContext";
+import { ToastContainer, toast } from "react-toastify";
 
 const AcctNo = () => {
   const [submittedData, setSubmittedData] = useState(null);
@@ -55,7 +56,7 @@ const AcctNo = () => {
       try {
         // Fetch selected bank details
         const selectedBank = allBanks.find((bank) => bank.id === values.bank);
-    
+
         // Check if the account number is 10 digits before resolving
         if (values.account_number.length === 10) {
           // Resolve bank account
@@ -64,34 +65,57 @@ const AcctNo = () => {
             selectedBank.code
           );
           console.log("Resolved Bank Account:", resolutionData);
-    
+
           // Update the form data with the resolved account name
-          formik.setFieldValue('account_name', resolutionData.account_name);
-    
+          formik.setFieldValue("account_name", resolutionData.account_name);
+
           // Use 'allBanks' from the context
           setSubmittedData({ ...values, bank: selectedBank?.bank_name });
-    
+
           // Send data to the account-number endpoint
-          const accountNumberEndpoint = '{{url}}/account-number';
+          const accountNumberEndpoint = `${baseUrl}/account-number`;
           const accountNumberData = {
             bank_id: selectedBank.id,
             account_number: values.account_number,
             account_name: resolutionData.account_name,
           };
-    
+
           // Make a POST request to the account-number endpoint
           await axios.post(accountNumberEndpoint, accountNumberData);
         } else {
           console.error("Account number must be 10 digits.");
         }
-    
+
         formik.resetForm();
       } catch (error) {
         console.error("Error processing form submission:", error);
       }
     },
-    
   });
+
+  // Use useEffect to trigger API call on change of account_number
+  useEffect(() => {
+    const fetchData = async () => {
+      if (formik.values.account_number.length === 10) {
+        const selectedBank = allBanks.find(
+          (bank) => bank.id === formik.values.bank
+        );
+        try {
+          const resolutionData = await resolveBankAccount(
+            formik.values.account_number,
+            selectedBank.code
+          );
+          console.log("Resolved Bank Account:", resolutionData);
+          formik.setFieldValue("account_name", resolutionData.account_name);
+        } catch (error) {
+          console.error("Error resolving bank account:", error);
+          toast.error("Error resolving bank account. Please try again.");
+        }
+      }
+    };
+
+    fetchData();
+  }, [formik.values.account_number, formik.values.bank, allBanks]);
 
   return (
     <div className="mx-12">
@@ -159,7 +183,7 @@ const AcctNo = () => {
             htmlFor="account_name"
             className="block text-gray-600 text-sm font-semibold mb-2"
           >
-            Enter Account Name
+            Account Name
           </label>
           <input
             type="text"
@@ -179,11 +203,13 @@ const AcctNo = () => {
         </div>
 
         <button
-          type="submit"
-          className="w-full md:w-1/2 flex items-center justify-center bg-[#049805] text-white p-3 rounded focus:outline-none mx-auto mt-5"
-        >
-          {isLoading ? <Spinner /> : "Submit"}
-        </button>
+  type="submit"
+  className="w-full md:w-1/2 flex items-center justify-center bg-[#049805] text-white p-3 rounded focus:outline-none mx-auto mt-5"
+  disabled={isLoading} // Disable button while loading
+>
+  {isLoading ? <Spinner /> : "Submit"}
+</button>
+
       </form>
 
       <div className="m-8 grid gap-2">
