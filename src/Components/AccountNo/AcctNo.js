@@ -64,7 +64,6 @@ const AcctNo = () => {
     validationSchema: acctnoSchema,
 
     onSubmit: async (values) => {
-      console.log(values);
       try {
         // Fetch selected bank details
         const selectedBank = allBanks.find((bank) => bank.id === values.bank);
