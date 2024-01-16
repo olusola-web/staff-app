@@ -4,11 +4,28 @@ import * as Yup from "yup";
 import { Spinner } from "react-activity";
 import axios from "axios";
 import { useStateContext } from "../../context/StateContext";
+import { ToastContainer, toast } from "react-toastify";
 
 const AcctNo = () => {
+  // State for submitted data
   const [submittedData, setSubmittedData] = useState(null);
-  const { getAllBanks, allBanks, baseUrl, isLoading } = useStateContext();
+  // State for loading resolve status
+  const [isLoadingResolve, setIsLoadingResolve] = useState(false);
+  // State for fetched account details
+  const [fetchedAccountDetails, setFetchedAccountDetails] = useState(null);
 
+  // Destructuring context values
+  const { getAllBanks, allBanks, baseUrl, isLoading, config, token } =
+    useStateContext();
+  // State for bank details in the form
+  const [bankDetails, setBankDetails] = useState({});
+
+  // Function to handle bank change in the form
+  const handleBankChange = (e) => {
+    setBankDetails({ ...bankDetails, [e.target.name]: e.target.value });
+  };
+
+  // Fetch banks on component mount
   useEffect(() => {
     const fetchBanks = async () => {
       try {
@@ -21,188 +38,250 @@ const AcctNo = () => {
     fetchBanks();
   }, []);
 
-  const resolveBankAccount = async (accountNumber, bankCode) => {
+  // Resolve bank account function
+  const resolveBankAccount = async () => {
     const url = `${baseUrl}/resolve-bank-account`;
-    const data = {
-      account_number: accountNumber,
-      code: bankCode,
-    };
 
     try {
-      const response = await axios.post(url, data);
-      console.log(response);
-      return response.data;
+      setIsLoadingResolve(true);
+      const response = await axios.post(url, bankDetails, config(token));
+      setBankDetails({
+        ...bankDetails,
+        account_name: response.data?.data?.data.account_name,
+      });
+      setIsLoadingResolve(false);
+      toast.success("Account number resolved successfully!");
     } catch (error) {
+      setIsLoadingResolve(false);
       console.error("Error resolving bank account:", error);
-      throw error;
+      toast.error("Error resolving bank account. Please try again.");
     }
   };
 
+  // Fetch account details function
+  const fetchAccountDetails = async () => {
+    const url = `${baseUrl}/get-account-number`;
+
+    try {
+      const response = await axios.get(url, config(token));
+      setFetchedAccountDetails(response.data?.data);
+    } catch (error) {
+      console.error("Error fetching account details:", error);
+      toast.error("Error fetching account details. Please try again.");
+    }
+  };
+
+  // Effect to resolve and fetch account details on account number change
+  useEffect(() => {
+    if (bankDetails?.account_number?.length >= 10) {
+      const fetchData = async () => {
+        try {
+          await resolveBankAccount();
+          await fetchAccountDetails();
+          console.log("Resolved Bank Account:", bankDetails.account_name);
+        } catch (error) {
+          console.error("Error resolving bank account:", error);
+          toast.error("Error resolving bank account. Please try again.");
+        }
+      };
+
+      fetchData();
+    }
+  }, [bankDetails.account_number]);
+
+  // Form validation schema
   const acctnoSchema = Yup.object().shape({
     bank: Yup.string().required("Please select a bank"),
     account_number: Yup.string().required("Please enter your Account Number"),
-    // account_name: Yup.string().required("Please enter your Account Name"),
   });
 
+  // Formik form handling
   const formik = useFormik({
     initialValues: {
       bank: "",
       account_number: "",
       account_name: "",
     },
-    validationSchema: acctnoSchema,
+    // validationSchema: acctnoSchema,
+
+    // Form submission logic
     onSubmit: async (values) => {
+      console.log(values);
       try {
-        // Fetch selected bank details
         const selectedBank = allBanks.find((bank) => bank.id === values.bank);
-    
-        // Check if the account number is 10 digits before resolving
+
         if (values.account_number.length === 10) {
-          // Resolve bank account
           const resolutionData = await resolveBankAccount(
             values.account_number,
             selectedBank.code
           );
           console.log("Resolved Bank Account:", resolutionData);
-    
-          // Update the form data with the resolved account name
-          formik.setFieldValue('account_name', resolutionData.account_name);
-    
-          // Use 'allBanks' from the context
+
+          formik.setFieldValue("account_name", resolutionData.account_name);
+
           setSubmittedData({ ...values, bank: selectedBank?.bank_name });
-    
-          // Send data to the account-number endpoint
-          const accountNumberEndpoint = '{{url}}/account-number';
+
           const accountNumberData = {
             bank_id: selectedBank.id,
-            account_number: values.account_number,
-            account_name: resolutionData.account_name,
+            account_number: bankDetails?.account_number,
+            account_name: bankDetails.account_name,
           };
-    
-          // Make a POST request to the account-number endpoint
-          await axios.post(accountNumberEndpoint, accountNumberData);
+
+          // Submit the account data
+          await submitAccount(accountNumberData);
         } else {
           console.error("Account number must be 10 digits.");
         }
-    
+
         formik.resetForm();
       } catch (error) {
         console.error("Error processing form submission:", error);
       }
     },
-    
   });
 
+  // Function to submit account data
+  const submitAccount = async (accountData) => {
+    const accountNumberEndpoint = `${baseUrl}/account-number`;
+
+    try {
+      const response = await axios.post(accountNumberEndpoint, accountData, config(token));
+
+      if (response.data?.status) {
+        // Handle successful submission
+        toast.success(response.data.message);
+      } else {
+        // Handle submission failure
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error submitting account:", error);
+      toast.error("Error submitting account. Please try again.");
+    }
+  };
+
   return (
-    <div className="mx-12">
-      <form onSubmit={formik.handleSubmit} className="p-12">
-        <div className="">
+    <div className='mx-12'>
+      <ToastContainer autoClose={3000} />
+      <form onSubmit={formik.handleSubmit} className='p-12'>
+        {/* Bank selection dropdown */}
+        <div className=''>
           <label
-            htmlFor="bank"
-            className="block text-gray-600 text-sm font-semibold mb-2"
+            htmlFor='bank'
+            className='block text-gray-600 text-sm font-semibold mb-2'
           >
             Select Bank
           </label>
           <select
-            id="bank"
-            name="bank"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.bank}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+            id='bank'
+            name='code'
+            value={bankDetails?.code}
+            onChange={handleBankChange}
+            className='w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500'
           >
-            <option value="" label="Select a bank" />{" "}
+            <option value='' label='Select a bank' />{" "}
             {allBanks.length > 0 ? (
               allBanks.map((bank) => (
                 <option
                   key={bank.id}
-                  value={bank.id}
+                  value={bank.code}
                   label={bank.bank_name}
                 ></option>
               ))
             ) : (
-              <option value="" disabled>
+              <option value='' disabled>
                 Loading banks...
               </option>
             )}
           </select>
           {formik.touched.bank && formik.errors.bank && (
-            <div className="text-red-500 text-sm">{formik.errors.bank}</div>
+            <div className='text-red-500 text-sm'>{formik.errors.bank}</div>
           )}
         </div>
 
-        <div className="mb-4">
+        {/* Account number input */}
+        <div className='mb-4'>
           <label
-            htmlFor="account_number"
-            className="block text-gray-600 text-sm font-semibold mb-2"
+            htmlFor='account_number'
+            className='block text-gray-600 text-sm font-semibold mb-2'
           >
             Account Number
           </label>
           <input
-            type="text"
-            id="account_number"
-            name="account_number"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.account_number}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+            type='text'
+            id='account_number'
+            name='account_number'
+            value={bankDetails?.account_number}
+            onChange={handleBankChange}
+            className='w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500'
           />
+          {isLoadingResolve && (
+            <div className='text-gray-500 text-sm mt-2 flex justify-center'>
+              <Spinner color="#049805" size={16} />
+              {"  "}Resolving account number...
+            </div>
+          )}
           {formik.touched.account_number && formik.errors.account_number && (
-            <div className="text-red-500 text-sm">
+            <div className='text-red-500 text-sm'>
               {formik.errors.account_number}
             </div>
           )}
         </div>
 
-        <div className="mb-4">
+        {/* Account name input */}
+        <div className='mb-4'>
           <label
-            htmlFor="account_name"
-            className="block text-gray-600 text-sm font-semibold mb-2"
+            htmlFor='account_name'
+            className='block text-gray-600 text-sm font-semibold mb-2'
           >
-            Enter Account Name
+            Account Name
           </label>
           <input
-            type="text"
-            id="account_name"
-            name="account_name"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.account_name}
+            type='text'
+            id='account_name'
+            name='account_name'
+            value={bankDetails?.account_name}
             readOnly={true}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+            className='w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500'
           />
           {formik.touched.account_name && formik.errors.account_name && (
-            <div className="text-red-500 text-sm">
+            <div className='text-red-500 text-sm'>
               {formik.errors.account_name}
             </div>
           )}
         </div>
 
+        {/* Submit button */}
         <button
-          type="submit"
-          className="w-full md:w-1/2 flex items-center justify-center bg-[#049805] text-white p-3 rounded focus:outline-none mx-auto mt-5"
+          onClick={submitAccount}
+          type='submit'
+          className='w-full md:w-1/2 flex items-center justify-center bg-[#049805] text-white p-3 rounded focus:outline-none mx-auto mt-5'
         >
-          {isLoading ? <Spinner /> : "Submit"}
+          {isLoading ? <Spinner /> : "submit"}
         </button>
       </form>
 
-      <div className="m-8 grid gap-2">
+      {/* Display fetched account details */}
+      <div className='m-8 grid gap-2'>
         <div>
-          <h1>Account Details</h1>
+          <h1>Fetched Account Details</h1>
         </div>
+        {/* Display Bank */}
         <h1>Bank</h1>
-        <p className="border rounded-md border-[2px] w-32 text-center">
-          {submittedData?.bank}
+        <p className='border rounded-md border-[2px] w-32 text-center'>
+          {fetchedAccountDetails?.bank_name}
         </p>
 
+        {/* Display Account Number */}
         <h1>Account Number</h1>
-        <p className="border rounded border-[2px] w-32 text-center">
-          {submittedData?.account_number}
+        <p className='border rounded border-[2px] w-32 text-center'>
+          {fetchedAccountDetails?.account_number}
         </p>
 
+        {/* Display Account Name */}
         <h1>Account Name</h1>
-        <p className="border rounded border-[2px] w-32 text-center">
-          {submittedData?.account_name}
+        <p className='border rounded border-[2px] w-32 text-center'>
+          {fetchedAccountDetails?.account_name}
         </p>
       </div>
     </div>
