@@ -106,7 +106,6 @@ const AcctNo = () => {
 
     // Form submission logic
     onSubmit: async (values) => {
-      console.log(values);
       try {
         const selectedBank = allBanks.find((bank) => bank.id === values.bank);
 
@@ -141,11 +140,23 @@ const AcctNo = () => {
   });
 
   // Function to submit account data
-  const submitAccount = async (accountData) => {
+  const submitAccount = async (e) => {
+    e.preventDefault();
     const accountNumberEndpoint = `${baseUrl}/account-number`;
-
+    const selectedBank = allBanks.find(
+      (bank) => bank.code === bankDetails?.code
+    );
+    const payload = {
+      bank_id: selectedBank.id,
+      account_number: bankDetails?.account_number,
+      account_name: bankDetails.account_name,
+    };
     try {
-      const response = await axios.post(accountNumberEndpoint, accountData, config(token));
+      const response = await axios.post(
+        accountNumberEndpoint,
+        payload,
+        config(token)
+      );
 
       if (response.data?.status) {
         // Handle successful submission
@@ -163,7 +174,7 @@ const AcctNo = () => {
   return (
     <div className='mx-12'>
       <ToastContainer autoClose={3000} />
-      <form onSubmit={formik.handleSubmit} className='p-12'>
+      <form onSubmit={submitAccount} className='p-12'>
         {/* Bank selection dropdown */}
         <div className=''>
           <label
@@ -217,7 +228,7 @@ const AcctNo = () => {
           />
           {isLoadingResolve && (
             <div className='text-gray-500 text-sm mt-2 flex justify-center'>
-              <Spinner color="#049805" size={16} />
+              <Spinner color='#049805' size={16} />
               {"  "}Resolving account number...
             </div>
           )}
