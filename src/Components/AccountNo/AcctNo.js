@@ -126,7 +126,7 @@ const AcctNo = () => {
             account_name: bankDetails.account_name,
           };
 
-          // Submit the account data
+         // Submit the account data
           await submitAccount(accountNumberData);
         } else {
           console.error("Account number must be 10 digits.");
@@ -273,9 +273,9 @@ const AcctNo = () => {
       </form>
 
       {/* Display fetched account details */}
-      <div className='m-8 grid gap-2'>
-        <div>
-          <h1>Fetched Account Details</h1>
+      <div className='m-8 grid gap-2 justify-center'>
+        <div className="text-center font-bold">
+          <h1>Account Details</h1>
         </div>
         {/* Display Bank */}
         <h1>Bank</h1>
