@@ -19,6 +19,7 @@ import AllReclaimPage from "./Pages/AllReclaimPage";
 import AcctViewReclaimPage from "./Pages/AcctViewReclaimPage";
 import AcctViewPrPage from "./Pages/AcctViewPrPage";
 import AcctPage from "./Pages/AcctPage";
+import AccountantPage from "./Pages/AccountantPage";
 
 const AppRoute = () => {
   return (
@@ -51,6 +52,7 @@ const AppRoute = () => {
           <Route path="allpendingreclaimreq" element={<AllReclaimPage />} />
           <Route path="allpendingreclaimreq/view/:id" element={<AcctViewReclaimPage/>} />
           <Route path="acctnumber" element={<AcctPage />} />
+          <Route path="accountant" element={<AccountantPage />} />
         </Route>
       </Routes>
     </Router>
