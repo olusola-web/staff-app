@@ -11,7 +11,7 @@ import { useStateContext } from '../../context/StateContext';
 
 const ProfileForm = () => {
  const [isLoading, setIsLoading] = useState(false)
- const { baseUrl, uploadConfig, imgUrl, profileDetails } = useStateContext();
+ const { baseUrl, uploadConfig, imgUrl, profileDetails, handleGetProfile } = useStateContext();
  const [formData, setFormData] = useState({
     profile_picture: '',
     cv: "",
@@ -65,6 +65,7 @@ const registrationSchema = Yup.object().shape({
     }
     const res = await axios.post(url, formInput, uploadConfig());
     toast.success(res?.data?.message);
+    handleGetProfile()
   } catch (error) {
     toast.error(error?.response?.data?.message);
   } finally {
