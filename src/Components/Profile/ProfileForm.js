@@ -10,7 +10,7 @@ import { useStateContext } from "../../context/StateContext";
 
 const ProfileForm = () => {
  const [isLoading, setIsLoading] = useState(false)
- const { baseUrl, uploadConfig, imgUrl, profileDetails } = useStateContext();
+ const { baseUrl, uploadConfig, imgUrl, profileDetails, handleGetProfile } = useStateContext();
  const [formData, setFormData] = useState({
     profile_picture: '',
     cv: "",
