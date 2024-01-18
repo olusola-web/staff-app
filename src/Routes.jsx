@@ -16,6 +16,9 @@ import LeaveOffRequestTable from "./Pages/LeaveOffRequestTable";
 import ReclaimViewPage from "./Pages/ReclaimViewPage";
 import AllPendingPage from "./Pages/AllPendingPage";
 import AllReclaimPage from "./Pages/AllReclaimPage";
+import AcctViewReclaimPage from "./Pages/AcctViewReclaimPage";
+import AcctViewPrPage from "./Pages/AcctViewPrPage";
+import AcctPage from "./Pages/AcctPage";
 
 const AppRoute = () => {
   return (
@@ -34,17 +37,20 @@ const AppRoute = () => {
 
           <Route path="purchaserequest" element={<PurchaseRequestPage />} />
           <Route path="purchaserequest/view/:id" element={<PurReqViewPage />} />
+        
+
 
           <Route
             path="purchaserequest/create"
             element={<CreatePurchReqPage />}
           />
-
           <Route path="leaverequest" element={<LeaveOffRequestTable />} />
           <Route path="leaverequestpage" element={<LeaveOffRequestPage />} />
           <Route path="allpendingpurchasereq" element={<AllPendingPage />} />
+          <Route path="allpendingpurchasereq/view/:id" element={<AcctViewPrPage />} />
           <Route path="allpendingreclaimreq" element={<AllReclaimPage />} />
-
+          <Route path="allpendingreclaimreq/view/:id" element={<AcctViewReclaimPage/>} />
+          <Route path="acctnumber" element={<AcctPage />} />
         </Route>
       </Routes>
     </Router>

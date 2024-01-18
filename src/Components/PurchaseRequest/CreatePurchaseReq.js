@@ -98,7 +98,7 @@ const CreatePurchaseReq = () => {
                 htmlFor="Amount"
                 className="block text-sm font-medium text-gray-600 mb-2"
               >
-                Amount:
+                Unit Price:
               </label>
               <input
                 type="number"

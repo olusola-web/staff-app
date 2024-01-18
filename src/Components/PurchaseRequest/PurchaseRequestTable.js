@@ -16,7 +16,7 @@ const tableHeader = [
   <th className="py-3 px-6">S/N</th>,
   <th className="py-3 px-4">Description</th>,
   <th className="py-3 px-4">Quantity</th>,
-  <th className="py-3 px-4">Amount</th>,
+  <th className="py-3 px-4">Unit Price</th>,
   <th className="py-3 px-6">Action</th>,
 ];
 

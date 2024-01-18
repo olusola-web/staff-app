@@ -63,6 +63,13 @@ export const getLinks = () => {
         text: "All Pending Reclaim",
         icon:<IoBagCheckOutline/>
       },
+
+      {
+        id: 9,
+        url: "accountnumber",
+        text: "Account Number",
+        icon:<MdOutlineEmojiPeople/>
+      },
   ];
   
 
@@ -104,6 +111,13 @@ export const getLinks = () => {
       text: "Complaints/Suggestions",
       icon:<MdOutlineEmojiPeople/>
     },
+
+    {
+      id: 7,
+      url: "acctnumber",
+      text: "Account Number",
+      icon:<MdOutlineEmojiPeople/>
+    },
   ];
 
 
@@ -111,9 +125,9 @@ export const getLinks = () => {
   
     if (role === "accountant") {
       return links;
-   } else if (role === "user") {
+   } else {
       return links2;
     }
-    return links;
+    // return links2;
   };
   
