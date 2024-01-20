@@ -9,10 +9,10 @@ import { ToastContainer, toast } from "react-toastify";
 import { useStateContext } from "../../context/StateContext";
 
 const ProfileForm = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { baseUrl, uploadConfig, imgUrl, profileDetails } = useStateContext();
-  const [formData, setFormData] = useState({
-    profile_picture: "",
+ const [isLoading, setIsLoading] = useState(false)
+ const { baseUrl, uploadConfig, imgUrl, profileDetails, handleGetProfile } = useStateContext();
+ const [formData, setFormData] = useState({
+    profile_picture: '',
     cv: "",
     guarantor_photo: "",
   });
@@ -61,24 +61,25 @@ const ProfileForm = () => {
     },
     validationSchema: registrationSchema,
     onSubmit: async (values) => {
-      setIsLoading(true);
-      try {
-        const url = `${baseUrl}/create-profile`;
-        const formInput = new FormData();
-        const payload = { ...values, ...formData };
-        for (const key in payload) {
-          formInput.append(key, payload[key]);
-        }
-        const res = await axios.post(url, formInput, uploadConfig());
-        toast.success(res?.data?.message);
-      } catch (error) {
-        toast.error(error?.response?.data?.message);
-      } finally {
-        setIsLoading(false);
-        formik.resetForm();
-      }
-      console.log(values);
-    },
+  setIsLoading(true);
+  try {
+    const url = `${baseUrl}/create-profile`;
+      const formInput = new FormData();
+      const payload =  {...values, ...formData};
+    for (const key in payload) {
+      formInput.append(key, payload[key]);
+    }
+    const res = await axios.post(url, formInput, uploadConfig());
+    toast.success(res?.data?.message);
+    handleGetProfile()
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+  } finally {
+    setIsLoading(false);
+    formik.resetForm();
+  }
+  console.log(values)
+},
   });
 
   useEffect(() => {
