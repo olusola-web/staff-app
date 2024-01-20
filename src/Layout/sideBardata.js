@@ -66,7 +66,7 @@ export const getLinks = () => {
 
       {
         id: 9,
-        url: "accountnumber",
+        url: "accountant",
         text: "Account Number",
         icon:<MdOutlineEmojiPeople/>
       },
