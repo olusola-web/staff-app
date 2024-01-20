@@ -77,7 +77,7 @@ const Login = () => {
     const url = `${baseUrl}/login`;
     try {
       const res = await axios.post(url, userData);
-      toast.success("Login Successful");
+      toast.success(res?.data?.message);
       console.log(res.data);
       await localStorage.setItem("token", res.data.token);
       await localStorage.setItem("firstname", res.data.data.firstname);
