@@ -63,7 +63,7 @@ const PurchaseRequestTable = () => {
     }, 2000);
     } catch (error) {
       console.error("Error submitting purchase request:", error);
-      toast.error("Failed to submit purchase request.");
+      toast.error(error.response.data?.message);
     } finally {
       setIsLoading(false); // Stop loading regardless of the outcome
     }
