@@ -40,25 +40,29 @@ const AcctNo = () => {
     fetchAccountDetails();
   }, []);
 
-  // Resolve bank account function
   const resolveBankAccount = async () => {
     const url = `${baseUrl}/resolve-bank-account`;
-
+  
     try {
       setIsLoadingResolve(true);
       const response = await axios.post(url, bankDetails, config(token));
       setBankDetails({
         ...bankDetails,
-        account_name: response.data?.data?.data.account_name,
+        account_name: response.data?.data?.data?.account_name,
       });
       setIsLoadingResolve(false);
-      toast.success("Account number resolved successfully!");
+  
+      // Use the message from the response for the toast
+      toast.success(response.data?.data?.message);
     } catch (error) {
       setIsLoadingResolve(false);
-      console.error("Error resolving bank account:", error);
-      toast.error("Error resolving bank account. Please try again.");
+      console.log( error);
+  
+      // Use the error message from the response for the toast
+      toast.error(error.response.data?.message);
     }
   };
+  
 
   // Fetch account details function
   const fetchAccountDetails = async () => {
@@ -69,8 +73,8 @@ const AcctNo = () => {
       setIsSubmitting(false); // Move here
       formik.resetForm(); // Move here
     } catch (error) {
-      console.error("Error fetching account details:", error);
-      toast.error("Error fetching account details. Please try again.");
+      console.log( error);
+      toast.error(error.response.data?.message);
       setIsSubmitting(false); // Move here in case of an error
     }
   };
@@ -84,8 +88,8 @@ const AcctNo = () => {
           await fetchAccountDetails();
           console.log("Resolved Bank Account:", bankDetails.account_name);
         } catch (error) {
-          console.error("Error resolving bank account:", error);
-          toast.error("Error resolving bank account. Please try again.");
+          console.log (error);
+          toast.error(error.response.data?.message);
         }
       };
 
@@ -134,12 +138,13 @@ const AcctNo = () => {
           // Submit the account data
           await submitAccount(accountNumberData);
         } else {
-          console.error("Account number must be 10 digits.");
+            console.error("Account number must be 10 digits.");
+            
         }
 
         // Do not set isSubmitting to false and reset form here
       } catch (error) {
-        console.error("Error processing form submission:", error);
+        console.error(error);
       }
     },
   });
@@ -166,15 +171,15 @@ const AcctNo = () => {
 
       if (response.data?.status) {
         // Handle successful submission
-        toast.success(response.data.message);
+        toast.success(response.data?.message);
         fetchAccountDetails(); // auto update
       } else {
         // Handle submission failure
-        toast.error(response.data.message);
+       
       }
     } catch (error) {
       console.error("Error submitting account:", error);
-      toast.error("Error submitting account. Please try again.");
+      toast.error(error.response.data?.message);
     }
   };
 
