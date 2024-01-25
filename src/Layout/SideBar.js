@@ -27,7 +27,7 @@ const SideBar = ({ closeSidebar }) => {
       const url = `${baseUrl}/logout`;
       const res = await axios.post(url, {}, config());
       toast.success(res?.data?.message);
-      console.log(res.data)
+      // console.log(res.data)
     } catch (error) {
       toast.error(error?.response?.data?.message);
     } finally {

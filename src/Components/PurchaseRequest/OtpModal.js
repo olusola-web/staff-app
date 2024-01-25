@@ -22,14 +22,14 @@ const OtpModal = (props) => {
         otp: otpValue
       }
       const response = await axios.post(url, payload, config());
-      console.log(response.data)
+      // console.log(response.data)
       toast.success(response?.data.message);
 
       setTimeout(() => {
         navigateTo("/home/allpendingpurchasereq");
       }, 5000);
     } catch (error) {
-      console.error("Error fetching single reclaim request:", error);
+      // console.error("Error fetching single reclaim request:", error);
       toast.error(error?.response?.data?.message || "An error occurred");
     } finally {
       setIsLoading(false);

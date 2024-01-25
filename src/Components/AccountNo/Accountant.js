@@ -32,7 +32,7 @@ const AcctNo = () => {
       try {
         await getAllBanks();
       } catch (error) {
-        console.error("Error fetching banks:", error);
+        // console.error("Error fetching banks:", error);
       }
     };
 
@@ -56,7 +56,7 @@ const AcctNo = () => {
       toast.success(response.data?.data?.message);
     } catch (error) {
       setIsLoadingResolve(false);
-      console.log( error);
+      // console.log( error);
   
       // Use the error message from the response for the toast
       toast.error(error.response.data?.message);
@@ -73,7 +73,7 @@ const AcctNo = () => {
       setIsSubmitting(false); // Move here
       formik.resetForm(); // Move here
     } catch (error) {
-      console.log( error);
+      // console.log( error);
       toast.error(error?.response?.data?.message);
       setIsSubmitting(false); // Move here in case of an error
     }
@@ -86,9 +86,9 @@ const AcctNo = () => {
         try {
           await resolveBankAccount();
           await fetchAccountDetails();
-          console.log("Resolved Bank Account:", bankDetails.account_name);
+          // console.log("Resolved Bank Account:", bankDetails.account_name);
         } catch (error) {
-          console.log (error);
+          // console.log (error);
           toast.error(error?.response?.data?.message);
         }
       };
@@ -123,7 +123,7 @@ const AcctNo = () => {
             values.account_number,
             selectedBank.code
           );
-          console.log("Resolved Bank Account:", resolutionData);
+          // console.log("Resolved Bank Account:", resolutionData);
 
           formik.setFieldValue("account_name", resolutionData?.account_name);
 
@@ -138,13 +138,13 @@ const AcctNo = () => {
           // Submit the account data
           await submitAccount(accountNumberData);
         } else {
-            console.error("Account number must be 10 digits.");
+            // console.error("Account number must be 10 digits.");
             
         }
 
         // Do not set isSubmitting to false and reset form here
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
     },
   });
@@ -178,7 +178,7 @@ const AcctNo = () => {
        
       }
     } catch (error) {
-      console.error("Error submitting account:", error);
+      // console.error("Error submitting account:", error);
       toast.error(error?.response?.data?.message);
     }
   };

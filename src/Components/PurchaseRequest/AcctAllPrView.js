@@ -32,13 +32,13 @@ const AcctAllPrView = () => {
     try {
       const response = await axios.put(url, payload, config(token));
       setTransferCode(response.data.data.data.transfer_code)
-      console.log(response.data.data.data.transfer_code)
+      // console.log(response.data.data.data.transfer_code)
       if(response.data.data.data.status === 'otp'){
         setShowOtpCard(true)
       }
       toast.success(response?.data.message);
     } catch (error) {
-      console.error("Error fetching single reclaim request:", error);
+      // console.error("Error fetching single reclaim request:", error);
       toast.error(error?.response?.data?.message || "An error occurred");
     } finally {
       setIsLoading(false);
@@ -53,7 +53,7 @@ const AcctAllPrView = () => {
           setAcctSinglePr(data);
         }
       } catch (error) {
-        console.error("Error fetching single purchase request:", error);
+        // console.error("Error fetching single purchase request:", error);
       }
     };
 

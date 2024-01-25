@@ -21,10 +21,10 @@ const View = () => {
       try {
         const data = await getSingleReclaim(id);
         if (data) {
-          console.log("Fetched Data:", data);
+          // console.log("Fetched Data:", data);
         }
       } catch (error) {
-        console.error("Error fetching single reclaim:", error);
+        // console.error("Error fetching single reclaim:", error);
       }
     };
 

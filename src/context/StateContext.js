@@ -84,7 +84,7 @@ export const StateProvider = ({ children }) => {
         return null;
       }
     } catch (error) {
-      console.log (error);
+      // console.log (error);
     } finally {
       setIsLoading(false);
     }
@@ -99,7 +99,7 @@ export const StateProvider = ({ children }) => {
       setAllBanks(res.data.data);
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setIsLoading(false);
     }
   };
@@ -117,7 +117,7 @@ export const StateProvider = ({ children }) => {
         // console.error("No data found in the response");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error(error);
     } finally {
       setIsLoading(false);
@@ -136,7 +136,7 @@ export const StateProvider = ({ children }) => {
         // console.error("No data found in the response");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error(error);
     } finally {
       setIsLoading(false);
@@ -155,7 +155,7 @@ export const StateProvider = ({ children }) => {
         // console.error("No data found in the response");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error)
       toast.error(error);
     } finally {
       setIsLoading(false);
@@ -167,10 +167,10 @@ export const StateProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const res = await axios.get(url, config(token));
-      console.log(res.data);
+      // console.log(res.data);
       setAllReclaim(res.data.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -181,10 +181,10 @@ export const StateProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const res = await axios.get(url, config(token));
-      console.log(res.data);
+      // console.log(res.data);
       setAcctAllReclaim(res.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -196,10 +196,10 @@ export const StateProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const res = await axios.get(url, config(token));
-      console.log(res.data);
+      // console.log(res.data);
       setAcctAllPurRequests(res.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -213,7 +213,7 @@ export const StateProvider = ({ children }) => {
       // console.log(res.data);
       setAllPurchaseReq(res.data.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -226,7 +226,7 @@ export const StateProvider = ({ children }) => {
       const res = await axios.get(url, config(token));
       setAllLeaveReq(res.data.data || []);
     } catch (error) {
-      console.log( error);
+      // console.log( error);
       toast.error(error);
     } finally {
       setIsLoading(false);
@@ -243,7 +243,7 @@ export const StateProvider = ({ children }) => {
       // console.log('Reclaim Requests:', dashDetails); // Log to check data
       setDashdetails(res.data.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setIsLoading(false);
     }
