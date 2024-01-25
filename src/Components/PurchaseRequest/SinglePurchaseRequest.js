@@ -3,9 +3,9 @@ import React from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 const SinglePurchaseRequest = ({ item, index, onDelete }) => {
-  console.log(onDelete)
+  // console.log(onDelete)
   const { description, quantity, price, action } = item || {};
-console.log(item)
+// console.log(item)
   return (
     <div className="grid text-sm grid-cols-5 gap-2 ">
       <h2 className="px-8">{index + 1}</h2>

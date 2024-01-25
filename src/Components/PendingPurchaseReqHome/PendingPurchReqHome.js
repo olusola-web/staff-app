@@ -10,9 +10,9 @@ const PendingPurchReqHome = () => {
   // const token = localStorage.getItem("token")
   // For simplicity, using sample data directly
   const { dashDetails, isLoading } = useStateContext();
-  console.log("purchase_request:", dashDetails.purchase_request);
+  // console.log("purchase_request:", dashDetails.purchase_request);
   const { purchase_request } = dashDetails;
-  console.log(dashDetails);
+  // console.log(dashDetails);
 
   let displayedData = [];
   if (purchase_request && Array.isArray(purchase_request)) {

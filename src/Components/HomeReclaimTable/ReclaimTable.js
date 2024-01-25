@@ -13,12 +13,12 @@ const ReclaimTable = () => {
   let displayedData = [];
   if (reclaim_request && Array.isArray(reclaim_request)) {
     displayedData = reclaim_request.map((reclaim, index) => {
-      console.log("Original created_at:", reclaim.created_at);
+      // console.log("Original created_at:", reclaim.created_at);
       // Format or handle null dates
       let formattedDate = reclaim.created_at
       ? new Date(reclaim.created_at).toLocaleDateString()
       : "Not Available";
-        console.log("Formatted date:", formattedDate);
+        // console.log("Formatted date:", formattedDate);
 
       return {
         id: index + 1,

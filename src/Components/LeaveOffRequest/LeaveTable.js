@@ -43,10 +43,10 @@ const LeaveTable = () => {
         setSuccessMessage("leave/off  deleted successfully");
         setShowModal(true);
       } else {
-        console.error("Failed to delete leave request");
+        // console.error("Failed to delete leave request");
       }
     } catch (error) {
-      console.error("Error deleting leave request:", error);
+      // console.error("Error deleting leave request:", error);
     }
   };
 

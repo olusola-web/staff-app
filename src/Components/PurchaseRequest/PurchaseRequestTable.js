@@ -28,7 +28,7 @@ const PurchaseRequestTable = () => {
   const handleDelete = (id) => {
     const newData = purchaseRequests.filter((item,index) => index !== id);
     setPurchaseRequests(newData);
-    console.log(newData)
+    // console.log(newData)
   };
 
   const totalAmount = purchaseRequests.reduce((acc, item) => {
@@ -51,7 +51,7 @@ const PurchaseRequestTable = () => {
   
     try {
       const response = await axios.post(`${baseUrl}/create-purchase-request`, data, config());
-      console.log("Response Data:", response.data);
+      // console.log("Response Data:", response.data);
       setPurchaseRequests([]);
       getDashboardDetails() // auto update
       toast.success("Purchase request submitted successfully!", {
@@ -62,7 +62,7 @@ const PurchaseRequestTable = () => {
       navigate('/home/purchaserequest');
     }, 2000);
     } catch (error) {
-      console.error("Error submitting purchase request:", error);
+      // console.error("Error submitting purchase request:", error);
       toast.error(error.response.data?.message);
     } finally {
       setIsLoading(false); // Stop loading regardless of the outcome

@@ -61,7 +61,7 @@ const registrationSchema = Yup.object().shape({
     setIsLoading(false);
     formik.resetForm();
   }
-  console.log(values)
+  // console.log(values)
 },
     
  });
