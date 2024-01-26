@@ -59,9 +59,9 @@ export const StateProvider = ({ children }) => {
     };
   };
   //const baseUrl = "https://api.myafrimall.com.ng/api/staff/v1";
-   const baseUrl = "https://sandbox.myafrimall.com.ng/api/staff/v1";
- //const imgUrl = "https://api.myafrimall.com.ng";
-   const imgUrl = "https://sandbox.myafrimall.com.ng";
+  const baseUrl = "https://sandbox.myafrimall.com.ng/api/staff/v1";
+  //const imgUrl = "https://api.myafrimall.com.ng";
+  const imgUrl = "https://sandbox.myafrimall.com.ng";
 
   const [formData, setFormData] = useState({});
 
@@ -76,7 +76,7 @@ export const StateProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const res = await axios.get(url, config(token));
-     
+
       if (res.data && res.data.status) {
         return res.data.data; // Directly accessing the data object
       } else {
@@ -90,7 +90,7 @@ export const StateProvider = ({ children }) => {
     }
   };
 
-  // get all banks 
+  // get all banks
   const getAllBanks = async () => {
     const url = `${baseUrl}/banks`;
     setIsLoading(true);
@@ -103,7 +103,6 @@ export const StateProvider = ({ children }) => {
       setIsLoading(false);
     }
   };
-  
 
   // Function to get a single reclaim
   const getSingleReclaim = async (id) => {
@@ -329,7 +328,7 @@ export const StateProvider = ({ children }) => {
         setAcctSingleReclaim,
         getAllBanks,
         setAllBanks,
-        allBanks
+        allBanks,
       }}
     >
       {children}
