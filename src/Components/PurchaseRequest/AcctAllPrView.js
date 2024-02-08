@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useStateContext } from "../../context/StateContext";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Button from "../Button/ButtonReusable";
 import logo from "../../Assets/Images/logo.png";
 import Table from "../../Utils/Table";
@@ -10,6 +10,7 @@ import { useReactToPrint } from "react-to-print";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { Spinner } from "react-activity";
+import OtpModal from "./OtpModal";
 
 const AcctAllPrView = () => {
   const {
@@ -22,19 +23,22 @@ const AcctAllPrView = () => {
   } = useStateContext();
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState();
-  const navigateTo = useNavigate();
-
+  const [showOtpCard, setShowOtpCard] = useState(false);
+  const [transferCode, setTransferCode] = useState("");
+  
   const approveRequest = async (id, payload) => {
     const url = `${baseUrl}/accountant-purchase-request/${id}`;
     setIsLoading(true);
     try {
       const response = await axios.put(url, payload, config(token));
+      setTransferCode(response.data.data.data.transfer_code)
+      // console.log(response.data.data.data.transfer_code)
+      if(response.data.data.data.status === 'otp'){
+        setShowOtpCard(true)
+      }
       toast.success(response?.data.message);
-      setTimeout(() => {
-        navigateTo("/home/allpendingpurchasereq");
-      }, 3000);
     } catch (error) {
-      console.error("Error fetching single reclaim request:", error);
+      // console.error("Error fetching single reclaim request:", error);
       toast.error(error?.response?.data?.message || "An error occurred");
     } finally {
       setIsLoading(false);
@@ -49,7 +53,7 @@ const AcctAllPrView = () => {
           setAcctSinglePr(data);
         }
       } catch (error) {
-        console.error("Error fetching single purchase request:", error);
+        // console.error("Error fetching single purchase request:", error);
       }
     };
 
@@ -92,7 +96,7 @@ const AcctAllPrView = () => {
       : 0;
 
   return (
-    <div className='container mx-auto' ref={printComp}>
+    <div className='relative container mx-auto' ref={printComp}>
       <div className='flex justify-between p-10'>
         <Link to='/home/allpendingpurchasereq'>
           <FaArrowLeft />
@@ -183,6 +187,7 @@ const AcctAllPrView = () => {
           onClick={() =>
             approveRequest(acctSinglePr?.id, { status: "approved" })
           }
+          // onClick={()=>setShowOtpCard(true)}
           className={`bg-green-500`}
         >
           Approve Purchase Request
@@ -199,6 +204,9 @@ const AcctAllPrView = () => {
         </Button>
       </div>
       <ToastContainer />
+
+      {showOtpCard ? <OtpModal setShowOtpCard={setShowOtpCard} transferCode={transferCode}/> : null}
+    
     </div>
   );
 };

@@ -21,9 +21,9 @@ const AcctAllPurRequest = () => {
   }, []);
 
   useEffect(() => {
-    console.log("Acct All Pur Requests Data:", acctAllPurRequests.data);
+    // console.log("Acct All Pur Requests Data:", acctAllPurRequests.data);
     if (acctAllPurRequests.data && !$.fn.DataTable.isDataTable("#purchaseTable")) {
-      console.log("Initializing DataTable with data:", acctAllPurRequests.data);
+      // console.log("Initializing DataTable with data:", acctAllPurRequests.data);
   
       $("#purchaseTable").DataTable({
         data: acctAllPurRequests.data.map((item, index) => [

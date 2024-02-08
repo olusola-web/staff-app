@@ -33,7 +33,7 @@ const AcctViewReclaim = () => {
         navigateTo("/home/allpendingreclaimreq");
       }, 3000);
     } catch (error) {
-      console.error("Error fetching single reclaim request:", error);
+      // console.error("Error fetching single reclaim request:", error);
       toast.error(error?.response?.data?.message || "An error occurred");
     } finally {
       setIsLoading(false);
@@ -45,10 +45,10 @@ const AcctViewReclaim = () => {
       try {
         const data = await getacctSingleReclaim(id);
         if (data) {
-          console.log("Fetched Data:", data);
+          // console.log("Fetched Data:", data);
         }
       } catch (error) {
-        console.error("Error fetching single reclaim:", error);
+        // console.error("Error fetching single reclaim:", error);
       }
     };
 

@@ -22,6 +22,7 @@ export const StateProvider = ({ children }) => {
   const [allReclaim, setAllReclaim] = useState([]);
   const [acctAllReclaims, setAcctAllReclaim] = useState([]);
   const [allLeaveReq, setAllLeaveReq] = useState([]);
+  const [allBanks, setAllBanks] = useState([]);
   // const [dashDetails, setDashdetails] = useState({});
   const [dashDetails, setDashdetails] = useState({
     reclaim_request: [],
@@ -57,8 +58,9 @@ export const StateProvider = ({ children }) => {
       },
     };
   };
-  // const baseUrl = "https://sandbox.myafrimall.com.ng/api/v1";
+  //const baseUrl = "https://api.myafrimall.com.ng/api/staff/v1";
   const baseUrl = "https://sandbox.myafrimall.com.ng/api/staff/v1";
+  //const imgUrl = "https://api.myafrimall.com.ng";
   const imgUrl = "https://sandbox.myafrimall.com.ng";
 
   const [formData, setFormData] = useState({});
@@ -74,15 +76,30 @@ export const StateProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const res = await axios.get(url, config(token));
+
       if (res.data && res.data.status) {
         return res.data.data; // Directly accessing the data object
       } else {
-        console.error("No data found in the response");
+        // console.error("No data found in the response");
         return null;
       }
     } catch (error) {
-      console.error("Error fetching single purchase request:", error);
+      // console.log (error);
     } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // get all banks
+  const getAllBanks = async () => {
+    const url = `${baseUrl}/banks`;
+    setIsLoading(true);
+    try {
+      const res = await axios.get(url, config());
+      setAllBanks(res.data.data);
+      setIsLoading(false);
+    } catch (error) {
+      // console.log(error);
       setIsLoading(false);
     }
   };
@@ -96,11 +113,11 @@ export const StateProvider = ({ children }) => {
       if (response.data && response.data.status) {
         setSingleReclaim(response.data.data);
       } else {
-        console.error("No data found in the response");
+        // console.error("No data found in the response");
       }
     } catch (error) {
-      console.error("Error fetching single reclaim request:", error);
-      toast.error("Error fetching data");
+      // console.log(error);
+      toast.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -115,11 +132,11 @@ export const StateProvider = ({ children }) => {
       if (response.data && response.data.status) {
         setAcctSingleReclaim(response.data.data);
       } else {
-        console.error("No data found in the response");
+        // console.error("No data found in the response");
       }
     } catch (error) {
-      console.error("Error fetching single reclaim request:", error);
-      toast.error("Error fetching data");
+      // console.log(error);
+      toast.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -134,11 +151,11 @@ export const StateProvider = ({ children }) => {
       if (response.data && response.data.status) {
         setAcctSinglePr(response.data.data);
       } else {
-        console.error("No data found in the response");
+        // console.error("No data found in the response");
       }
     } catch (error) {
-      console.error("Error fetching single reclaim request:", error);
-      toast.error("Error fetching data");
+      // console.log(error)
+      toast.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -149,10 +166,10 @@ export const StateProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const res = await axios.get(url, config(token));
-      console.log(res.data);
+      // console.log(res.data);
       setAllReclaim(res.data.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -163,10 +180,10 @@ export const StateProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const res = await axios.get(url, config(token));
-      console.log(res.data);
+      // console.log(res.data);
       setAcctAllReclaim(res.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -178,10 +195,10 @@ export const StateProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const res = await axios.get(url, config(token));
-      console.log(res.data);
+      // console.log(res.data);
       setAcctAllPurRequests(res.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -195,7 +212,7 @@ export const StateProvider = ({ children }) => {
       // console.log(res.data);
       setAllPurchaseReq(res.data.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -208,8 +225,8 @@ export const StateProvider = ({ children }) => {
       const res = await axios.get(url, config(token));
       setAllLeaveReq(res.data.data || []);
     } catch (error) {
-      console.error("Error fetching leave requests:", error);
-      toast.error("Error fetching leave requests");
+      // console.log( error);
+      toast.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -225,7 +242,7 @@ export const StateProvider = ({ children }) => {
       // console.log('Reclaim Requests:', dashDetails); // Log to check data
       setDashdetails(res.data.data);
     } catch (error) {
-      console.error("Error fetching dashboard details:", error);
+      // console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -309,6 +326,9 @@ export const StateProvider = ({ children }) => {
         getacctSingleReclaim,
         acctSingleReclaim,
         setAcctSingleReclaim,
+        getAllBanks,
+        setAllBanks,
+        allBanks,
       }}
     >
       {children}

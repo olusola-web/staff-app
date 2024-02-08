@@ -77,8 +77,8 @@ const Login = () => {
     const url = `${baseUrl}/login`;
     try {
       const res = await axios.post(url, userData);
-      toast.success("Login Successful");
-      console.log(res.data);
+      toast.success(res?.data?.message);
+      // console.log(res.data);
       await localStorage.setItem("token", res.data.token);
       await localStorage.setItem("firstname", res.data.data.firstname);
       const user = JSON.stringify(res.data.data);
@@ -89,7 +89,7 @@ const Login = () => {
       setIsLoggedIn(true);
       setUserData({});
     } catch (error) {
-      console.log(error.response);
+      // console.log(error.response);
       toast.error(error?.response?.data?.message);
     } finally {
       setIsLoading(false);

@@ -38,21 +38,21 @@ const CreateLeaveOffRequest = () => {
 
       if (response.data.status) {
         // Handle success
-        console.log("Leave submitted successfully");
+        // console.log("Leave submitted successfully");
         toast.success("Leave submitted successfully", {
           autoClose: 5000 // 5000 milliseconds = 5 seconds
         });
         // Optionally, reset form here or navigate away
       } else {
         // Handle failure
-        console.error("Failed to submit leave");
+        // console.error("Failed to submit leave");
       }
         // Delay navigation to allow the toast to be displayed
     setTimeout(() => {
       navigate('/home/leaverequest');
     }, 2000);
     } catch (error) {
-      console.error("Error submitting leave request:", error);
+      // console.error("Error submitting leave request:", error);
     }
     // Reset form after submission
     setNewRequest({

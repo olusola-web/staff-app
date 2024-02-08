@@ -13,9 +13,9 @@ const tableHeader = [
 
 const LeaveRequestTable = () => {
 const { dashDetails, isLoading, getAllLeaveReq, getDashboardDetails } = useStateContext();
-  console.log('leave_request:', dashDetails.leave_request);
+  // console.log('leave_request:', dashDetails.leave_request);
   const { leave_request } = dashDetails;
-   console.log(dashDetails);
+  //  console.log(dashDetails);
   useEffect(() => {
     getAllLeaveReq(); // call all leave req on the table
     getDashboardDetails() //  call getDashboardDetails on the table 

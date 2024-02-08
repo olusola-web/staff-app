@@ -15,15 +15,7 @@ const SingleReclaimRequest = ({ item, index }) => {
       <h2>{uploadReceipt}</h2>
       <h2>{status}</h2>
       <h2>{button}</h2>
-      {/* <h2>
-        {action}
-        <div className="flex gap-2">
-          <RiDeleteBin6Line
-            className="text-red-600 cursor-pointer"
-            onClick={onDelete}
-          />
-        </div>
-      </h2> */}
+     
     </div>
   );
 };

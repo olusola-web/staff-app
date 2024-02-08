@@ -18,13 +18,13 @@ const View = () => {
   // const [purchaseRequest, setPurchaseRequest] = useState(null);
   const { id } = useParams();
   const baseUrl = "https://api.myafrimall.com.ng";
-  console.log(singlePurchaseRequest);
-  console.log(id);
+  // console.log(singlePurchaseRequest);
+  // console.log(id);
   useEffect(() => {
     const fetchSinglePurchaseRequest = async () => {
       const data = await getSinglePurchaseRequest(id);
 
-      console.log("Fetched Data:", id);
+      // console.log("Fetched Data:", id);
       setSinglePurchaseRequest(data);
     };
     if (id) {

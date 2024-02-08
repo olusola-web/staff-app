@@ -18,6 +18,8 @@ import AllPendingPage from "./Pages/AllPendingPage";
 import AllReclaimPage from "./Pages/AllReclaimPage";
 import AcctViewReclaimPage from "./Pages/AcctViewReclaimPage";
 import AcctViewPrPage from "./Pages/AcctViewPrPage";
+import AcctPage from "./Pages/AcctPage";
+import AccountantPage from "./Pages/AccountantPage";
 
 const AppRoute = () => {
   return (
@@ -43,15 +45,14 @@ const AppRoute = () => {
             path="purchaserequest/create"
             element={<CreatePurchReqPage />}
           />
-
           <Route path="leaverequest" element={<LeaveOffRequestTable />} />
           <Route path="leaverequestpage" element={<LeaveOffRequestPage />} />
           <Route path="allpendingpurchasereq" element={<AllPendingPage />} />
           <Route path="allpendingpurchasereq/view/:id" element={<AcctViewPrPage />} />
           <Route path="allpendingreclaimreq" element={<AllReclaimPage />} />
           <Route path="allpendingreclaimreq/view/:id" element={<AcctViewReclaimPage/>} />
-
-
+          <Route path="acctnumber" element={<AcctPage />} />
+          <Route path="accountant" element={<AccountantPage />} />
         </Route>
       </Routes>
     </Router>
