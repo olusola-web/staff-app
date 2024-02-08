@@ -57,9 +57,9 @@ export const StateProvider = ({ children }) => {
       },
     };
   };
-  const baseUrl = "https://api.myafrimall.com.ng/api/staff/v1";
-  // const baseUrl = "https://sandbox.myafrimall.com.ng/api/staff/v1";
-  const imgUrl = "https://api.myafrimall.com.ng";
+  // const baseUrl = "https://sandbox.myafrimall.com.ng/api/v1";
+  const baseUrl = "https://sandbox.myafrimall.com.ng/api/staff/v1";
+  const imgUrl = "https://sandbox.myafrimall.com.ng";
 
   const [formData, setFormData] = useState({});
 
